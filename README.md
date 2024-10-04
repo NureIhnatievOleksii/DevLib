@@ -1,6 +1,11 @@
 # DevLib
 ![Branch Image](https://drive.google.com/uc?export=view&id=1crCXb-QVlmTpuXuLTPLvznyidRZ8zoqI)
 
+### <span style="color:red;">ВАЖНО!!!</span>
+> Не коммитите изменения в главную ветку **Main**!  
+> Все изменения нужно коммитить в ветку **frontend/backend** или конкретную ветку.  
+> Владелец репозитория сольёт изменения из веток **frontend** или **backend** в главную ветку **Main**.
+
 ### Правила проекта DevLib
 
 #### Структура проекта
