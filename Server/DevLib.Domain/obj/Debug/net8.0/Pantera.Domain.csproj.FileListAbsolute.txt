@@ -1,0 +1,12 @@
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\bin\Debug\net8.0\Pantera.Domain.deps.json
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\bin\Debug\net8.0\Pantera.Domain.dll
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\bin\Debug\net8.0\Pantera.Domain.pdb
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.csproj.AssemblyReference.cache
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.AssemblyInfoInputs.cache
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.AssemblyInfo.cs
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.dll
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\refint\Pantera.Domain.dll
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\Pantera.Domain.pdb
+C:\Users\Empty\Desktop\pantera-feature-6-add-ability-to-support-google-authentication\Server\Pantera.Domain\obj\Debug\net8.0\ref\Pantera.Domain.dll

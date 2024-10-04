@@ -1,0 +1,81 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AA1E7F3B-69D3-4D19-9313-0DF00829169D}|DevLib.Api\\DevLib.Api.csproj|c:\\users\\empty\\desktop\\dev\\devlib\\server\\devlib.api\\devlib.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AA1E7F3B-69D3-4D19-9313-0DF00829169D}|DevLib.Api\\DevLib.Api.csproj|solutionrelative:devlib.api\\devlib.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{673E7B87-D1C6-40FA-A11A-C520319BCFF7}|DevLib.Infrastructure\\DevLib.Infrastructure.csproj|c:\\users\\empty\\desktop\\dev\\devlib\\server\\devlib.infrastructure\\devlib.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{673E7B87-D1C6-40FA-A11A-C520319BCFF7}|DevLib.Infrastructure\\DevLib.Infrastructure.csproj|solutionrelative:devlib.infrastructure\\devlib.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D63CA25-A347-4BFC-96B1-F6F223B9E6D9}|DevLib.Application\\DevLib.Application.csproj|c:\\users\\empty\\desktop\\dev\\devlib\\server\\devlib.application\\devlib.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{4D63CA25-A347-4BFC-96B1-F6F223B9E6D9}|DevLib.Application\\DevLib.Application.csproj|solutionrelative:devlib.application\\devlib.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DevLib.Application.csproj",
+              "DocumentMoniker": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Application\\DevLib.Application.csproj",
+              "RelativeDocumentMoniker": "DevLib.Application\\DevLib.Application.csproj",
+              "ToolTip": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Application\\DevLib.Application.csproj",
+              "RelativeToolTip": "DevLib.Application\\DevLib.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-28T17:19:09.61Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DevLib.Infrastructure.csproj",
+              "DocumentMoniker": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Infrastructure\\DevLib.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "DevLib.Infrastructure\\DevLib.Infrastructure.csproj",
+              "ToolTip": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Infrastructure\\DevLib.Infrastructure.csproj",
+              "RelativeToolTip": "DevLib.Infrastructure\\DevLib.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-28T17:19:08.906Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DevLib.Api.csproj",
+              "DocumentMoniker": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Api\\DevLib.Api.csproj",
+              "RelativeDocumentMoniker": "DevLib.Api\\DevLib.Api.csproj",
+              "ToolTip": "C:\\Users\\Empty\\Desktop\\DEV\\DevLib\\Server\\DevLib.Api\\DevLib.Api.csproj",
+              "RelativeToolTip": "DevLib.Api\\DevLib.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-09-28T17:19:05.804Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
