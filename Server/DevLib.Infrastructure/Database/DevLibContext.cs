@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.UserAggregate;
 using DevLib.Domain.PostAggregate;
+using DevLib.Domain.TagAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -11,6 +12,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Post> Posts { get; set; } 
+    public DbSet<Tag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,6 +23,15 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.HasKey(c => c.Id);
 
             entity.Property(c => c.Id)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+        });
+
+        modelBuilder.Entity<Tag>(entity =>
+        {
+            entity.HasKey(c => c.TagId);
+
+            entity.Property(c => c.TagId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
         });
