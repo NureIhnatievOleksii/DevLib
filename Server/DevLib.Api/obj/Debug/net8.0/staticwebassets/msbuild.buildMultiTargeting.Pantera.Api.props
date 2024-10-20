@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Pantera.Api.props" />
-</Project>
