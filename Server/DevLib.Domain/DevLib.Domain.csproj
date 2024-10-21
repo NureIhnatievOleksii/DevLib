@@ -10,8 +10,4 @@
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.6" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BookmarkAggregate\" />
-    </ItemGroup>
-
 </Project>

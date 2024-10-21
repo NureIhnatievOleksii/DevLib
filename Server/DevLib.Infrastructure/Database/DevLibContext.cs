@@ -8,6 +8,7 @@ using DevLib.Domain.TagAggregate;
 using DevLib.Domain.DirectoryAggregate;
 using DevLib.Domain.DirectoryLinkAggregate;
 using DevLib.Domain.BookAggregate;
+using DevLib.Domain.BookmarkAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -19,6 +20,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Book> Books { get; set; }
     public DbSet<DLDirectory> Directories { get; set; }
     public DbSet<DirectoryLink> DirectoryLinks { get; set; }
+    public DbSet<Bookmark> Bookmarks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,6 +52,23 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
         });
+
+        // Настройка Bookmark
+        modelBuilder.Entity<Bookmark>(entity =>
+        {
+            entity.HasKey(b => b.BookmarkId);
+
+            entity.HasOne(b => b.Book)
+                  .WithMany()
+                  .HasForeignKey(b => b.BookId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(b => b.User)
+                  .WithMany()
+                  .HasForeignKey(b => b.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
 
         modelBuilder.Entity<Post>(entity =>
         {
