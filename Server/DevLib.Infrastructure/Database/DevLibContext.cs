@@ -54,7 +54,6 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .HasDefaultValueSql("NEWID()");
         });
 
-        // Настройка Bookmark
         modelBuilder.Entity<Bookmark>(entity =>
         {
             entity.HasKey(b => b.BookmarkId);
@@ -69,6 +68,32 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .HasForeignKey(b => b.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
+
+        modelBuilder.Entity<TagConnection>(entity =>
+        {
+            entity.HasKey(tc => tc.TagConnectionId);
+
+            entity.HasOne(tc => tc.Tag)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.TagId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Post)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.PostId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Book)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.BookId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Directory)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.DirectoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
 
 
         modelBuilder.Entity<Post>(entity =>
