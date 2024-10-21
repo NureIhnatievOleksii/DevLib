@@ -21,6 +21,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<DLDirectory> Directories { get; set; }
     public DbSet<DirectoryLink> DirectoryLinks { get; set; }
     public DbSet<Bookmark> Bookmarks { get; set; }
+    public DbSet<TagConnection> TagConnections { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -4,6 +4,7 @@ using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevLib.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DevLibContext))]
-    partial class DevLibContextModelSnapshot : ModelSnapshot
+    [Migration("20241021133433_Created_TagsConnection")]
+    partial class Created_TagsConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,27 +47,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.HasKey("BookId");
 
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("DevLib.Domain.BookmarkAggregate.Bookmark", b =>
-                {
-                    b.Property<Guid>("BookmarkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BookmarkId");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bookmarks");
                 });
 
             modelBuilder.Entity("DevLib.Domain.CustomerAggregate.Customer", b =>
@@ -440,25 +422,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("DevLib.Domain.BookmarkAggregate.Bookmark", b =>
-                {
-                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DevLib.Domain.DirectoryLinkAggregate.DirectoryLink", b =>
