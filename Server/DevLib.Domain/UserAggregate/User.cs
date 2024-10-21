@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DevLib.Domain.PostAggregate;
+using Microsoft.AspNetCore.Identity;
 
 namespace DevLib.Domain.UserAggregate;
 
 public class User : IdentityUser<Guid>
 {
-    public int Age { get; set; }
+    public string Photo { get; set; }
+    public string Role { get; set; }
+
+    public ICollection<Post> Posts { get; set; } = new List<Post>();
 }
