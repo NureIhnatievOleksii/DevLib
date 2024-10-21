@@ -7,6 +7,7 @@ using DevLib.Domain.PostAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Domain.DirectoryAggregate;
 using DevLib.Domain.DirectoryLinkAggregate;
+using DevLib.Domain.BookAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -15,6 +16,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Post> Posts { get; set; } 
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<Book> Books { get; set; }
     public DbSet<DLDirectory> Directories { get; set; }
     public DbSet<DirectoryLink> DirectoryLinks { get; set; }
 
@@ -36,6 +38,15 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.HasKey(c => c.TagId);
 
             entity.Property(c => c.TagId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+        });
+
+        modelBuilder.Entity<Book>(entity =>
+        {
+            entity.HasKey(c => c.BookId);
+
+            entity.Property(c => c.BookId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
         });
