@@ -4,6 +4,7 @@ using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevLib.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DevLibContext))]
-    partial class DevLibContextModelSnapshot : ModelSnapshot
+    [Migration("20241021110829_Created_Directory")]
+    partial class Created_Directory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,33 +87,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.HasKey("DirectoryId");
 
                     b.ToTable("Directories");
-                });
-
-            modelBuilder.Entity("DevLib.Domain.DirectoryLinkAggregate.DirectoryLink", b =>
-                {
-                    b.Property<Guid>("DirectoryLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<Guid>("ArticleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ChapterName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid>("DirectoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DirectoryLinkId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("DirectoryId");
-
-                    b.ToTable("DirectoryLinks");
                 });
 
             modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>
@@ -366,25 +342,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DevLib.Domain.DirectoryLinkAggregate.DirectoryLink", b =>
-                {
-                    b.HasOne("DevLib.Domain.PostAggregate.Post", "Post")
-                        .WithMany("DirectoryLinks")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DevLib.Domain.DirectoryAggregate.DLDirectory", "Directory")
-                        .WithMany("DirectoryLinks")
-                        .HasForeignKey("DirectoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Directory");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>
                 {
                     b.HasOne("DevLib.Domain.UserAggregate.User", "User")
@@ -445,16 +402,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DevLib.Domain.DirectoryAggregate.DLDirectory", b =>
-                {
-                    b.Navigation("DirectoryLinks");
-                });
-
-            modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>
-                {
-                    b.Navigation("DirectoryLinks");
                 });
 
             modelBuilder.Entity("DevLib.Domain.UserAggregate.User", b =>

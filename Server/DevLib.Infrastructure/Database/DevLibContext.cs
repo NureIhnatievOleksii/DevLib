@@ -5,6 +5,8 @@ using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.UserAggregate;
 using DevLib.Domain.PostAggregate;
 using DevLib.Domain.TagAggregate;
+using DevLib.Domain.DirectoryAggregate;
+using DevLib.Domain.DirectoryLinkAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -13,6 +15,8 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Post> Posts { get; set; } 
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<DLDirectory> Directories { get; set; }
+    public DbSet<DirectoryLink> DirectoryLinks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,6 +58,38 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.HasOne(p => p.User)
                   .WithMany(u => u.Posts)
                   .HasForeignKey(p => p.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);  
+        });
+
+        modelBuilder.Entity<DLDirectory>(entity =>
+        {
+            entity.HasKey(d => d.DirectoryId);
+
+            entity.Property(d => d.DirectoryId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+        });
+
+        modelBuilder.Entity<DirectoryLink>(entity =>
+        {
+            entity.HasKey(dl => dl.DirectoryLinkId);
+
+            entity.Property(dl => dl.DirectoryLinkId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+
+            entity.Property(dl => dl.ChapterName)
+                  .IsRequired()
+                  .HasMaxLength(255);
+
+            entity.HasOne(dl => dl.Directory)
+                  .WithMany(d => d.DirectoryLinks)
+                  .HasForeignKey(dl => dl.DirectoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(dl => dl.Post)
+                  .WithMany(p => p.DirectoryLinks) 
+                  .HasForeignKey(dl => dl.ArticleId)
                   .OnDelete(DeleteBehavior.Cascade);  
         });
     }
