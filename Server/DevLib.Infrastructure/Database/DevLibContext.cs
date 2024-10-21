@@ -19,10 +19,36 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Book> Books { get; set; }
     public DbSet<DLDirectory> Directories { get; set; }
     public DbSet<DirectoryLink> DirectoryLinks { get; set; }
+    public DbSet<TagConnection> TagConnections { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<TagConnection>(entity =>
+        {
+            entity.HasKey(tc => tc.TagConnectionId);
+
+            entity.HasOne(tc => tc.Tag)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.TagId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Post)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.PostId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Book)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.BookId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(tc => tc.Directory)
+                  .WithMany()
+                  .HasForeignKey(tc => tc.DirectoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
 
         modelBuilder.Entity<Customer>(entity =>
         {
