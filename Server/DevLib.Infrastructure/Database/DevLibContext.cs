@@ -9,6 +9,7 @@ using DevLib.Domain.DirectoryAggregate;
 using DevLib.Domain.DirectoryLinkAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.BookmarkAggregate;
+using DevLib.Domain.RatingAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -22,6 +23,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<DirectoryLink> DirectoryLinks { get; set; }
     public DbSet<Bookmark> Bookmarks { get; set; }
     public DbSet<TagConnection> TagConnections { get; set; }
+    public DbSet<Rating> Ratings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,6 +59,10 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
         modelBuilder.Entity<Bookmark>(entity =>
         {
             entity.HasKey(b => b.BookmarkId);
+
+            entity.Property(b => b.BookmarkId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
 
             entity.HasOne(b => b.Book)
                   .WithMany()
@@ -148,5 +154,27 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .HasForeignKey(dl => dl.ArticleId)
                   .OnDelete(DeleteBehavior.Cascade);  
         });
+
+        modelBuilder.Entity<Rating>(entity =>
+        {
+            entity.HasKey(r => r.RatingId);
+
+            entity.Property(r => r.BookId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+
+            entity.HasOne(r => r.Book)
+                  .WithMany()
+                  .HasForeignKey(r => r.BookId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(r => r.User)
+                  .WithMany()
+                  .HasForeignKey(r => r.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Property(r => r.PointsQuantity).IsRequired();
+        });
+
     }
 }
