@@ -159,7 +159,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
         {
             entity.HasKey(r => r.RatingId);
 
-            entity.Property(r => r.BookId)
+            entity.Property(r => r.RatingId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
 
