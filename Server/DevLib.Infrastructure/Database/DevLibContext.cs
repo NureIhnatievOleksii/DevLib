@@ -10,6 +10,8 @@ using DevLib.Domain.DirectoryLinkAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.RatingAggregate;
+using DevLib.Domain.CommentAggregate;
+using DevLib.Domain.ReplyLinkAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -24,6 +26,8 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Bookmark> Bookmarks { get; set; }
     public DbSet<TagConnection> TagConnections { get; set; }
     public DbSet<Rating> Ratings { get; set; }
+    public DbSet<Comment> Comments { get; set; }
+    public DbSet<Comment> ReplyLinks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -98,6 +102,8 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .WithMany()
                   .HasForeignKey(tc => tc.DirectoryId)
                   .OnDelete(DeleteBehavior.Cascade);
+
+
         });
 
 
@@ -174,6 +180,53 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.Property(r => r.PointsQuantity).IsRequired();
+        });
+
+        // todo ok come up with a way to delete comments with correct interaction of the Reply_Link table.
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasKey(com => com.CommentId);
+
+            entity.Property(com => com.Content).IsRequired();
+
+            entity.Property(com => com.CommentId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+
+            entity.HasOne(com => com.Book)
+                  .WithMany()
+                  .HasForeignKey(com => com.BookId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(com => com.Post)
+                  .WithMany()
+                  .HasForeignKey(com => com.PostId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(com => com.User)
+                  .WithMany()
+                  .HasForeignKey(com => com.UserId);
+
+            entity.HasOne(com => com.Reply)
+                  .WithMany()
+                  .HasForeignKey(com => com.ReplyId)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
+
+        });
+
+        modelBuilder.Entity<ReplyLink>(entity =>
+        {
+            entity.HasKey(r => r.ReplyId);
+
+            entity.Property(r => r.ReplyId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+
+            entity.HasOne(r => r.Comment)
+                  .WithMany()
+                  .HasForeignKey(r => r.CommentId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
         });
 
     }
