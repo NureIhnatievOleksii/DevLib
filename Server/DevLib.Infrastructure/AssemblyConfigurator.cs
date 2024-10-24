@@ -39,7 +39,8 @@ public static class AssemblyConfigurator
             options.Password.RequiredLength = 6;
             options.Password.RequiredUniqueChars = 0;
         })
-            .AddEntityFrameworkStores<DevLibContext>();
+            .AddEntityFrameworkStores<DevLibContext>()
+            .AddDefaultTokenProviders(); 
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
