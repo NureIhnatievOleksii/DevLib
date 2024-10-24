@@ -12,6 +12,7 @@ using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.RatingAggregate;
 using DevLib.Domain.CommentAggregate;
 using DevLib.Domain.ReplyLinkAggregate;
+using DevLib.Domain.ArticleAggregate;
 
 namespace DevLib.Infrastructure.Database;
 
@@ -28,6 +29,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Comment> ReplyLinks { get; set; }
+    public DbSet<Article> Articles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +60,20 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.Property(c => c.BookId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
+        });
+
+        modelBuilder.Entity<Article>(entity =>
+        {
+            entity.HasKey(b => b.ArticleId);
+
+            entity.Property(b => b.ArticleId)
+                  .ValueGeneratedOnAdd()
+                  .HasDefaultValueSql("NEWID()");
+
+            entity.HasOne(b => b.Directory)
+                  .WithMany()
+                  .HasForeignKey(b => b.DirectoryId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Bookmark>(entity =>
