@@ -8,6 +8,16 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.114",
+<<<<<<< HEAD
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "client": "file:",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
+=======
     "axios": "^1.7.7",
     "client": "file:",
     "jwt-decode": "^4.0.0",
@@ -18,6 +28,7 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.5"
+>>>>>>> main
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,6 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
+=======
   },
   "devDependencies": {
     "@types/axios": "^0.14.4",
@@ -49,5 +62,6 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/react-router-dom": "^5.3.3"
+>>>>>>> main
   }
 }
