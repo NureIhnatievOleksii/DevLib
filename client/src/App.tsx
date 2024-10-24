@@ -1,5 +1,3 @@
-import React from 'react';
-import AuthGuard from './app/components/AuthGuard/AuthGuard';
 import AppLayout from './layouts/AppLayout/AppLayout';
 import AppRouter from './app/router/AppRouter';
 import './App.css';

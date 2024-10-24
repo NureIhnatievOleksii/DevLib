@@ -11,6 +11,9 @@ html {
 section {
     scroll-margin-top: 70px;
 }
+input:focus {
+    outline: none;
+}
 
 
 @media (max-width:770px) {

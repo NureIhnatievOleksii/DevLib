@@ -13,9 +13,9 @@ const AppLayout: FC<Props> = ({ children }) => {
   const location = useLocation();
 
   const [showAdminPanel, setShowAdminPanel] = useState<boolean>();
-
+  const role = useAuthStore(store => store.role)
   useEffect(() => {
-    if (adminPanelRoutes.includes(location.pathname as RouteNames)){
+    if (adminPanelRoutes.includes(location.pathname as RouteNames) && role == 'admin'){
       setShowAdminPanel(true)
     }
     else{

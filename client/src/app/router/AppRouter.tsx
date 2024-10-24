@@ -14,8 +14,8 @@ const AppRouter = () => {
     const setRole = useAuthStore(state => state.setRole)
 
     useEffect(() => {
-        setLoggedIn(true);
-        setRole('admin')
+        setLoggedIn(true); // значения обозначающее зарегестрирован ли пользователь 
+        setRole('user') // // значения обозначающее роль пользователя
         setIsLoadingAuth(false)
     }, [])
 

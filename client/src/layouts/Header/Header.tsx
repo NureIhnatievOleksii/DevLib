@@ -11,7 +11,7 @@ import SearchInput from './components/SearchInput/SearchInput';
 interface FilterItem {
     text: string,
     active: boolean,
-    url?: string
+    url: string
 }
 
 
@@ -22,18 +22,20 @@ const Header = () => {
 
     const setFilterValue = useHeaderStore(store => store.setFilterValue);
     const headerVersion = useHeaderStore(store => store.headerVersion)
-    const navigate = useNavigate()
+
 
 
 
     const [filet, setFilter] = useState<FilterItem[]>([
         {
             text: 'Книги',
-            active: true
+            active: true,
+            url: RouteNames.BOOKS
         },
         {
             text: 'Довідники',
-            active: false
+            active: false,
+            url: RouteNames.DIRECTORIES
         },
         {
             text: 'Форум',
@@ -42,11 +44,8 @@ const Header = () => {
         }
     ]);
 
-    const setActive = (text: string, url: string) => {
-        if (url) {
-            navigate(url);
+    const setActive = (text: string) => {
 
-        }
         setFilterValue(text)
         setFilter(prev =>
             prev.map(filter => ({
@@ -114,12 +113,15 @@ const Header = () => {
 
                         </>
                     }
-                    <Link className={styles.icon} to={role == 'admin' ? RouteNames.ADD_RECORD : RouteNames.USER_ACCOUNT}>
-                        <svg viewBox="0 0 35 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.7168 16.8C21.9371 16.8 25.3584 13.4869 25.3584 9.4C25.3584 5.31309 21.9371 2 17.7168 2C13.4965 2 10.0752 5.31309 10.0752 9.4C10.0752 13.4869 13.4965 16.8 17.7168 16.8Z" stroke="#6FC3FF" stroke-width="3" />
-                            <path d="M33 30.675C33 35.2723 33 39 17.7168 39C2.43359 39 2.43359 35.2723 2.43359 30.675C2.43359 26.0778 9.27665 22.35 17.7168 22.35C26.157 22.35 33 26.0778 33 30.675Z" stroke="#6FC3FF" stroke-width="3" />
-                        </svg>
-                    </Link>
+                    {isLoggedIn &&
+                        <Link className={styles.icon} to={role == 'admin' ? RouteNames.ADD_RECORD : RouteNames.ACCOUNT}>
+                            <svg viewBox="0 0 35 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.7168 16.8C21.9371 16.8 25.3584 13.4869 25.3584 9.4C25.3584 5.31309 21.9371 2 17.7168 2C13.4965 2 10.0752 5.31309 10.0752 9.4C10.0752 13.4869 13.4965 16.8 17.7168 16.8Z" stroke="#6FC3FF" stroke-width="3" />
+                                <path d="M33 30.675C33 35.2723 33 39 17.7168 39C2.43359 39 2.43359 35.2723 2.43359 30.675C2.43359 26.0778 9.27665 22.35 17.7168 22.35C26.157 22.35 33 26.0778 33 30.675Z" stroke="#6FC3FF" stroke-width="3" />
+                            </svg>
+                        </Link>
+                    }
+
                 </div>
 
             </div>
@@ -132,9 +134,9 @@ const Header = () => {
 
                     <div className={styles.filterRow}>
                         {filet.map(filterItem =>
-                            <div className={`${styles.filterItem} ${filterItem.active && styles.active}`}
-                                onClick={() => setActive(filterItem.text, filterItem.url || '')}
-                            >{filterItem.text}</div>
+                            <Link to={filterItem.url} className={`${styles.filterItem} ${filterItem.active && styles.active}`}
+                                onClick={() => setActive(filterItem.text)}
+                            >{filterItem.text}</Link>
                         )}
                     </div>
                 </div>
