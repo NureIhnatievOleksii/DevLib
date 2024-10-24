@@ -1,11 +1,11 @@
 import React from 'react'
 
-const index = () => {
+const Forum = () => {
   return (
     <div>
-      
+      Forum
     </div>
   )
 }
 
-export default index
+export default Forum
