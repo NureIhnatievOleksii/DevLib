@@ -40,7 +40,7 @@ public static class AssemblyConfigurator
             options.Password.RequiredUniqueChars = 0;
         })
             .AddEntityFrameworkStores<DevLibContext>()
-            .AddDefaultTokenProviders(); 
+            .AddDefaultTokenProviders();
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
@@ -75,7 +75,11 @@ public static class AssemblyConfigurator
             .AddScoped<ICustomerRepository, CustomerRepository>()
             .AddScoped<IRatingRepository, RatingRepository>()
             .AddScoped<ICommentRepository, CommentRepository>();
+            .AddScoped<ICustomerRepository, CustomerRepository>()
+            .AddScoped<IDirectoryRepository, DirectoryRepository>()
+            .AddScoped<IArticleRepository, ArticleRepository>();
     }
+
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
