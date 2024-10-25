@@ -5,8 +5,8 @@ using DevLib.Domain.UserAggregate;
 
 namespace DevLib.Application.CQRS.Commands.Auth.Register;
 
-public class RegisterCommandHandler(UserManager<User> userManager) : IRequestHandler<RegisterCommand, AuthResponseDto>
-{
+public class RegisterCommandHandler(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager) : IRequestHandler<RegisterCommand, AuthResponseDto>
+{ 
     public async Task<AuthResponseDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Email) || !request.Email.Contains("@"))
@@ -15,7 +15,7 @@ public class RegisterCommandHandler(UserManager<User> userManager) : IRequestHan
         }
 
         var existingUser = await userManager.FindByEmailAsync(request.Email);
-        
+
         if (existingUser != null)
         {
             return CreateLoginResult(false, "A user with this email already exists");
@@ -44,7 +44,14 @@ public class RegisterCommandHandler(UserManager<User> userManager) : IRequestHan
             return CreateLoginResult(false, "User registration failed");
         }
 
-        return CreateLoginResult(true);        
+        if (!await roleManager.RoleExistsAsync("Client"))
+        {
+            await roleManager.CreateAsync(new IdentityRole<Guid>("Client"));
+        }
+
+        await userManager.AddToRoleAsync(user, "Client");
+
+        return CreateLoginResult(true);
     }
 
     private AuthResponseDto CreateLoginResult(bool success, string errorMessage = null, string token = null)
