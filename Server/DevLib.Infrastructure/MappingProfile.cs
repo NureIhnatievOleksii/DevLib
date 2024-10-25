@@ -2,6 +2,7 @@
 using DevLib.Application.CQRS.Commands.Customers.CreateCustomer;
 using DevLib.Application.CQRS.Commands.Customers.UpdateCustomer;
 using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
+using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.DirectoryAggregate;
@@ -20,5 +21,8 @@ public class MappingProfile : Profile
 
         CreateMap<CreateDirectoryCommand, DLDirectory>()
             .ForMember(dest => dest.DirectoryId, opt => opt.MapFrom(src => Guid.NewGuid()));
+
+        CreateMap<UpdateDirectoryCommand, DLDirectory>()
+            .ForMember(dest => dest.DirectoryId, opt => opt.MapFrom(src => src.DirectoryId));
     }
 }

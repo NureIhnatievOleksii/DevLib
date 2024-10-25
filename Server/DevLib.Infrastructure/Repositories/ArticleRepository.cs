@@ -1,8 +1,7 @@
 ﻿using DevLib.Infrastructure.Database;
 using DevLib.Domain.ArticleAggregate;
 using DevLib.Application.Interfaces.Repositories;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -18,6 +17,17 @@ namespace DevLib.Infrastructure.Repositories
         public async Task CreateAsync(Article article, CancellationToken cancellationToken = default)
         {
             await _context.Articles.AddAsync(article, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Article> GetByIdAsync(Guid articleId, CancellationToken cancellationToken = default)
+        {
+            return await _context.Articles.FirstOrDefaultAsync(a => a.ArticleId == articleId, cancellationToken);
+        }
+
+        public async Task UpdateAsync(Article article, CancellationToken cancellationToken = default)
+        {
+            _context.Articles.Update(article);
             await _context.SaveChangesAsync(cancellationToken);
         }
     }

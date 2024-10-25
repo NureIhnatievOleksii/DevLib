@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
+using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,14 @@ namespace DevLib.Api.Controllers
     public class DirectoryController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> CreateDirectory([FromBody, Required]  CreateDirectoryCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateDirectory([FromBody, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
+        {
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateDirectory([FromBody, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
