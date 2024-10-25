@@ -6,7 +6,6 @@ using DevLib.Domain.UserAggregate;
 using DevLib.Domain.PostAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Domain.DirectoryAggregate;
-using DevLib.Domain.DirectoryLinkAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.RatingAggregate;
@@ -23,7 +22,6 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<DLDirectory> Directories { get; set; }
-    public DbSet<DirectoryLink> DirectoryLinks { get; set; }
     public DbSet<Bookmark> Bookmarks { get; set; }
     public DbSet<TagConnection> TagConnections { get; set; }
     public DbSet<Rating> Ratings { get; set; }
@@ -152,29 +150,6 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.Property(d => d.DirectoryId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
-        });
-
-        modelBuilder.Entity<DirectoryLink>(entity =>
-        {
-            entity.HasKey(dl => dl.DirectoryLinkId);
-
-            entity.Property(dl => dl.DirectoryLinkId)
-                  .ValueGeneratedOnAdd()
-                  .HasDefaultValueSql("NEWID()");
-
-            entity.Property(dl => dl.ChapterName)
-                  .IsRequired()
-                  .HasMaxLength(255);
-
-            entity.HasOne(dl => dl.Directory)
-                  .WithMany(d => d.DirectoryLinks)
-                  .HasForeignKey(dl => dl.DirectoryId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(dl => dl.Post)
-                  .WithMany(p => p.DirectoryLinks) 
-                  .HasForeignKey(dl => dl.ArticleId)
-                  .OnDelete(DeleteBehavior.Cascade);  
         });
 
         modelBuilder.Entity<Rating>(entity =>

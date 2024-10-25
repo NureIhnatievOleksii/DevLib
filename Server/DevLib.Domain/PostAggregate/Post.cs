@@ -1,4 +1,4 @@
-﻿using DevLib.Domain.DirectoryLinkAggregate;
+﻿
 using DevLib.Domain.UserAggregate;
 
 namespace DevLib.Domain.PostAggregate
@@ -13,6 +13,5 @@ namespace DevLib.Domain.PostAggregate
         public DateTime DateTime { get; set; }
 
         public User User { get; set; }
-        public ICollection<DirectoryLink> DirectoryLinks { get; set; } = new List<DirectoryLink>();
     }
 }
