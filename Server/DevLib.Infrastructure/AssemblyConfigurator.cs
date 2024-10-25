@@ -72,7 +72,9 @@ public static class AssemblyConfigurator
     {
         return services
             .AddScoped<IAuthRepository, AuthRepository>()
-            .AddScoped<ICustomerRepository, CustomerRepository>();
+            .AddScoped<ICustomerRepository, CustomerRepository>()
+            .AddScoped<IRatingRepository, RatingRepository>()
+            .AddScoped<ICommentRepository, CommentRepository>();
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
