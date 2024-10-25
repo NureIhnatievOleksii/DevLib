@@ -10,7 +10,7 @@ namespace DevLib.Api.Controllers
     public class DirectoryController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> CreateDirectory([FromBody, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create_Directory([FromBody, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
             return Ok();

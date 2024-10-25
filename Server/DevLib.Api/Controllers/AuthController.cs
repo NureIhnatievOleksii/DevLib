@@ -23,7 +23,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> LoginWithGoogle([FromBody] LoginWithGoogleCommand command,
+    public async Task<IActionResult> Login_With_Google([FromBody] LoginWithGoogleCommand command,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);

@@ -9,7 +9,7 @@ namespace DevLib.Api.Controllers
     public class RatingController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> AddRating([FromBody, Required] AddRatingCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Add_Rating([FromBody, Required] AddRatingCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
 

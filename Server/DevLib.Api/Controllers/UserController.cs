@@ -11,14 +11,14 @@ namespace DevLib.Api.Controllers
     {
         // todo ai add response toke after complete task with token configuration
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromBody, Required] UpdateUserCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update_User([FromBody, Required] UpdateUserCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetUserPassword([FromBody, Required] ResetUserPasswordCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> Reset_User_Password([FromBody, Required] ResetUserPasswordCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
