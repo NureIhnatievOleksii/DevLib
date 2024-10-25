@@ -5,16 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/comment")]
     public class CommentController(IMediator mediator) : ControllerBase
     {
-        [HttpPost]
-        public async Task<IActionResult> Add_Review([FromBody, Required] AddReviewCommand command, CancellationToken cancellationToken)
+        [HttpPost("add-review")]
+        public async Task<IActionResult> AddReview([FromBody, Required] AddReviewCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
 
             return Ok();
         }
     }
-
 }

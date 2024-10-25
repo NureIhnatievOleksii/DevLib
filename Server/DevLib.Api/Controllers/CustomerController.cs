@@ -13,7 +13,7 @@ namespace DevLib.Api.Controllers;
 public class CustomerController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Get_All_Customers(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllCustomers(CancellationToken cancellationToken)
     {
         var customers = await mediator.Send(new GetAllCustomersQuery(), cancellationToken);
 
@@ -21,7 +21,7 @@ public class CustomerController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get_Customer_By_Id(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCustomerById(Guid id, CancellationToken cancellationToken)
     {
         var customer = await mediator.Send(new GetCustomerByIdQuery(id), cancellationToken);
 
@@ -34,7 +34,7 @@ public class CustomerController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create_Customer([FromBody, Required] CreateCustomerCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateCustomer([FromBody, Required] CreateCustomerCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
 
@@ -42,7 +42,7 @@ public class CustomerController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update_Customer([FromBody, Required] UpdateCustomerCommand command, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateCustomer([FromBody, Required] UpdateCustomerCommand command, CancellationToken cancellationToken)
     {
         await mediator.Send(command, cancellationToken);
 
@@ -50,7 +50,7 @@ public class CustomerController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete_Customer(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteCustomer(Guid id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteCustomerCommand(id), cancellationToken);
 

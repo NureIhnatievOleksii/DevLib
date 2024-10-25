@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/tag")]
     public class TagController(IMediator mediator) : ControllerBase
     {
 

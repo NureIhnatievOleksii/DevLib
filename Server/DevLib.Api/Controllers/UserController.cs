@@ -1,24 +1,31 @@
-﻿using DevLib.Application.CQRS.Commands.Users.ResetUserPassword;
+﻿using AutoMapper;
+using DevLib.Application.CQRS.Commands.Users.ResetUserPassword;
 using DevLib.Application.CQRS.Commands.Users.UpdateUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Differencing;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/user")]
     public class UserController(IMediator mediator) : ControllerBase
     {
-        // todo ai add response toke after complete task with token configuration
-        [HttpPut]
-        public async Task<IActionResult> Update_User([FromBody, Required] UpdateUserCommand command, CancellationToken cancellationToken)
-        {
-            await mediator.Send(command, cancellationToken);
-            return Ok();
-        }
+            [HttpPut("edit-profile")]
+            public async Task<IActionResult> UpdateUser([FromBody, Required] UpdateUserCommand command, CancellationToken cancellationToken)
+            {
+                var result = await mediator.Send(command, cancellationToken);
 
-        [HttpPost]
-        public async Task<IActionResult> Reset_User_Password([FromBody, Required] ResetUserPasswordCommand command, CancellationToken cancellationToken)
+                if (result.IsSuccess)
+                {
+                    return Ok(new { result.Token, Message = "User profile updated successfully." });
+                }
+
+                return BadRequest(result.ErrorMessage);
+            }
+
+        [HttpPost("reset-user-password")]
+        public async Task<IActionResult> ResetUserPassword([FromBody, Required] ResetUserPasswordCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
