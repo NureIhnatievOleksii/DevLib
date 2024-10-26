@@ -30,5 +30,12 @@ namespace DevLib.Infrastructure.Repositories
             _context.Articles.Update(article);
             await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<List<Article>> GetByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken)
+        {
+            return await _context.Articles
+                .Where(article => article.DirectoryId == directoryId)
+                .ToListAsync(cancellationToken);
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
+using DevLib.Application.CQRS.Dtos.Queries;
+using DevLib.Application.CQRS.Queries.Articles.GetAllArticlesNamesByDirectoryId;
 using DevLib.Application.CQRS.Queries.Articles.GetArticleById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +38,13 @@ namespace DevLib.Api.Controllers
             }
 
             return Ok(article);
+        }
+
+        [HttpGet("get-all-chapter-name/{id}")]
+        public async Task<ActionResult<List<GetAllArticlesNamesByDirectoryIdDto>>> GetArticleNames(Guid id, CancellationToken cancellationToken)
+        {
+            var articlesNames = await mediator.Send(new GetArticleNamesByDirectoryIdQuery(id), cancellationToken);
+            return Ok(articlesNames);
         }
     }
 }

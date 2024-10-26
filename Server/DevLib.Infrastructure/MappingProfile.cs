@@ -3,7 +3,6 @@ using DevLib.Application.CQRS.Commands.Customers.CreateCustomer;
 using DevLib.Application.CQRS.Commands.Customers.UpdateCustomer;
 using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
-using DevLib.Application.CQRS.Queries.Articles.GetArticleById;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.DirectoryAggregate;
@@ -28,5 +27,6 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DirectoryId, opt => opt.MapFrom(src => src.DirectoryId));
 
         CreateMap<Article, GetArticleByIdQueryDto>();
+        CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
     }
 }
