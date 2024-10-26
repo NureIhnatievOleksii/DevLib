@@ -15,6 +15,10 @@ using DevLib.Domain.UserAggregate;
 using DevLib.Infrastructure.Database;
 using DevLib.Infrastructure.Repositories;
 using ApplicationAssemblyConfigurator = DevLib.Infrastructure.AssemblyConfigurator;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace DevLib.Infrastructure;
 
@@ -39,11 +43,59 @@ public static class AssemblyConfigurator
             options.Password.RequiredLength = 6;
             options.Password.RequiredUniqueChars = 0;
         })
-            .AddEntityFrameworkStores<DevLibContext>()
-            .AddDefaultTokenProviders();
+        .AddEntityFrameworkStores<DevLibContext>()
+        .AddDefaultTokenProviders();
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
         services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+            };
+        });
+
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+
+            // Добавьте эту часть для поддержки JWT Bearer
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Введите 'Bearer' [пробел] и ваш токен внизу для доступа к защищённым ресурсам.",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
+        });
 
         services.AddAuthentication(options =>
         {
@@ -61,9 +113,8 @@ public static class AssemblyConfigurator
         services.AddScoped<IValidator<Customer>, CustomerValidator>();
 
         return services
-            .AddAutoMapper(typeof(MappingProfile))
-            .AddServices()
             .AddRepositories()
+            .AddServices()
             .AddValidators()
             .AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(ApplicationAssemblyConfigurator).Assembly));
     }
@@ -72,14 +123,12 @@ public static class AssemblyConfigurator
     {
         return services
             .AddScoped<IAuthRepository, AuthRepository>()
-            .AddScoped<ICustomerRepository, CustomerRepository>()
+            .AddScoped<ICustomerRepository, CustomerRepository>() // Удален дубликат
             .AddScoped<IRatingRepository, RatingRepository>()
             .AddScoped<ICommentRepository, CommentRepository>()
-            .AddScoped<ICustomerRepository, CustomerRepository>()
             .AddScoped<IDirectoryRepository, DirectoryRepository>()
             .AddScoped<IArticleRepository, ArticleRepository>();
     }
-
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
