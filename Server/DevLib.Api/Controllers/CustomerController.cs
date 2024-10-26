@@ -6,6 +6,7 @@ using DevLib.Application.CQRS.Commands.Customers.UpdateCustomer;
 using DevLib.Application.CQRS.Queries.Customers.GetAllCustomers;
 using DevLib.Application.CQRS.Queries.Customers.GetCustomerById;
 using System.ComponentModel.DataAnnotations;
+//using Microsoft.AspNetCore.Authorization;
 
 namespace DevLib.Api.Controllers;
 
@@ -13,6 +14,7 @@ namespace DevLib.Api.Controllers;
 public class CustomerController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAllCustomers(CancellationToken cancellationToken)
     {
         var customers = await mediator.Send(new GetAllCustomersQuery(), cancellationToken);

@@ -31,11 +31,9 @@ public class LoginCommandHandler(
             return CreateLoginResult(false, "Invalid password");
         }
 
-        // Получение роли пользователя
         var roles = await userManager.GetRolesAsync(user);
-        var role = roles.FirstOrDefault(); // Предположим, что пользователь может иметь одну роль
+        var role = roles.FirstOrDefault();  
 
-        // Генерация токена с дополнительными параметрами
         var token = await jwtService.GenerateJwtTokenAsync(user);
 
         var tokenResult = await userManager.SetAuthenticationTokenAsync(user, authenticationOptions.Value.DevLib.Provider, authenticationOptions.Value.DevLib.TokenName, token);

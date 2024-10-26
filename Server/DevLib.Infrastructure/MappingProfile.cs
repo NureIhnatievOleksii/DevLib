@@ -8,6 +8,7 @@ using DevLib.Application.CQRS.Commands.Books.CreateBooks;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.DirectoryAggregate;
+using DevLib.Domain.ArticleAggregate;
 using DevLib.Domain.BookAggregate;
 
 namespace DevLib.Infrastructure;
@@ -32,5 +33,8 @@ public class MappingProfile : Profile
         CreateMap<UpdateBookCommand, Book>();
 
         CreateMap<Book, GetBookByIdQueryDto>();
+
+        CreateMap<Article, GetArticleByIdQueryDto>();
+        CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
     }
 }

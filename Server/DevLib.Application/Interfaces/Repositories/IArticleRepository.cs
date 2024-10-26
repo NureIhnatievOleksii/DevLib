@@ -7,5 +7,6 @@ namespace DevLib.Application.Interfaces.Repositories
         Task CreateAsync(Article article, CancellationToken cancellationToken = default);
         Task<Article> GetByIdAsync(Guid articleId, CancellationToken cancellationToken = default);
         Task UpdateAsync(Article article, CancellationToken cancellationToken = default);
+        Task<List<Article>> GetByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken = default);
     }
 }
