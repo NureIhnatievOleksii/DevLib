@@ -6,22 +6,8 @@ using DevLib.Domain.Exceptions;
 
 namespace DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 
-public class UpdateDirectoryCommandHandler : IRequestHandler<UpdateDirectoryCommand>
+public class UpdateDirectoryCommandHandler(IDirectoryRepository _directoryRepository, IArticleRepository _articleRepository, IMapper _mapper) : IRequestHandler<UpdateDirectoryCommand>
 {
-    private readonly IDirectoryRepository _directoryRepository;
-    private readonly IArticleRepository _articleRepository;
-    private readonly IMapper _mapper;
-
-    public UpdateDirectoryCommandHandler(
-        IDirectoryRepository directoryRepository,
-        IArticleRepository articleRepository,
-        IMapper mapper)
-    {
-        _directoryRepository = directoryRepository;
-        _articleRepository = articleRepository;
-        _mapper = mapper;
-    }
-
     public async Task Handle(UpdateDirectoryCommand command, CancellationToken cancellationToken)
     {
         var directory = await _directoryRepository.GetByIdAsync(command.DirectoryId, cancellationToken);

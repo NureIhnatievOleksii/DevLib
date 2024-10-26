@@ -4,8 +4,16 @@ using System.Collections.Generic;
 namespace DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 
 public record UpdateDirectoryCommand(
-    Guid DirectoryId,
     string DirectoryName,
     string DirectoryImgUrl,
-    List<(Guid? ArticleId, string Name, string Text)>? Articles = null
-) : IRequest;
+    List<ArticleUpdateDto>? Articles = null) : IRequest
+{
+    public Guid DirectoryId { get; init; }
+}
+
+// todo oc delete dto
+public record ArticleUpdateDto(
+    Guid? ArticleId,
+    string Name,
+    string Text
+);
