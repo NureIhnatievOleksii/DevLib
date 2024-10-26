@@ -77,7 +77,9 @@ public static class AssemblyConfigurator
             .AddScoped<ICommentRepository, CommentRepository>()
             .AddScoped<ICustomerRepository, CustomerRepository>()
             .AddScoped<IDirectoryRepository, DirectoryRepository>()
-            .AddScoped<IArticleRepository, ArticleRepository>();
+            .AddScoped<IArticleRepository, ArticleRepository>()
+            .AddScoped<IBookmarkRepository, BookmarkRepository>()
+            .AddScoped<INoteRepository, NoteRepository>();
     }
 
 

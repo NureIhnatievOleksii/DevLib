@@ -223,7 +223,7 @@ namespace DevLib.Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Note");
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>

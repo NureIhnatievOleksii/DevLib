@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using DevLib.Application.CQRS.Commands.Customers.CreateCustomer;
 using DevLib.Application.CQRS.Commands.Customers.UpdateCustomer;
+using DevLib.Application.CQRS.Commands.Notes.AddNote;
+using DevLib.Application.CQRS.Commands.Bookmarks.AddBookmark;
 using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Domain.CustomerAggregate;
 using DevLib.Domain.DirectoryAggregate;
 using DevLib.Domain.ArticleAggregate;
+using DevLib.Domain.BookmarkAggregate;
+using DevLib.Domain.NotesAggregate;
 
 namespace DevLib.Infrastructure;
 
@@ -14,6 +18,9 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        CreateMap<AddNoteCommand, Note>();
+        CreateMap<AddBookmarkCommand, Bookmark>();
+
         CreateMap<CreateCustomerCommand, Customer>();
         CreateMap<UpdateCustomerCommand, Customer>();
 

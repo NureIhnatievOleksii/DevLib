@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevLib.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DevLibContext))]
-    [Migration("20241025101739_Created_Notes")]
+    [Migration("20241026121855_Created_Notes")]
     partial class Created_Notes
     {
         /// <inheritdoc />
@@ -226,7 +226,7 @@ namespace DevLib.Infrastructure.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Note");
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>

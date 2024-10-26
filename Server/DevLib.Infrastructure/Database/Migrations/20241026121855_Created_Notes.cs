@@ -12,7 +12,7 @@ namespace DevLib.Infrastructure.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Note",
+                name: "Notes",
                 columns: table => new
                 {
                     NoteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
@@ -22,15 +22,15 @@ namespace DevLib.Infrastructure.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Note", x => x.NoteId);
+                    table.PrimaryKey("PK_Notes", x => x.NoteId);
                     table.ForeignKey(
-                        name: "FK_Note_AspNetUsers_UserId",
+                        name: "FK_Notes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Note_Books_BookId",
+                        name: "FK_Notes_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "BookId",
@@ -38,13 +38,13 @@ namespace DevLib.Infrastructure.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Note_BookId",
-                table: "Note",
+                name: "IX_Notes_BookId",
+                table: "Notes",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Note_UserId",
-                table: "Note",
+                name: "IX_Notes_UserId",
+                table: "Notes",
                 column: "UserId");
         }
 
@@ -52,7 +52,7 @@ namespace DevLib.Infrastructure.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Note");
+                name: "Notes");
         }
     }
 }

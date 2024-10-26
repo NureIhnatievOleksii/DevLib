@@ -29,6 +29,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Comment> ReplyLinks { get; set; }
     public DbSet<Article> Articles { get; set; }
+    public DbSet<Note> Notes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
