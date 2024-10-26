@@ -2,8 +2,13 @@
 
 namespace DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 
-public record UpdateDirectoryCommand(Guid DirectoryId, string DirectoryName, string DirectoryImgUrl, List<ArticleUpdateDto> Articles) : IRequest;
-
+public record UpdateDirectoryCommand(
+    string DirectoryName,
+    string DirectoryImgUrl,
+    List<ArticleUpdateDto>? Articles = null) : IRequest
+{
+    public Guid DirectoryId { get; init; }
+}
 
 // todo oc delete dto
 public record ArticleUpdateDto(

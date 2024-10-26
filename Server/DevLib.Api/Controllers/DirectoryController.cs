@@ -16,11 +16,13 @@ namespace DevLib.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("edit-directory/{id}")] 
-        public async Task<IActionResult> UpdateDirectory([FromBody, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
+        [HttpPut("edit-directory/{id}")]
+        public async Task<IActionResult> UpdateDirectory(Guid id, [FromBody, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
         {
-            await mediator.Send(command, cancellationToken);
+            var updateCommand = command with { DirectoryId = id };
+            await mediator.Send(updateCommand, cancellationToken);
             return Ok();
         }
+
     }
 }
