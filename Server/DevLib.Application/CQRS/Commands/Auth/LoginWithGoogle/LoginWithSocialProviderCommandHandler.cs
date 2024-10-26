@@ -8,12 +8,12 @@ using DevLib.Domain.UserAggregate;
 
 namespace DevLib.Application.CQRS.Commands.Auth.Login;
 
-public class LoginWithGoogleCommandHandler(
+public class LoginWithSocialProviderCommandHandler(
     IAuthRepository authRepository, 
     UserManager<User> userManager, 
-    IOptions<AuthenticationOptions> authenticationOptions): IRequestHandler<LoginWithGoogleCommand, AuthResponseDto>
+    IOptions<AuthenticationOptions> authenticationOptions): IRequestHandler<LoginWithSocialProviderCommand, AuthResponseDto>
 {
-    public async Task<AuthResponseDto> Handle(LoginWithGoogleCommand request, CancellationToken cancellationToken)
+    public async Task<AuthResponseDto> Handle(LoginWithSocialProviderCommand request, CancellationToken cancellationToken)
     {
         var user = await authRepository.FindByEmailAsync(request.Email, cancellationToken);
 
@@ -24,14 +24,14 @@ public class LoginWithGoogleCommandHandler(
 
         var userLogins = await authRepository.GetLoginsAsync(user, cancellationToken);
 
-        if (userLogins.Any(l => l.LoginProvider == request.Provider && l.ProviderKey == request.Id))
+        if (userLogins.Any(l => l.LoginProvider == request.Provider && l.ProviderKey == request.UserId))
         {
             await userManager.SetAuthenticationTokenAsync(user, request.Provider, authenticationOptions.Value.Google.TokenName, request.IdToken);
 
             return CreateLoginResult(true, token: request.IdToken);
         }
 
-        var loginInfo = new UserLoginInfo(request.Provider, request.Id, request.Provider);
+        var loginInfo = new UserLoginInfo(request.Provider, request.UserId, request.Provider);
 
         var addLog = await authRepository.AddLoginAsync(user, loginInfo, cancellationToken);
 

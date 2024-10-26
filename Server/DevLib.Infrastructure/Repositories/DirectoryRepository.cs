@@ -49,5 +49,12 @@ namespace DevLib.Infrastructure.Repositories
                 .Where(article => article.DirectoryId == directoryId)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<IReadOnlyList<DLDirectory>> SearchByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            return await _context.Directories
+                .Where(d => d.DirectoryName.Contains(name))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

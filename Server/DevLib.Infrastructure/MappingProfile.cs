@@ -38,7 +38,8 @@ public class MappingProfile : Profile
 
         CreateMap<CreateBookCommand, Book>();
         CreateMap<UpdateBookCommand, Book>();
-
+        CreateMap<DLDirectory, DirectoryDto>()
+            .ForMember(dest => dest.DirectoryImg, opt => opt.MapFrom(src => src.ImgLink));
         CreateMap<Book, GetBookByIdQueryDto>();
 
         CreateMap<Article, GetArticleByIdQueryDto>();

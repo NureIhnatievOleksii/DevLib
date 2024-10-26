@@ -15,6 +15,7 @@ namespace DevLib.Application.Interfaces.Repositories
         Task UpdateAsync(DLDirectory directory, CancellationToken cancellationToken = default);
         Task DeleteAsync(DLDirectory directory, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<Article>> GetArticlesByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<DLDirectory>> SearchByNameAsync(string name, CancellationToken cancellationToken = default);
 
     }
 }

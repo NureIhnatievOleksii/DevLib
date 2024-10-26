@@ -6,10 +6,10 @@ using DevLib.Application.CQRS.Commands.Auth.Register;
 
 namespace DevLib.Api.Controllers;
 
-[Route("api/auth")]
+[Route("api/[controller]/[action]")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    [HttpPost("register")]
+    [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
@@ -22,8 +22,8 @@ public class AuthController(IMediator mediator) : ControllerBase
         return BadRequest(result.ErrorMessage);
     }
 
-    [HttpPost("login-with-google")]
-    public async Task<IActionResult> LoginWithGoogle([FromBody] LoginWithGoogleCommand command,
+    [HttpPost]
+    public async Task<IActionResult> LoginWithSocialProvider([FromBody] LoginWithSocialProviderCommand command,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
@@ -36,7 +36,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         return BadRequest(result.ErrorMessage);
     }
 
-    [HttpPost("login")]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
@@ -49,7 +49,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         return BadRequest(result.ErrorMessage);
     }
 
-    [HttpPut("logout")]
+    [HttpPost]
     public async Task<IActionResult> Logout([FromBody] LogoutCommand command, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
