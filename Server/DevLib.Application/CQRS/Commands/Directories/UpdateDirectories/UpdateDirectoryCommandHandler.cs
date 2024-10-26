@@ -6,7 +6,6 @@ using DevLib.Domain.Exceptions;
 
 namespace DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 
-//todo oc make so articles are not necessary
 public class UpdateDirectoryCommandHandler : IRequestHandler<UpdateDirectoryCommand>
 {
     private readonly IDirectoryRepository _directoryRepository;
@@ -34,7 +33,7 @@ public class UpdateDirectoryCommandHandler : IRequestHandler<UpdateDirectoryComm
 
         var articles = command.Articles;
 
-        if (articles != null || articles.Any())
+        if (articles != null && articles.Any())
         {
             foreach (var articleDto in articles)
             {
