@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DevLib.Domain.ArticleAggregate;
 using DevLib.Domain.DirectoryAggregate;
 
 namespace DevLib.Application.Interfaces.Repositories
@@ -13,5 +14,7 @@ namespace DevLib.Application.Interfaces.Repositories
         Task CreateAsync(DLDirectory directory, CancellationToken cancellationToken = default);
         Task UpdateAsync(DLDirectory directory, CancellationToken cancellationToken = default);
         Task DeleteAsync(DLDirectory directory, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<Article>> GetArticlesByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken = default);
+
     }
 }

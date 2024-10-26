@@ -2,6 +2,7 @@
 using DevLib.Application.Interfaces.Repositories;
 using DevLib.Domain.DirectoryAggregate;
 using DevLib.Infrastructure.Database;
+using DevLib.Domain.ArticleAggregate;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -40,6 +41,13 @@ namespace DevLib.Infrastructure.Repositories
         {
             _context.Directories.Remove(directory);
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<Article>> GetArticlesByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken = default)
+        {
+            return await _context.Articles
+                .Where(article => article.DirectoryId == directoryId)
+                .ToListAsync(cancellationToken);
         }
     }
 }

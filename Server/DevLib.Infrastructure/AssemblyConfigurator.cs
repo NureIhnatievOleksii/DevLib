@@ -129,7 +129,7 @@ public static class AssemblyConfigurator
             .AddScoped<IDirectoryRepository, DirectoryRepository>()
             .AddScoped<IArticleRepository, ArticleRepository>()
             .AddScoped<IBookmarkRepository, BookmarkRepository>()
-            .AddScoped<INoteRepository, NoteRepository>();
+            .AddScoped<INoteRepository, NoteRepository>()
             .AddScoped<IArticleRepository, ArticleRepository>()
             .AddScoped<IBookRepository, BookRepository>();
     }
