@@ -10,4 +10,5 @@ public record BookDto
     public string BookName { get; init; }
     public string Author { get; init; }
     public string FilePath { get; init; }
+    public DateTime PublicationDateTime { get; set; }
 }

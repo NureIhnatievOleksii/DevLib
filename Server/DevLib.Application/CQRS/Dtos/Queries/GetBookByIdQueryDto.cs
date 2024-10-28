@@ -5,5 +5,6 @@ public record GetBookByIdQueryDto
     Guid BookId,
     string BookName,
     string Author,
-    string FilePath
+    string FilePath,
+    DateTime PublicationDateTime
 );

@@ -6,5 +6,6 @@ public record CreateBookCommand
 (
     string BookName,
     string Author,
-    string FilePath
+    string FilePath,
+    DateTime PublicationDateTime
 ) : IRequest;
