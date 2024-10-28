@@ -1,6 +1,7 @@
 using DevLib.Application.CQRS.Commands.Books.CreateBooks;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 using DevLib.Application.CQRS.Queries.Books.GetBookById;
+using DevLib.Application.CQRS.Queries.Books.SearchBooks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +37,13 @@ namespace DevLib.Api.Controllers
             await mediator.Send(command, cancellationToken);
 
             return Ok();
+        }
+
+        [HttpGet("search-books/{BookName}")]
+        public async Task<IActionResult> SearchBooks(string bookName, CancellationToken cancellationToken)
+        {
+            var books = await mediator.Send(new SearchBooksQuery(bookName), cancellationToken);
+            return Ok(books);
         }
     }
 }
