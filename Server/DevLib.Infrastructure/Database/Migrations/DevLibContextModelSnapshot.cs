@@ -398,6 +398,16 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -611,6 +621,114 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DevLib.Domain.ArticleAggregate.Article", b =>
+                {
+                    b.HasOne("DevLib.Domain.DirectoryAggregate.DLDirectory", "Directory")
+                        .WithMany()
+                        .HasForeignKey("DirectoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Directory");
+                });
+
+            modelBuilder.Entity("DevLib.Domain.BookmarkAggregate.Bookmark", b =>
+                {
+                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DevLib.Domain.CommentAggregate.Comment", b =>
+                {
+                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DevLib.Domain.PostAggregate.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DevLib.Domain.ReplyLinkAggregate.ReplyLink", "Reply")
+                        .WithMany()
+                        .HasForeignKey("ReplyId");
+
+                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+            modelBuilder.Entity("DevLib.Domain.ArticleAggregate.Article", b =>
+                {
+                    b.HasOne("DevLib.Domain.DirectoryAggregate.DLDirectory", "Directory")
+                        .WithMany()
+                        .HasForeignKey("DirectoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Directory");
+                });
+
+            modelBuilder.Entity("DevLib.Domain.BookmarkAggregate.Bookmark", b =>
+                {
+                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DevLib.Domain.CommentAggregate.Comment", b =>
+                {
+                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DevLib.Domain.PostAggregate.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DevLib.Domain.ReplyLinkAggregate.ReplyLink", "Reply")
+                        .WithMany()
+                        .HasForeignKey("ReplyId");
+
+                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Reply");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DevLib.Domain.NotesAggregate.Note", b =>
                 {
                     b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
@@ -630,6 +748,16 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.Navigation("User");
                 });
 
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Reply");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DevLib.Domain.PostAggregate.Post", b =>
                 {
                     b.HasOne("DevLib.Domain.UserAggregate.User", "User")
@@ -637,6 +765,25 @@ namespace DevLib.Infrastructure.Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DevLib.Domain.RatingAggregate.Rating", b =>
+                {
+                    b.HasOne("DevLib.Domain.BookAggregate.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DevLib.Domain.UserAggregate.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
 
                     b.Navigation("User");
                 });

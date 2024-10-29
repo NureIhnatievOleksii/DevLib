@@ -1,0 +1,227 @@
+.bookDetails {
+    background-color: #F8F8F8; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    min-height: 100vh; 
+    flex-wrap: wrap; 
+}
+
+.bookImage {
+    width: 100%; 
+    max-width: 400px; 
+    height: auto; 
+    border: 5px solid #000000; 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    margin: 50px; 
+}
+
+.bookInfo {
+    display: flex; 
+    flex-direction: column; 
+    flex: 1; 
+    margin-left: 40px; 
+    margin-top: 50px;
+    gap: 60px;
+}
+.titleContainer {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 20px; 
+}
+
+.title {
+    font-family: 'Hahmlet', sans-serif; 
+    font-weight: 700; 
+    font-size: 38px; 
+    color: #000000; 
+    margin: 0; 
+}
+.author, .tags {
+    font-family: 'Hahmlet', sans-serif; 
+    font-weight: 400; 
+    font-size: 24px; 
+    color: #555555; 
+}
+
+.tags {
+    color: #0B7DCF; 
+    margin-top: 10px; 
+}
+
+.bookStats {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-top: 20px; 
+}
+
+.ratingContainer, .bookmarksContainer {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-right: 80px;
+    text-align: center;
+}
+
+.averageRating, .reviewsCount, .bookmarksCount {
+    font-family: 'Hahmlet';
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 45px;
+    text-align: center;
+}
+
+.separator {
+    width: 1px; 
+    height: 40px; 
+    background-color: #888888; 
+    margin: 0 20px; 
+}
+
+
+.buttons {
+    display: flex;
+    gap: 120px; 
+    margin-top: 0px;
+}
+  
+
+.readButton {
+    width: 300px; 
+    height: 90px; 
+    border: 5px solid #0B7DCF; 
+    border-radius: 40px; 
+    background: transparent; 
+    color: #000; 
+    font-family: 'Hahmlet';
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    cursor: pointer;
+}
+  
+
+.downloadButton {
+    width: 410px; 
+    height: 90px; 
+    background: #0B7DCF; 
+    border-radius: 40px;
+    color: #FFFFFF;
+    font-family: 'Hahmlet';
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    cursor: pointer;
+}
+
+.lineSeparator {
+    
+    width: 801px;
+    height: 0px;
+    margin-left: 400px; 
+    margin-top: 50px; 
+    border: 1px solid #0B7DCF; 
+}
+  
+.ratingSection {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.ratingTitle {
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    margin: 0; 
+    margin-top: 90px;
+}
+  
+.ratingDescription {
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #555555;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+  
+.starsContainer {
+    display: flex;
+    gap: 10px;
+}
+  
+.filledStar, .emptyStar {
+    font-size: 70px;
+    cursor: pointer;
+    color: #888888; 
+}
+  
+.filledStar {
+    color: #FFD700;
+}
+  
+.rateButton {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: #555555;
+    cursor: pointer;
+    margin-left: 370px; 
+    transform: translateY(-55px); 
+}
+
+
+.review {
+    margin-top: 20px; 
+    text-align: left; 
+}
+
+.submitReviewButton {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 35px;
+    padding: 10px 20px;
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 500;
+    font-size: 34px;
+    color: #555555;
+    cursor: pointer;
+    margin-top: -30px; 
+    margin-right: 900px;
+    
+   
+}
+
+  
+.reviews {
+    margin-top: 50px;
+    margin-right: 890px;
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    cursor: pointer;
+}
+  
+.reviewItem {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    
+}

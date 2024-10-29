@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+
 }
 
 .app.showAdminPanel .main{
@@ -13,4 +14,7 @@
 .app.showAdminPanel{
     height: 100vh;
     overflow-y: hidden;
+}
+.adminMain{
+  padding: 60px;
 }
