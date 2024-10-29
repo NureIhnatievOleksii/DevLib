@@ -10,7 +10,7 @@ namespace DevLib.Api.Controllers
     public class CommentController(IMediator mediator) : ControllerBase
     {
         [HttpPost("add-review")]
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> AddReview([FromBody, Required] AddReviewCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);

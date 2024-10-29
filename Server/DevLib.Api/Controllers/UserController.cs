@@ -13,7 +13,7 @@ namespace DevLib.Api.Controllers
     public class UserController(IMediator mediator) : ControllerBase
     {
             [HttpPut("edit-profile")]
-            [Authorize(Roles = "Client")]
+            [Authorize(Roles = "Client,Admin")]
             public async Task<IActionResult> UpdateUser([FromBody, Required] UpdateUserCommand command, CancellationToken cancellationToken)
             {
                 var result = await mediator.Send(command, cancellationToken);
@@ -27,7 +27,7 @@ namespace DevLib.Api.Controllers
             }
 
         [HttpPost("reset-user-password")]
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> ResetUserPassword([FromBody, Required] ResetUserPasswordCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);

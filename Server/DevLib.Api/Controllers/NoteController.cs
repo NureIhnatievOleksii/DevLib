@@ -10,7 +10,7 @@ namespace DevLib.Api.Controllers
     public class NoteController(IMediator mediator) : ControllerBase
     {
         [HttpPost("add-note")]
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> Add_Note([FromBody, Required] AddNoteCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
