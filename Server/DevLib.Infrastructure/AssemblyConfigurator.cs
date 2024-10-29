@@ -72,7 +72,6 @@ public static class AssemblyConfigurator
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
 
-            // Добавьте эту часть для поддержки JWT Bearer
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -111,6 +110,8 @@ public static class AssemblyConfigurator
 
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IValidator<Customer>, CustomerValidator>();
+
+        services.AddHostedService<UserInitializerService>();
 
         return services
             .AddRepositories()

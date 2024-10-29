@@ -7,5 +7,6 @@ public record UpdateBookCommand
     Guid BookId,
     string BookName,
     string Author,
-    string FilePath
+    string FilePath,
+    DateTime PublicationDateTime
 ) : IRequest;

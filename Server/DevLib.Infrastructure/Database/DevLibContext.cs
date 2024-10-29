@@ -60,6 +60,9 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
             entity.Property(c => c.BookId)
                   .ValueGeneratedOnAdd()
                   .HasDefaultValueSql("NEWID()");
+
+            entity.Property(c => c.PublicationDateTime)
+                  .HasDefaultValueSql("GETDATE()");
         });
 
         modelBuilder.Entity<Article>(entity =>
