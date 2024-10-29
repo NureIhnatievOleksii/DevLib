@@ -9,10 +9,11 @@ public record CreateBookCommand
     string BookName,
     string Author,
     IFormFile BookImg,
-    // todo rename FilePath property
-    string FilePath,
+    IFormFile FilePath,
     List<TagCreateDto> Tags
-) : IRequest;
+) : IRequest<IdentityResult>; 
+
+
 
 // todo oc delete dto
 public record TagCreateDto(

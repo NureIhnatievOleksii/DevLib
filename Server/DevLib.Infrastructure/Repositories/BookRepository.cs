@@ -25,7 +25,6 @@ public class BookRepository : IBookRepository
         book.PublicationDateTime = DateTime.Now;
 
         string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Books");
-
         if (!Directory.Exists(webRootPath))
         {
             Directory.CreateDirectory(webRootPath);
@@ -42,6 +41,7 @@ public class BookRepository : IBookRepository
             }
 
             File.Copy(book.FilePath, destinationPath);
+            book.FilePath = $"/Books/{fileName}"; // обновляем путь к файлу
         }
         catch (IOException ex)
         {
@@ -49,13 +49,12 @@ public class BookRepository : IBookRepository
             return IdentityResult.Failed(new IdentityError { Description = "File was not found or could not be copied" });
         }
 
-        book.FilePath = $"/Books/{fileName}";
-
         await _context.Books.AddAsync(book, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         return IdentityResult.Success;
     }
+
 
 
     public async Task<Book> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

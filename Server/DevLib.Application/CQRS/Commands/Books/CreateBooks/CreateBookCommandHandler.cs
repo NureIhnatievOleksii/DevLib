@@ -12,7 +12,6 @@ public class CreateBookCommandHandler(IBookRepository repository, IMapper mapper
     public async Task<IdentityResult> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
         var book = mapper.Map<Book>(command);
-
         book.PublicationDateTime = DateTime.UtcNow;
 
         if (command.BookImg != null)
@@ -22,7 +21,6 @@ public class CreateBookCommandHandler(IBookRepository repository, IMapper mapper
             {
                 await command.BookImg.CopyToAsync(stream, cancellationToken);
             }
-            // todo saving the file
         }
 
         if (command.FilePath != null)
@@ -32,9 +30,8 @@ public class CreateBookCommandHandler(IBookRepository repository, IMapper mapper
             {
                 await command.FilePath.CopyToAsync(stream, cancellationToken);
             }
-            // todo saving the file
         }
 
-        await repository.CreateAsync(book, cancellationToken);
+        return await repository.CreateAsync(book, cancellationToken); // добавлен return
     }
 }
