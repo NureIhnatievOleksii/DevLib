@@ -8,13 +8,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/book")]
     public class BookController(IMediator mediator) : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBookById(Guid id, CancellationToken cancellationToken)
+        [HttpGet("get-book/{bookId}")]
+        public async Task<IActionResult> GetBookById(Guid bookId, CancellationToken cancellationToken)
         {
-            var book = await mediator.Send(new GetBookByIdQuery(id), cancellationToken);
+            var book = await mediator.Send(new GetBookByIdQuery(bookId), cancellationToken);
 
             if (book == null)
             {
@@ -23,7 +23,7 @@ namespace DevLib.Api.Controllers
 
             return Ok(book);
         }
-        [HttpPost]
+        [HttpPost("add-book")]
         public async Task<IActionResult> CreateBook([FromBody, Required] CreateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
@@ -31,7 +31,7 @@ namespace DevLib.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("update-book")]
         public async Task<IActionResult> UpdateBook([FromBody, Required] UpdateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);

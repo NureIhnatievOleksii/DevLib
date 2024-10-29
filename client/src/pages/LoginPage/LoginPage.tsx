@@ -20,19 +20,17 @@ const LoginPage = () => {
   const [password, setPassword] = useState<string>('');
 
   const setRole = useAuthStore(store => store.setRole)
-
+  const login = useAuthStore(store => store.login)
   const loggedIn = useAuthStore(store => store.loggedIn)
   const setLoggedIn = useAuthStore(store => store.setLoggedIn)
   const navigate = useNavigate()
 
-  const login = async () => {
-    const data = {
-      email, password
-    }
+  const handelLogin = async () => {
+    console.log(validateStringFields({email, password}))
     //TODO validation
-    if (!validateStringFields(data)){
+    if (validateStringFields({email, password})){
       try {
-        await LoginService.login(data)
+        await login(email, password)
       } catch (e) {
         alert(e)
       }
@@ -46,7 +44,7 @@ const LoginPage = () => {
 
     } else {
       alert('incorrectly entered data')
-    }
+  }
 
 
 
@@ -87,7 +85,7 @@ const LoginPage = () => {
         <img src={gitIcon} alt="Git icon" />
         <div className={styles.buttonText}>зайти через github</div>
       </button>
-      <button className={styles.logiButton} onClick={login}>
+      <button className={styles.logiButton} onClick={handelLogin}>
         Увійти
       </button>
     </div>

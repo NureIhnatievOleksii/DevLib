@@ -114,7 +114,7 @@ const Header = () => {
                         </>
                     }
                     {isLoggedIn &&
-                        <Link className={styles.icon} to={role == 'admin' ? RouteNames.ADD_RECORD : RouteNames.ACCOUNT}>
+                        <Link className={styles.icon} to={role == 'admin' ? RouteNames.ADD_BOOK : RouteNames.ACCOUNT}>
                             <svg viewBox="0 0 35 41" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17.7168 16.8C21.9371 16.8 25.3584 13.4869 25.3584 9.4C25.3584 5.31309 21.9371 2 17.7168 2C13.4965 2 10.0752 5.31309 10.0752 9.4C10.0752 13.4869 13.4965 16.8 17.7168 16.8Z" stroke="#6FC3FF" stroke-width="3" />
                                 <path d="M33 30.675C33 35.2723 33 39 17.7168 39C2.43359 39 2.43359 35.2723 2.43359 30.675C2.43359 26.0778 9.27665 22.35 17.7168 22.35C26.157 22.35 33 26.0778 33 30.675Z" stroke="#6FC3FF" stroke-width="3" />

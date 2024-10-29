@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: row;
     column-gap: 45px;
+    align-items: center; /* Не трогать, уебу */
 }
 
 .iconsRow svg {

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/directory")]
     public class DirectoryController(IMediator mediator) : ControllerBase
     {
         [HttpPost("add-directory")] 

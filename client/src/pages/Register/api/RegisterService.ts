@@ -9,6 +9,6 @@ interface IRegiserDto{
 
 export default class RegiserService {
     static async register(data:IRegiserDto) :Promise<AxiosResponse>{
-        return await $api.post('register',data)
+        return await $api.post('/auth/register',data)
     }
 }
