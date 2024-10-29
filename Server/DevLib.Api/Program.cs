@@ -15,6 +15,10 @@ builder.Services.AddDbContext<DevLibContext>(options =>
 
 var app = builder.Build();
 
+// todo move UseStaticFiles to AssembleConfiguration
+
+app.UseStaticFiles();   
+
 app.ConfigureWebApi();
 
 app.Run();

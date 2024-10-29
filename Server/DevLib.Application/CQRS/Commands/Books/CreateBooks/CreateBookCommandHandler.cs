@@ -2,21 +2,14 @@
 using DevLib.Application.Interfaces.Repositories;
 using DevLib.Domain.BookAggregate;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace DevLib.Application.CQRS.Commands.Books.CreateBooks;
 
-public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand>
+public class CreateBookCommandHandler(IBookRepository repository, IMapper mapper)
+    : IRequestHandler<CreateBookCommand,IdentityResult>
 {
-    private readonly IBookRepository repository;
-    private readonly IMapper mapper;
-
-    public CreateBookCommandHandler(IBookRepository repository, IMapper mapper)
-    {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
-
-    public async Task Handle(CreateBookCommand command, CancellationToken cancellationToken)
+    public async Task<IdentityResult> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
         var book = mapper.Map<Book>(command);
 
@@ -32,12 +25,12 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand>
             // todo saving the file
         }
 
-        if (command.BookPdf != null)
+        if (command.FilePath != null)
         {
-            var pdfPath = Path.Combine("Uploads", command.BookPdf.FileName);
+            var pdfPath = Path.Combine("Uploads", command.FilePath.FileName);
             using (var stream = new FileStream(pdfPath, FileMode.Create))
             {
-                await command.BookPdf.CopyToAsync(stream, cancellationToken);
+                await command.FilePath.CopyToAsync(stream, cancellationToken);
             }
             // todo saving the file
         }

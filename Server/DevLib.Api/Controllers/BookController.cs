@@ -28,8 +28,14 @@ namespace DevLib.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateBook([FromBody, Required] CreateBookCommand command, CancellationToken cancellationToken)
         {
-            await mediator.Send(command, cancellationToken);
-            return Ok();
+            var result = await mediator.Send(command, cancellationToken);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Book was added succesfully." });
+            }
+
+            return BadRequest(result.Errors);
         }
 
         [HttpPut("update-book")]
