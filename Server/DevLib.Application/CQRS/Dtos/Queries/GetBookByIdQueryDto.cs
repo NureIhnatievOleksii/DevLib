@@ -7,4 +7,4 @@ public record GetBookByIdQueryDto
     string Author,
     string FilePath,
     DateTime PublicationDateTime
-);
+); // todo add references for book's files

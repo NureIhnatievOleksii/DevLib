@@ -24,20 +24,20 @@ namespace DevLib.Api.Controllers
             return Ok(book);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateBook([FromBody, Required] CreateBookCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateBook([FromForm, Required] CreateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
-
             return Ok();
         }
+
 
         [HttpPut]
-        public async Task<IActionResult> UpdateBook([FromBody, Required] UpdateBookCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateBook([FromForm, Required] UpdateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
-
             return Ok();
         }
+
 
         [HttpGet("search-books/{BookName}")]
         public async Task<IActionResult> SearchBooks(string bookName, CancellationToken cancellationToken)
