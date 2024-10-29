@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DevLib.Domain.ArticleAggregate;
-using DevLib.Domain.DirectoryAggregate;
 using DevLib.Application.CQRS.Dtos.Queries;
 using MediatR;
 using DevLib.Application.Interfaces.Repositories;
