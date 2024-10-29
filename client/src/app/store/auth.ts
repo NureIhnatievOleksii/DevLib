@@ -8,6 +8,7 @@ import $api from '../api/http';
 
 
 
+
 interface BearState {
   loggedIn: boolean;
   role: string;
@@ -15,9 +16,9 @@ interface BearState {
   setLoggedIn: (value: boolean) => void;
   setRole: (role: string) => void;
   setIsLoading: (value: boolean) => void;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   checkAuth: () => Promise<void>;
-  logout: () => void;
+  logout: () => void
 }
 export const useAuthStore = create<BearState>()(
   devtools((set) => ({
@@ -28,17 +29,18 @@ export const useAuthStore = create<BearState>()(
     isLoading: true,
     setIsLoading: (value: boolean) => set(() => ({ isLoading: value })),
 
-    login: async (username: string, password: string) => {
+    login: async (email: string, password: string) => {
       set({ isLoading: true });
       try {
-        const { data } = await AppService.login(username, password);
-        const decodedToken: any = jwtDecode(data.accessToken);
+        const { data } = await AppService.login(email, password);
+        const decodedToken: any = jwtDecode(data.token);
         set({
           loggedIn: true,
-          role: decodedToken.role,
+          role: (decodedToken.role == 'Client') ? 'user' : decodedToken.role,
           isLoading: false,
         });
-        localStorage.setItem('token', data.accessToken);
+
+        localStorage.setItem('token', data.token);
       } catch (error: any) {
         console.error(error);
         set({ isLoading: false });
@@ -47,19 +49,17 @@ export const useAuthStore = create<BearState>()(
     checkAuth: async () => {
       set({ isLoading: true });
       try {
-        const response = await $api.get(`/token/refresh`, {
-          withCredentials: true,
-        });
-        localStorage.setItem('token', response.data.accessToken);
-        const decodedToken: any = jwtDecode(response.data.accessToken);
-        console.log('checkAuth');
+     
+
+        const decodedToken: any = jwtDecode(localStorage.getItem('token') as string);
+        console.log(decodedToken)
         set({
           loggedIn: true,
           role: decodedToken.role,
           isLoading: false,
         });
       } catch (error: any) {
-        console.error(error.response?.data?.message);
+        console.error(error);
       } finally {
         set({ isLoading: false });
       }
@@ -74,6 +74,6 @@ export const useAuthStore = create<BearState>()(
         .catch((error: any) => {
           console.error('Logout error', error);
         }); */
-    },
+    }
   }))
 );

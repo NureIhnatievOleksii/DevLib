@@ -21,11 +21,12 @@ const Register = () => {
       email, password, userName
     }
     try {
-      if (!validateStringFields(data)){
+      if (validateStringFields(data)){
         try {
           await RegiserService.register(data)
+          navigate('/login')
         } catch (e) {
-          alert(e)
+          console.log(e)
         }
       }
     } catch (e) {

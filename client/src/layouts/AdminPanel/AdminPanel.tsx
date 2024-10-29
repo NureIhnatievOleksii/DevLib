@@ -14,7 +14,7 @@ const AdminPanel = () => {
     const [navList, setNavList] = useState<NavList[]>([
         {
             text: 'Додати матеріал',
-            url: RouteNames.ADD_RECORD,
+            url: RouteNames.ADD_BOOK,
             active: true
         },
         {

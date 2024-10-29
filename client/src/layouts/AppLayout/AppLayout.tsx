@@ -15,13 +15,13 @@ const AppLayout: FC<Props> = ({ children }) => {
   const [showAdminPanel, setShowAdminPanel] = useState<boolean>();
   const role = useAuthStore(store => store.role)
   useEffect(() => {
-    if (adminPanelRoutes.includes(location.pathname as RouteNames) && role == 'admin'){
+    if (adminPanelRoutes.includes(location.pathname as RouteNames) && role == 'admin') {
       setShowAdminPanel(true)
     }
-    else{
+    else {
       setShowAdminPanel(false)
     }
-  },[location.pathname,role])
+  }, [location.pathname, role])
 
 
   return (
@@ -33,7 +33,9 @@ const AppLayout: FC<Props> = ({ children }) => {
             <AdminPanel />
           </>
         }
-        {children}
+        <div className={`${ showAdminPanel && styles.adminMain}`}>
+          {children}
+        </div>
       </div>
     </div>
   )

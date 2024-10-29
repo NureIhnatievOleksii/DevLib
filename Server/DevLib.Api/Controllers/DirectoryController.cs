@@ -6,15 +6,17 @@ using DevLib.Application.CQRS.Queries.Articles.GetArticleById;
 using DevLib.Application.CQRS.Queries.Directories.GetDirectoryById;
 using DevLib.Application.CQRS.Queries.Directories.SearchDirectories;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/directory")]
     public class DirectoryController(IMediator mediator) : ControllerBase
     {
-        [HttpPost("add-directory")] 
+        [HttpPost("add-directory")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateDirectory([FromBody, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
@@ -22,6 +24,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpPut("edit-directory/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateDirectory(Guid id, [FromBody, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
         {
             var updateCommand = command with { DirectoryId = id };

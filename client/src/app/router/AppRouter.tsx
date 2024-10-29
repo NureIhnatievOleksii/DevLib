@@ -11,12 +11,13 @@ const AppRouter = () => {
     const isLoading = useAuthStore(state => state.isLoading)
     const setIsLoadingAuth = useAuthStore(state => state.setIsLoading);
     const setLoggedIn = useAuthStore(state => state.setLoggedIn)
-    const setRole = useAuthStore(state => state.setRole)
+    const checkAuth = useAuthStore(state => state.checkAuth)
 
     useEffect(() => {
-        setLoggedIn(true); // значения обозначающее зарегестрирован ли пользователь 
+        /* setLoggedIn(true); // значения обозначающее зарегестрирован ли пользователь 
         setRole('user') // // значения обозначающее роль пользователя
-        setIsLoadingAuth(false)
+        setIsLoadingAuth(false) */
+        checkAuth()
     }, [])
 
     return (
