@@ -3,6 +3,7 @@ using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 using DevLib.Application.CQRS.Queries.Books.GetBookById;
 using DevLib.Application.CQRS.Queries.Books.SearchBooks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,6 +25,7 @@ namespace DevLib.Api.Controllers
             return Ok(book);
         }
         [HttpPost("add-book")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateBook([FromBody, Required] CreateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
@@ -32,6 +34,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpPut("update-book")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBook([FromBody, Required] UpdateBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
