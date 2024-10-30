@@ -10,12 +10,5 @@ public record CreateBookCommand
     string Author,
     IFormFile BookImg,
     IFormFile FilePath,
-    List<TagCreateDto> Tags
+    List<Guid> Tags
 ) : IRequest<IdentityResult>; 
-
-
-
-// todo oc delete dto
-public record TagCreateDto(
-    string TagText
-);
