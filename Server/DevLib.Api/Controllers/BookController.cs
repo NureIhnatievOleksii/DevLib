@@ -24,19 +24,44 @@ namespace DevLib.Api.Controllers
 
             return Ok(book);
         }
+
         [HttpPost("add-book")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateBook([FromBody, Required] CreateBookCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateBook([FromForm, Required] CreateBookCommand command, CancellationToken cancellationToken)
         {
+            var allowedImageExtensions = new[] { ".jpg", ".png", ".jpeg" };
+            var allowedFileExtensions = new[] { ".pdf", ".epub" };
+
+            if (command.BookImg != null)
+            {
+                var imgExtension = Path.GetExtension(command.BookImg.FileName).ToLower();
+                if (!allowedImageExtensions.Contains(imgExtension))
+                {
+                    return BadRequest(new { Message = "Недопустиме розширення зображення. Доступні розширення: .jpg, .png, .jpeg" });
+                }
+            }
+
+            if (command.FilePath != null)
+            {
+                var fileExtension = Path.GetExtension(command.FilePath.FileName).ToLower();
+                if (!allowedFileExtensions.Contains(fileExtension))
+                {
+                    return BadRequest(new { Message = "Недопустиме розширення файлу. Доступні розширення: .pdf, .epub" });
+                }
+            }
+
             var result = await mediator.Send(command, cancellationToken);
 
             if (result.Succeeded)
             {
-                return Ok(new { Message = "Book was added succesfully." });
+                return Ok(new { Message = "Книгу було успішно додано." });
             }
 
             return BadRequest(result.Errors);
         }
+
+
+
 
         [HttpPut("update-book")]
         [Authorize(Roles = "Admin")]
