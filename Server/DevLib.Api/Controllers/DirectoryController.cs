@@ -17,11 +17,27 @@ namespace DevLib.Api.Controllers
     {
         [HttpPost("add-directory")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateDirectory([FromBody, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateDirectory([FromForm] CreateDirectoryCommand command, CancellationToken cancellationToken)
         {
+            if (command.File != null && command.File.Length > 0)
+            {
+                var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
+                var filePath = Path.Combine("wwwroot/images", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await command.File.CopyToAsync(stream);
+                }
+
+                command = command with { DirectoryImgUrl = $"/images/{fileName}" };
+            }
+
+
             await mediator.Send(command, cancellationToken);
             return Ok();
         }
+
+
 
         [HttpPut("edit-directory/{id}")]
         [Authorize(Roles = "Admin")]
