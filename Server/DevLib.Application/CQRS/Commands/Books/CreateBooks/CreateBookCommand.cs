@@ -9,6 +9,6 @@ public record CreateBookCommand
     string BookName,
     string Author,
     IFormFile BookImg,
-    IFormFile FilePath,
-    List<Guid> Tags
+    IFormFile BookPdf,
+    List<string> Tags
 ) : IRequest<IdentityResult>; 
