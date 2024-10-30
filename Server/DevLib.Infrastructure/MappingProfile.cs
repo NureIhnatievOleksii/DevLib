@@ -15,6 +15,7 @@ using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.TagAggregate;
+using DevLib.Application.CQRS.Queries.Books.SearchBooks;
 
 namespace DevLib.Infrastructure;
 
@@ -42,6 +43,7 @@ public class MappingProfile : Profile
         CreateMap<DLDirectory, DirectoryDto>()
             .ForMember(dest => dest.DirectoryImg, opt => opt.MapFrom(src => src.ImgLink));
         CreateMap<Book, GetBookByIdQueryDto>();
+        CreateMap<Book, BookNameDto>();
 
         CreateMap<Article, GetArticleByIdQueryDto>();
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();

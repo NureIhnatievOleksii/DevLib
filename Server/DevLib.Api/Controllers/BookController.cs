@@ -96,12 +96,10 @@ namespace DevLib.Api.Controllers
             return BadRequest(result.Errors);
         }
 
-
-
-        [HttpGet("search-books/{BookName}")]
-        public async Task<IActionResult> SearchBooks(string bookName, CancellationToken cancellationToken)
+        [HttpGet("search-books")]
+        public async Task<IActionResult> SearchBooks([FromQuery] string? bookName, CancellationToken cancellationToken)
         {
-            var books = await mediator.Send(new SearchBooksQuery(bookName), cancellationToken);
+            var books = await mediator.Send(new SearchBooksQuery(bookName ?? ""), cancellationToken);
             return Ok(books);
         }
     }
