@@ -7,42 +7,32 @@ using Microsoft.Extensions.Logging;
 
 namespace DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 
-public class CreateDirectoryCommandHandler(IDirectoryRepository directoryRepository, IArticleRepository articleRepository, IMapper mapper, ILogger<CreateDirectoryCommandHandler> logger)
+public class CreateDirectoryCommandHandler(IDirectoryRepository directoryRepository, IMapper mapper, ILogger<CreateDirectoryCommandHandler> logger)
     : IRequestHandler<CreateDirectoryCommand>
 {
     public async Task Handle(CreateDirectoryCommand command, CancellationToken cancellationToken)
     {
+        string DirectoryImgLink = "";
+
+        if (command.File != null && command.File.Length > 0)
+        {
+            var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
+            var filePath = Path.Combine("wwwroot/images", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await command.File.CopyToAsync(stream);
+            }
+
+            DirectoryImgLink = $"/images/{fileName}" ;
+        }
+
         var directory = new DLDirectory
         {
             DirectoryName = command.DirectoryName,
-            ImgLink = command.DirectoryImgUrl
+            ImgLink = DirectoryImgLink
         };
 
         await directoryRepository.CreateAsync(directory, cancellationToken);
-
-        if (command.Articles != null && command.Articles.Any())
-        {
-            logger.LogInformation("Articles count: {Count}", command.Articles.Count);
-
-            foreach (var articleDto in command.Articles)
-            {
-                logger.LogInformation("Processing article: {Name}, {Text}", articleDto.Name, articleDto.Text);
-
-                var newArticle = new Article
-                {
-                    ArticleId = Guid.NewGuid(),
-                    DirectoryId = directory.DirectoryId,
-                    Text = articleDto.Text,
-                    ChapterName = articleDto.Name,
-                    Directory = directory
-                };
-
-                await articleRepository.CreateAsync(newArticle, cancellationToken);
-            }
-        }
-        else
-        {
-            logger.LogWarning("No articles were provided or the list is empty.");
-        }
     }
 }

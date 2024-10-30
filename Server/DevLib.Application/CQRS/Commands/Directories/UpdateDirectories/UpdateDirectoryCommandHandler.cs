@@ -11,42 +11,39 @@ public class UpdateDirectoryCommandHandler(IDirectoryRepository directoryReposit
     public async Task Handle(UpdateDirectoryCommand command, CancellationToken cancellationToken)
     {
         var directory = await directoryRepository.GetByIdAsync(command.DirectoryId, cancellationToken);
-        if (directory == null) throw new NotFoundException($"Directory with ID {command.DirectoryId} not found.");
+        if (directory == null)
+            throw new NotFoundException($"Directory with ID {command.DirectoryId} not found.");
 
-        directory.DirectoryName = command.DirectoryName;
-        directory.ImgLink = command.DirectoryImgUrl;
-        await directoryRepository.UpdateAsync(directory, cancellationToken);
-
-        var articles = command.Articles;
-
-        if (articles != null && articles.Any())
+        string oldImgPath = directory.ImgLink != null
+            ? Path.Combine("wwwroot", directory.ImgLink.TrimStart('/'))
+            : null;
+        string newImgLink = "";
+        if (command.File != null && command.File.Length > 0)
         {
-            foreach (var articleDto in articles)
+            var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
+            var filePath = Path.Combine("wwwroot/images", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                if (articleDto.ArticleId.HasValue)
-                {
-                    var article = await articleRepository.GetByIdAsync(articleDto.ArticleId.Value, cancellationToken);
-                    if (article != null)
-                    {
-                        article.ChapterName = articleDto.Name;
-                        article.Text = articleDto.Text;
-                        await articleRepository.UpdateAsync(article, cancellationToken);
-                    }
-                }
-                else
-                {
-                    var newArticle = new Article
-                    {
-                        ArticleId = Guid.NewGuid(),
-                        DirectoryId = directory.DirectoryId,
-                        Text = articleDto.Text,
-                        ChapterName = articleDto.Name,
-                        Directory = directory
-                    };
+                await command.File.CopyToAsync(stream);
+            }
 
-                    await articleRepository.CreateAsync(newArticle, cancellationToken);
-                }
+            newImgLink = $"/images/{fileName}";
+
+            if (!string.IsNullOrWhiteSpace(oldImgPath) && File.Exists(oldImgPath))
+            {
+                File.Delete(oldImgPath);
             }
         }
+        if (!string.IsNullOrWhiteSpace(command.DirectoryName))
+        {
+            directory.DirectoryName = command.DirectoryName;
+        }
+
+        if (!string.IsNullOrWhiteSpace(newImgLink))
+        {
+            directory.ImgLink = newImgLink;
+        }
+
+        await directoryRepository.UpdateAsync(directory, cancellationToken);
     }
 }

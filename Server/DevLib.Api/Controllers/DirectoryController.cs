@@ -1,5 +1,7 @@
 ﻿using DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
+using DevLib.Application.CQRS.Commands.Directories.CreateArticles;
 using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
+using DevLib.Application.CQRS.Commands.Directories.UpdateArticles;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Application.CQRS.Queries.Articles.GetAllArticlesNamesByDirectoryId;
 using DevLib.Application.CQRS.Queries.Articles.GetArticleById;
@@ -9,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace DevLib.Api.Controllers
 {
@@ -17,41 +20,39 @@ namespace DevLib.Api.Controllers
     {
         [HttpPost("add-directory")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateDirectory([FromForm] CreateDirectoryCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateDirectory([FromForm, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
         {
-            if (command.File != null && command.File.Length > 0)
-            {
-                var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
-                var filePath = Path.Combine("wwwroot/images", fileName);
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await command.File.CopyToAsync(stream);
-                }
-
-                command = command with { DirectoryImgUrl = $"/images/{fileName}" };
-            }
-
-
+        [HttpPost("add-article")]
+        public async Task<IActionResult> CreateArticle([FromBody, Required] CreateArticleCommand command, CancellationToken cancellationToken)
+        {
             await mediator.Send(command, cancellationToken);
             return Ok();
         }
 
 
-
-        [HttpPut("edit-directory/{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateDirectory(Guid id, [FromBody, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
+        [HttpPut("edit-directory")]
+        public async Task<IActionResult> UpdateDirectory([FromForm, Required] UpdateDirectoryCommand command, CancellationToken cancellationToken)
         {
-            var updateCommand = command with { DirectoryId = id };
-            await mediator.Send(updateCommand, cancellationToken);
+            await mediator.Send(command, cancellationToken);
             return Ok();
         }
 
-        [HttpGet("get-article/{id}")]
-        public async Task<IActionResult> GetArticleById(Guid id, CancellationToken cancellationToken)
+        [HttpPut("edit-article")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateArticle([FromForm, Required] UpdateArticleCommand command, CancellationToken cancellationToken)
         {
-            var article = await mediator.Send(new GetArticleByIdQuery(id), cancellationToken);
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
+
+        [HttpGet("get-article/{articleId}")]
+        public async Task<IActionResult> GetArticleById(Guid articleId, CancellationToken cancellationToken)
+        {
+            var article = await mediator.Send(new GetArticleByIdQuery(articleId), cancellationToken);
 
             if (article == null)
             {
@@ -61,10 +62,10 @@ namespace DevLib.Api.Controllers
             return Ok(article);
         }
 
-        [HttpGet("get-all-chapter-name/{id}")]
-        public async Task<ActionResult<List<GetAllArticlesNamesByDirectoryIdDto>>> GetArticleNames(Guid id, CancellationToken cancellationToken)
+        [HttpGet("get-all-chapter-name/{directoryId}")]
+        public async Task<ActionResult<List<GetAllArticlesNamesByDirectoryIdDto>>> GetArticleNames(Guid directoryId, CancellationToken cancellationToken)
         {
-            var articlesNames = await mediator.Send(new GetArticleNamesByDirectoryIdQuery(id), cancellationToken);
+            var articlesNames = await mediator.Send(new GetArticleNamesByDirectoryIdQuery(directoryId), cancellationToken);
             return Ok(articlesNames);
         }
 
