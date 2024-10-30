@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace DevLib.Application.CQRS.Commands.Books.UpdateBook;
 
@@ -10,12 +11,5 @@ public record UpdateBookCommand
     string Author,
     IFormFile BookImg,
     IFormFile BookPdf,
-    DateTime PublicationDateTime,
-    List<TagUpdateDto> Tags
-) : IRequest;
-
-// todo oc delete dto
-public record TagUpdateDto(
-    Guid? TagId,
-    string TagText
-);
+    List<string> Tags
+) : IRequest<IdentityResult>;

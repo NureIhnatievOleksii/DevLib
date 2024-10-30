@@ -14,6 +14,7 @@ using DevLib.Domain.ArticleAggregate;
 using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.BookAggregate;
+using DevLib.Domain.TagAggregate;
 
 namespace DevLib.Infrastructure;
 
@@ -44,5 +45,7 @@ public class MappingProfile : Profile
 
         CreateMap<Article, GetArticleByIdQueryDto>();
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
+
+        CreateMap<Tag, TagDto>();
     }
 }

@@ -1,72 +1,75 @@
 ﻿using AutoMapper;
 using MediatR;
 using DevLib.Application.Interfaces.Repositories;
+using DevLib.Domain.BookAggregate;
+using Microsoft.AspNetCore.Identity;
+using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 
 namespace DevLib.Application.CQRS.Commands.Books.UpdateBook;
 
-public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand>
+public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository tagRepository, IMapper mapper)
+    : IRequestHandler<UpdateBookCommand, IdentityResult>
 {
-    private readonly IBookRepository bookRepository;
-    //private readonly ITagRepository tagRepository;
-    private readonly IMapper mapper;
-
-    public UpdateBookCommandHandler(IBookRepository bookRepository/*, ITagRepository tagRepository*/, IMapper mapper)
+    public async Task<IdentityResult> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        this.bookRepository = bookRepository;
-        //this.tagRepository = tagRepository;
-        this.mapper = mapper;
-    }
+        var book = mapper.Map<Book>(command);
+        book.PublicationDateTime = DateTime.UtcNow;
 
-    public async Task Handle(UpdateBookCommand command, CancellationToken cancellationToken)
-    {
-        var book = await bookRepository.GetByIdAsync(command.BookId, cancellationToken)
-                       ?? throw new Exception("Book not found");
-
-        book.BookName = command.BookName;
-        book.Author = command.Author;
-        book.PublicationDateTime = command.PublicationDateTime;
+        string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Books");
+        if (!Directory.Exists(webRootPath))
+        {
+            Directory.CreateDirectory(webRootPath);
+        }
 
         if (command.BookImg != null)
         {
-            var filePath = Path.Combine("Uploads", command.BookImg.FileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            var imageFileName = Path.GetFileName(command.BookImg.FileName);
+            var imageDestinationPath = Path.Combine(webRootPath, imageFileName);
+
+            try
             {
-                await command.BookImg.CopyToAsync(stream, cancellationToken);
+                using (var stream = new FileStream(imageDestinationPath, FileMode.Create))
+                {
+                    await command.BookImg.CopyToAsync(stream, cancellationToken);
+                }
+
+                book.BookImg = $"/Books/{imageFileName}";
             }
-            // todo update database data
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return IdentityResult.Failed(new IdentityError { Description = "Image file could not be copied" });
+            }
         }
 
         if (command.BookPdf != null)
         {
-            var pdfPath = Path.Combine("Uploads", command.BookPdf.FileName);
-            using (var stream = new FileStream(pdfPath, FileMode.Create))
+            var pdfFileName = Path.GetFileName(command.BookPdf.FileName);
+            var pdfDestinationPath = Path.Combine(webRootPath, pdfFileName);
+
+            try
             {
-                await command.BookPdf.CopyToAsync(stream, cancellationToken);
+                using (var stream = new FileStream(pdfDestinationPath, FileMode.Create))
+                {
+                    await command.BookPdf.CopyToAsync(stream, cancellationToken);
+                }
+
+                book.FilePath = $"/Books/{pdfFileName}";
             }
-            // todo update database data
+            catch (IOException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return IdentityResult.Failed(new IdentityError { Description = "PDF file could not be copied" });
+            }
         }
 
-        // todo make loading the tags
-        //var existingTags = book.Tags.Select(t => t.TagId).ToHashSet();
+        var result = await repository.UpdateAsync(book, cancellationToken);
 
-        //foreach (var tagDto in command.Tags)
-        //{
-        //    if (tagDto.TagId.HasValue && existingTags.Contains(tagDto.TagId.Value))
-        //    {
-        //        var tag = await tagRepository.GetByIdAsync(tagDto.TagId.Value, cancellationToken);
-        //        tag.TagName = tagDto.TagText;
-        //        await tagRepository.UpdateAsync(tag, cancellationToken);
-        //    }
-        //    else
-        //    {
-        //        var newTag = new Tag { TagName = tagDto.TagText };
-        //        await tagRepository.CreateAsync(newTag, cancellationToken);
-        //        book.Tags.Add(newTag);
-        //    }
-        //}
+        for (int i = 0; i < command.Tags.Count; i++)
+        {
+            await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);
+        }
 
-        mapper.Map(command, book);
-
-        await bookRepository.UpdateAsync(book, cancellationToken);
+        return result;
     }
 }

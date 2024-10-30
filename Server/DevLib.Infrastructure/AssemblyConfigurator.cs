@@ -124,7 +124,7 @@ public static class AssemblyConfigurator
     {
         return services
             .AddScoped<IAuthRepository, AuthRepository>()
-            .AddScoped<ICustomerRepository, CustomerRepository>() // Удален дубликат
+            .AddScoped<ICustomerRepository, CustomerRepository>()
             .AddScoped<IRatingRepository, RatingRepository>()
             .AddScoped<ICommentRepository, CommentRepository>()
             .AddScoped<IDirectoryRepository, DirectoryRepository>()
@@ -132,6 +132,7 @@ public static class AssemblyConfigurator
             .AddScoped<IBookmarkRepository, BookmarkRepository>()
             .AddScoped<INoteRepository, NoteRepository>()
             .AddScoped<IArticleRepository, ArticleRepository>()
+            .AddScoped<ITagRepository, TagRepository>()
             .AddScoped<IBookRepository, BookRepository>();
     }
 

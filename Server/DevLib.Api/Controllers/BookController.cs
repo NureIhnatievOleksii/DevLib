@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DevLib.Api.Controllers
 {
@@ -37,16 +38,16 @@ namespace DevLib.Api.Controllers
                 var imgExtension = Path.GetExtension(command.BookImg.FileName).ToLower();
                 if (!allowedImageExtensions.Contains(imgExtension))
                 {
-                    return BadRequest(new { Message = "Недопустиме розширення зображення. Доступні розширення: .jpg, .png, .jpeg" });
+                    return BadRequest(new { Message = "Invalid file extension. Allowed extensions are:  .jpg, .png, .jpeg" });
                 }
             }
 
-            if (command.FilePath != null)
+            if (command.BookPdf != null)
             {
-                var fileExtension = Path.GetExtension(command.FilePath.FileName).ToLower();
+                var fileExtension = Path.GetExtension(command.BookPdf.FileName).ToLower();
                 if (!allowedFileExtensions.Contains(fileExtension))
                 {
-                    return BadRequest(new { Message = "Недопустиме розширення файлу. Доступні розширення: .pdf, .epub" });
+                    return BadRequest(new { Message = "Invalid file extension. Allowed extensions are: .pdf, .epub" });
                 }
             }
 
@@ -54,22 +55,47 @@ namespace DevLib.Api.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(new { Message = "Книгу було успішно додано." });
+                return Ok(new { Message = "Book was succesfully added" });
             }
 
             return BadRequest(result.Errors);
         }
 
-
-
-
         [HttpPut("update-book")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateBook([FromBody, Required] UpdateBookCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateBook([FromForm, Required] UpdateBookCommand command, CancellationToken cancellationToken)
         {
-            await mediator.Send(command, cancellationToken);
-            return Ok();
+            var allowedImageExtensions = new[] { ".jpg", ".png", ".jpeg" };
+            var allowedFileExtensions = new[] { ".pdf", ".epub" };
+
+            if (command.BookImg != null)
+            {
+                var imgExtension = Path.GetExtension(command.BookImg.FileName).ToLower();
+                if (!allowedImageExtensions.Contains(imgExtension))
+                {
+                    return BadRequest(new { Message = "Invalid file extension. Allowed extensions are:  .jpg, .png, .jpeg" });
+                }
+            }
+
+            if (command.BookPdf != null)
+            {
+                var fileExtension = Path.GetExtension(command.BookPdf.FileName).ToLower();
+                if (!allowedFileExtensions.Contains(fileExtension))
+                {
+                    return BadRequest(new { Message = "НInvalid file extension. Allowed extensions are: .pdf, .epub" });
+                }
+            }
+
+            var result = await mediator.Send(command, cancellationToken);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Book was succesfulle updated" });
+            }
+
+            return BadRequest(result.Errors);
         }
+
 
 
         [HttpGet("search-books/{BookName}")]
