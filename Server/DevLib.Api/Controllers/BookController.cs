@@ -1,6 +1,7 @@
 using DevLib.Application.CQRS.Commands.Books.CreateBooks;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 using DevLib.Application.CQRS.Queries.Books.GetBookById;
+using DevLib.Application.CQRS.Queries.Books.LastPublishedBooks;
 using DevLib.Application.CQRS.Queries.Books.SearchBooks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -102,5 +103,13 @@ namespace DevLib.Api.Controllers
             var books = await mediator.Send(new SearchBooksQuery(bookName ?? ""), cancellationToken);
             return Ok(books);
         }
+
+        [HttpGet("last-published-books")]
+        public async Task<IActionResult> GetLastPublishedBooks(CancellationToken cancellationToken)
+        {
+            var books = await mediator.Send(new LastPublishedBooksQuery(), cancellationToken);
+            return Ok(books);
+        }
+
     }
 }

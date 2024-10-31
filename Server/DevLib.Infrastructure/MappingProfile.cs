@@ -44,6 +44,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DirectoryImg, opt => opt.MapFrom(src => src.ImgLink));
         CreateMap<Book, GetBookByIdQueryDto>();
         CreateMap<Book, BookNameDto>();
+        CreateMap<Book, LastPublishedBookDto>()
+            .ForMember(dest => dest.PhotoBook, opt => opt.MapFrom(src => src.BookImg));
 
         CreateMap<Article, GetArticleByIdQueryDto>();
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
