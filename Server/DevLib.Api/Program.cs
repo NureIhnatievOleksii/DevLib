@@ -18,7 +18,7 @@ builder.Services.AddDbContext<DevLibContext>(options =>
 builder.Services.AddTransient<SeedDataService>();
 
 var app = builder.Build();
-
+app.UseMiddleware<TokenValidationMiddleware>();
 app.UseStaticFiles();
 
 using (var scope = app.Services.CreateScope())
