@@ -14,16 +14,11 @@ namespace DevLib.Api.Controllers
     [Route("api/book")]
     public class BookController(IMediator mediator) : ControllerBase
     {
-        [HttpGet("get-book/{bookId}")]
+        [HttpGet("get-book/{bookId:guid}")]
         public async Task<IActionResult> GetBookById(Guid bookId, CancellationToken cancellationToken)
         {
-            var book = await mediator.Send(new GetBookByIdQuery(bookId), cancellationToken);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
+            var query = new GetBookByIdQuery(bookId);
+            var book = await mediator.Send(query, cancellationToken);
             return Ok(book);
         }
 

@@ -3,6 +3,8 @@ using DevLib.Application.Interfaces.Repositories;
 using DevLib.Domain.BookAggregate;
 using DevLib.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
+using DevLib.Domain.CommentAggregate;
+using DevLib.Domain.RatingAggregate;
 
 namespace DevLib.Infrastructure.Repositories;
 
@@ -49,4 +51,18 @@ public class BookRepository : IBookRepository
         _context.Books.Remove(book);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<List<Rating>> GetRatingsByBookIdAsync(Guid bookId, CancellationToken cancellationToken)
+    {
+        return await _context.Ratings.Where(r => r.BookId == bookId).ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<Comment>> GetCommentsByBookIdAsync(Guid bookId, CancellationToken cancellationToken)
+    {
+        return await _context.Comments
+            .Include(c => c.User)
+            .Where(c => c.BookId == bookId)
+            .ToListAsync(cancellationToken);
+    }
+
 }
