@@ -83,7 +83,7 @@ namespace DevLib.Api.Controllers
                 var fileExtension = Path.GetExtension(command.BookPdf.FileName).ToLower();
                 if (!allowedFileExtensions.Contains(fileExtension))
                 {
-                    return BadRequest(new { Message = "ÍInvalid file extension. Allowed extensions are: .pdf, .epub" });
+                    return BadRequest(new { Message = "Invalid file extension. Allowed extensions are: .pdf, .epub" });
                 }
             }
 
