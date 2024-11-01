@@ -7,6 +7,19 @@ using DevLib.Infrastructure.PreloadingInformation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Настройка CORS для разрешения запросов с http://localhost:3000
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // Укажите конкретный разрешенный домен
+              .AllowAnyMethod()                     // Разрешаем все методы (GET, POST, PUT, DELETE и т.д.)
+              .AllowAnyHeader()                     // Разрешаем все заголовки
+              .AllowCredentials();                  // Разрешаем отправку куки и авторизационных данных
+    });
+});
+
+// Регистрация сервисов
 builder.Services
     .ConfigureWebApiServices()
     .ConfigureInfrastructureServices(builder.Configuration);
