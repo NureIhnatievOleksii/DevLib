@@ -28,7 +28,8 @@ public class TokenValidationMiddleware
             path.StartsWith("/api/directory/get-directory/") ||
             path.StartsWith("/api/tag/get-tags/") ||
             path.StartsWith("/api/directory/search-directories/") ||
-            path.StartsWith("/books")) // Разрешение доступа ко всем файлам в папке Books
+            path.StartsWith("/api/directory/get-last-directory") ||
+            path.StartsWith("/books"))
         {
             await _next(context);
             return;
@@ -36,12 +37,11 @@ public class TokenValidationMiddleware
 
         if (!context.Request.Headers.ContainsKey("Authorization"))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Forbidden; // 403 Forbidden
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden; 
             await context.Response.WriteAsync("Access denied. No token provided.");
             return;
         }
 
         await _next(context);
     }
-
 }
