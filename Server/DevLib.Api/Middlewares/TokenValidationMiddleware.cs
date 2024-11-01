@@ -20,14 +20,15 @@ public class TokenValidationMiddleware
             path.StartsWith("/api/auth/login") ||
             path.StartsWith("/api/auth/login-with-social-provider") ||
             path.StartsWith("/api/auth/logout") ||
-            path.StartsWith("/api/book/get-book/") || 
-            path.StartsWith("/api/book/search-books") || 
-            path.StartsWith("/api/book/last-published-books") || 
-            path.StartsWith("/api/directory/get-article/") || 
-            path.StartsWith("/api/directory/get-all-chapter-name/") || 
-            path.StartsWith("/api/directory/get-directory/") || 
+            path.StartsWith("/api/book/get-book/") ||
+            path.StartsWith("/api/book/search-books") ||
+            path.StartsWith("/api/book/last-published-books") ||
+            path.StartsWith("/api/directory/get-article/") ||
+            path.StartsWith("/api/directory/get-all-chapter-name/") ||
+            path.StartsWith("/api/directory/get-directory/") ||
             path.StartsWith("/api/tag/get-tags/") ||
-            path.StartsWith("/api/directory/search-directories/"))
+            path.StartsWith("/api/directory/search-directories/") ||
+            path.StartsWith("/books")) // Разрешение доступа ко всем файлам в папке Books
         {
             await _next(context);
             return;
@@ -42,4 +43,5 @@ public class TokenValidationMiddleware
 
         await _next(context);
     }
+
 }
