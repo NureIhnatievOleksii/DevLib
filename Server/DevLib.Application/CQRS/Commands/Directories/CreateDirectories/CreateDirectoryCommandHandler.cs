@@ -12,27 +12,35 @@ public class CreateDirectoryCommandHandler(IDirectoryRepository directoryReposit
 {
     public async Task Handle(CreateDirectoryCommand command, CancellationToken cancellationToken)
     {
-        string DirectoryImgLink = "";
+        string directoryImgLink = "";
 
         if (command.File != null && command.File.Length > 0)
         {
             var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
-            var filePath = Path.Combine("wwwroot/images", fileName);
+            var imagesFolderPath = Path.Combine("wwwroot", "images");
+
+            if (!Directory.Exists(imagesFolderPath))
+            {
+                Directory.CreateDirectory(imagesFolderPath);
+            }
+
+            var filePath = Path.Combine(imagesFolderPath, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await command.File.CopyToAsync(stream);
             }
 
-            DirectoryImgLink = $"/images/{fileName}" ;
+            directoryImgLink = Path.Combine("images", fileName).Replace("\\", "/");
         }
 
         var directory = new DLDirectory
         {
             DirectoryName = command.DirectoryName,
-            ImgLink = DirectoryImgLink
+            ImgLink = directoryImgLink
         };
 
         await directoryRepository.CreateAsync(directory, cancellationToken);
     }
 }
+
