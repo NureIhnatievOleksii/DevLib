@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using DevLib.Application.CQRS.Commands.Auth.Login;
 using DevLib.Application.CQRS.Commands.Auth.Logout;
 using DevLib.Application.CQRS.Commands.Auth.Register;
+using DevLib.Application.CQRS.Commands.Auth;
 
 namespace DevLib.Api.Controllers;
 
@@ -31,6 +32,19 @@ public class AuthController(IMediator mediator) : ControllerBase
         if (result.IsSuccess)
         {
             return Ok(new { result.Token, Message = "Login information added successfully." });
+        }
+
+        return BadRequest(result.ErrorMessage);
+    }
+
+    [HttpPost("login-with-github")]
+    public async Task<IActionResult> LoginWithGitHub([FromQuery] LoginWithGitHubCommand command, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            return Ok(new { result.Token, Message = "GitHub login successful." });
         }
 
         return BadRequest(result.ErrorMessage);
