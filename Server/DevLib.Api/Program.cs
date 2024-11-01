@@ -7,6 +7,8 @@ using DevLib.Infrastructure.PreloadingInformation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient();
+
 // Настройка CORS для разрешения запросов с http://localhost:3000
 builder.Services.AddCors(options =>
 {

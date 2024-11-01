@@ -51,9 +51,10 @@ namespace DevLib.Application.CQRS.Commands.Auth
             }
 
             var userInfo = await GetGitHubUserInfo(accessToken);
-            var email = userInfo["email"]?.ToString();
+            var firstEmail = userInfo.FirstOrDefault()?["email"]?.ToString(); // Получаем первый email из массива
 
-            var user = await _authRepository.FindByEmailAsync(email, cancellationToken);
+
+            var user = await _authRepository.FindByEmailAsync(firstEmail, cancellationToken);
 
             var token = await _jwtService.GenerateJwtTokenAsync(user);
 
@@ -79,7 +80,7 @@ namespace DevLib.Application.CQRS.Commands.Auth
             return JObject.FromObject(jsonDict);
         }
 
-        private async Task<JObject> GetGitHubUserInfo(string accessToken)
+        private async Task<JArray> GetGitHubUserInfo(string accessToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/user/emails");
             request.Headers.Add("Authorization", $"Bearer {accessToken}");
@@ -89,7 +90,7 @@ namespace DevLib.Application.CQRS.Commands.Auth
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            return JObject.Parse(responseBody);
+            return JArray.Parse(responseBody);
         }
 
         private AuthResponseDto CreateLoginResult(bool success, string errorMessage = null, string token = null)
