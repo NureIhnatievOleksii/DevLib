@@ -22,15 +22,15 @@ public class AuthController(IMediator mediator) : ControllerBase
         return BadRequest(result.ErrorMessage);
     }
 
-    [HttpPost("login-with-social-provider")]
-    public async Task<IActionResult> LoginWithGoogle([FromBody] LoginWithSocialProviderCommand command,
-        CancellationToken cancellationToken)
+    [HttpPost("login-with-google")]
+    public async Task<IActionResult> LoginWithGoogle([FromBody] LoginWithGoogleCommand command,
+    CancellationToken cancellationToken)
     {
         var result = await mediator.Send(command, cancellationToken);
 
         if (result.IsSuccess)
         {
-            return Ok(new { Message = "Login information added successfully." });
+            return Ok(new { result.Token, Message = "Login information added successfully." });
         }
 
         return BadRequest(result.ErrorMessage);
