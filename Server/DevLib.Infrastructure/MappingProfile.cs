@@ -40,10 +40,8 @@ public class MappingProfile : Profile
 
         CreateMap<CreateBookCommand, Book>();
         CreateMap<UpdateBookCommand, Book>();
-
         CreateMap<DLDirectory, DirectoryDto>()
             .ForMember(dest => dest.DirectoryImg, opt => opt.MapFrom(src => src.ImgLink));
-
         CreateMap<Book, GetBookByIdQueryDto>()
             .ForMember(dest => dest.PDF, opt => opt.MapFrom(src => src.FilePath));
         CreateMap<Book, BookNameDto>();
@@ -54,11 +52,5 @@ public class MappingProfile : Profile
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
 
         CreateMap<Tag, TagDto>();
-
-        // Новый маппинг для получения последних директорий
-        CreateMap<DLDirectory, LastDirectoryDto>()
-            .ForMember(dest => dest.DirectoryId, opt => opt.MapFrom(src => src.DirectoryId))
-            .ForMember(dest => dest.DirectoryName, opt => opt.MapFrom(src => src.DirectoryName))
-            .ForMember(dest => dest.ImgLink, opt => opt.MapFrom(src => src.ImgLink));
     }
 }

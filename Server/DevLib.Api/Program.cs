@@ -31,17 +31,6 @@ builder.Services.AddDbContext<DevLibContext>(options =>
 builder.Services.AddTransient<SeedDataService>();
 
 var app = builder.Build();
-app.UseMiddleware<TokenValidationMiddleware>();
-app.UseStaticFiles();
-
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<DevLibContext>();
-    context.Database.Migrate();
-
-    var seedService = scope.ServiceProvider.GetRequiredService<SeedDataService>();
-    seedService.SeedData();
-}
 
 // Применение CORS middleware до любого другого middleware
 app.UseCors("AllowSpecificOrigin");
