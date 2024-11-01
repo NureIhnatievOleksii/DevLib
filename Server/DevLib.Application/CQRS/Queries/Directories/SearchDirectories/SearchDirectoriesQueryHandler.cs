@@ -18,6 +18,14 @@ namespace DevLib.Application.CQRS.Queries.Directories.SearchDirectories
         public async Task<List<DirectoryDto>> Handle(SearchDirectoriesQuery query, CancellationToken cancellationToken)
         {
             var directories = await _directoryRepository.GetAllAsync(cancellationToken);
+
+            // Если directoryName пустой, возвращаем все директории
+            if (string.IsNullOrWhiteSpace(query.DirectoryName))
+            {
+                return _mapper.Map<List<DirectoryDto>>(directories);
+            }
+
+            // Фильтруем по совпадению имен директории
             var filteredDirectories = directories
                 .Where(d => d.DirectoryName.Contains(query.DirectoryName, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -25,4 +33,5 @@ namespace DevLib.Application.CQRS.Queries.Directories.SearchDirectories
             return _mapper.Map<List<DirectoryDto>>(filteredDirectories);
         }
     }
+
 }

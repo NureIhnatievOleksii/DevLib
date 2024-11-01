@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using DevLib.Application.CQRS.Queries.Directories;
 
 namespace DevLib.Api.Controllers
 {
@@ -77,10 +78,18 @@ namespace DevLib.Api.Controllers
             return Ok(directoryDto);
         }
 
-        [HttpGet("search-directories/{directoryName}")]
-        public async Task<IActionResult> SearchDirectories(string directoryName, CancellationToken cancellationToken)
+        [HttpGet("search-directories")]
+        public async Task<IActionResult> SearchDirectories(CancellationToken cancellationToken = default, string? directoryName = null)
         {
             var directories = await mediator.Send(new SearchDirectoriesQuery(directoryName), cancellationToken);
+            return Ok(directories);
+        }
+
+
+        [HttpGet("get-last-directory")]
+        public async Task<IActionResult> GetLastDirectories(CancellationToken cancellationToken)
+        {
+            var directories = await mediator.Send(new LastDirectoriesQuery(), cancellationToken);
             return Ok(directories);
         }
     }

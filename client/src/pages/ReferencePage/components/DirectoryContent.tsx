@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './DirectoryContent.module.css'
+import styles from './DirectoryContent.module.css';
 import { Link } from 'react-router-dom';
 
 interface Article {
-  article_id: string;
-  name: string;
+  chapterName: string;
 }
 
 interface DirectoryContentProps {
@@ -17,9 +16,10 @@ const DirectoryContent: React.FC<DirectoryContentProps> = ({ directory_name, art
     <h1>{directory_name}</h1>
     <h3>Статті</h3>
     <ol>
-      {articles.map((article) => (
-        <li key={article.article_id}>
-        <Link to={`/article/${article.article_id}`}>{article.name}</Link></li>
+      {articles.map((article, index) => (
+        <li key={index}>
+          <Link to={`/article/${index}`}>{article.chapterName}</Link>
+        </li>
       ))}
     </ol>
   </div>

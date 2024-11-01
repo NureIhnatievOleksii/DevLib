@@ -4,17 +4,6 @@ import $api from "../http";
 export interface LoginResponse {
     token: string
 }
-
-interface Article {
-    article_id: string;
-    name: string;
-  }
-  
-  interface DirectoryResponse {
-    directory_id: string;
-    directory_name: string;
-    articles: Article[];
-  }
   interface BookDetails {
     title: string;
     author: string;

@@ -2,9 +2,9 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     grid-gap: 30px 145px;
-    margin: 0 auto; /* Center the grid */
-    max-width: 100%; /* Keep it within the screen width */
-    overflow: hidden; /* Hide any overflow */
+    margin: 0 auto;
+    max-width: 100%; 
+    overflow: hidden; 
     padding: 25px 0;
 }
 

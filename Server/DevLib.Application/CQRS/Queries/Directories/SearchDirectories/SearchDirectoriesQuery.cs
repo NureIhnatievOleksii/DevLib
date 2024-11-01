@@ -3,7 +3,8 @@ using DevLib.Application.CQRS.Dtos.Queries;
 
 namespace DevLib.Application.CQRS.Queries.Directories.SearchDirectories
 {
-    public record SearchDirectoriesQuery(string DirectoryName) : IRequest<List<DirectoryDto>>;
+    public record SearchDirectoriesQuery(string? DirectoryName) : IRequest<List<DirectoryDto>>;
+
 }
 public record DirectoryDto
 {

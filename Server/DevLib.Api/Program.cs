@@ -45,8 +45,34 @@ using (var scope = app.Services.CreateScope())
     seedService.SeedData();
 }
 
+// Применение CORS middleware до любого другого middleware
+app.UseCors("AllowSpecificOrigin");
+
+//app.UseMiddleware<TokenValidationMiddleware>(); // Проверка токенов после CORS
+app.UseStaticFiles();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DevLibContext>();
+    context.Database.Migrate();
+
+    var seedService = scope.ServiceProvider.GetRequiredService<SeedDataService>();
+    seedService.SeedData();
+}
+
+app.UseRouting();
+
+// Подключаем другие middlewares и службы
 app.ConfigureWebApi();
 
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
 app.Run();
+
+// Валидация конфигурации AutoMapper
 var mapper = app.Services.GetRequiredService<IMapper>();
 mapper.ConfigurationProvider.AssertConfigurationIsValid();

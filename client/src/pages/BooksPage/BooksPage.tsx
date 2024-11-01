@@ -11,8 +11,13 @@ const BooksPage: React.FC = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const {data} = await BooksPageService.getAllBooks();
-            setBooks(data);
+            try {
+                const {data} = await BooksPageService.getAllBooks();
+                setBooks(data);
+                console.log(data);
+            } catch (error) {
+                console.error("Ошибка при загрузке книг:", error);
+            }
         };
         
         fetchBooks();
