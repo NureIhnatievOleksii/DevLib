@@ -14,32 +14,24 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
         var book = mapper.Map<Book>(command);
         book.PublicationDateTime = DateTime.UtcNow;
 
-        // Определяем путь к папке для хранения книг
         string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Books");
         if (!Directory.Exists(webRootPath))
         {
             Directory.CreateDirectory(webRootPath);
         }
 
-        // Обработка изображения книги
         if (command.BookImg != null)
         {
-            var imageFileName = Path.GetFileName(command.BookImg.FileName);
+            var imageFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.BookImg.FileName)}";
             var imageDestinationPath = Path.Combine(webRootPath, imageFileName);
 
             try
             {
-                if (File.Exists(imageDestinationPath))
-                {
-                    return IdentityResult.Failed(new IdentityError { Description = "This book image has already been added" });
-                }
-
                 using (var stream = new FileStream(imageDestinationPath, FileMode.Create))
                 {
                     await command.BookImg.CopyToAsync(stream, cancellationToken);
                 }
 
-                // Обновляем путь к изображению в объекте Book
                 book.BookImg = $"/Books/{imageFileName}";
             }
             catch (IOException ex)
@@ -49,25 +41,18 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
             }
         }
 
-        // Обработка PDF-файла книги
         if (command.BookPdf != null)
         {
-            var pdfFileName = Path.GetFileName(command.BookPdf.FileName);
+            var pdfFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.BookPdf.FileName)}";
             var pdfDestinationPath = Path.Combine(webRootPath, pdfFileName);
 
             try
             {
-                if (File.Exists(pdfDestinationPath))
-                {
-                    return IdentityResult.Failed(new IdentityError { Description = "This book PDF has already been added" });
-                }
-
                 using (var stream = new FileStream(pdfDestinationPath, FileMode.Create))
                 {
                     await command.BookPdf.CopyToAsync(stream, cancellationToken);
                 }
 
-                // Обновляем путь к PDF в объекте Book
                 book.FilePath = $"/Books/{pdfFileName}";
             }
             catch (IOException ex)
@@ -77,13 +62,16 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
             }
         }
 
-        // Сохраняем книгу в репозитории
+
         var result = await repository.CreateAsync(book, cancellationToken);
 
-        // Добавляем связи с тегами
-        for (int i = 0; i < command.Tags.Count; i++)
-        {
-            await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);
+
+        if (command.Tags != null)
+        {       
+            for (int i = 0; i < command.Tags.Count; i++)
+            {
+                await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);
+            }
         }
 
         return result;

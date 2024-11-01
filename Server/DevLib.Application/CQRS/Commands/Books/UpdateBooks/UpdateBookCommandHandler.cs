@@ -23,7 +23,7 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
 
         if (command.BookImg != null)
         {
-            var imageFileName = Path.GetFileName(command.BookImg.FileName);
+            var imageFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.BookImg.FileName)}";
             var imageDestinationPath = Path.Combine(webRootPath, imageFileName);
 
             try
@@ -44,7 +44,7 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
 
         if (command.BookPdf != null)
         {
-            var pdfFileName = Path.GetFileName(command.BookPdf.FileName);
+            var pdfFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.BookPdf.FileName)}";
             var pdfDestinationPath = Path.Combine(webRootPath, pdfFileName);
 
             try
@@ -63,7 +63,9 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
             }
         }
 
+
         var result = await repository.UpdateAsync(book, cancellationToken);
+
 
         if (command.Tags != null)
         {
