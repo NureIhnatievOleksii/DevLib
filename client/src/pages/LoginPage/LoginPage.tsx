@@ -5,11 +5,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../app/router';
 import googleIcon from '../../assets/images/icons/google.png'
 import gitIcon from '../../assets/images/icons/git.png'
-import { useAuthStore } from '../../app/store/auth';
+import { IGoogleRes, useAuthStore } from '../../app/store/auth';
 import MyInput from '../../UI/MyInput/MyInput';
 import LoginService from './api/LoginService';
 import { validateStringFields } from '../../helpers/checkStringFields';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
+
+const CLIENT_ID_GUTHUB = 'Ov23liVP1fdpjqeZ6yPh'
+const SECRET_GUTHUB = '7b3f86da428ca938d69f5e9ec477a511758c54f6'
 
 const LoginPage = () => {
   /*   const [loginData, setLoginData] = useState<ILoginData>({
@@ -21,37 +25,46 @@ const LoginPage = () => {
 
   const setRole = useAuthStore(store => store.setRole)
   const login = useAuthStore(store => store.login)
+  const loginWithGoogle = useAuthStore(store => store.loginWithGoogle)
+
   const loggedIn = useAuthStore(store => store.loggedIn)
   const setLoggedIn = useAuthStore(store => store.setLoggedIn)
   const navigate = useNavigate()
 
   const handelLogin = async () => {
-    console.log(validateStringFields({email, password}))
+    console.log(validateStringFields({ email, password }))
     //TODO validation
-    if (validateStringFields({email, password})){
+    if (validateStringFields({ email, password })) {
       try {
         await login(email, password)
       } catch (e) {
         alert(e)
       }
     }
-     
-
-
-    if (email == 'user' || email == 'admin') {
-      setRole(email);
-      setLoggedIn(true);
-
-    } else {
-      alert('incorrectly entered data')
   }
+/*   const loginWithGoogle = useGoogleLogin({
+    onSuccess: credentialResponse => console.log(credentialResponse),
+  }); */
 
-
-
-
+  const loginWithGitHub = () => {
+    window.location.assign('https://github.com/login/oauth/authorize?client_id=' + CLIENT_ID_GUTHUB)
   }
+  
+  const getGitHubAccess = async () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const codeParam = urlParams.get("code");
+
+    try {
+      /*   const { data } = await LoginService.getGitAccess(codeParam as string);
+        console.log(data); */
+    } catch (error) {
+      console.error("Error fetching access token:", error);
+    }
+  };
 
   useEffect(() => {
+    getGitHubAccess()
     if (loggedIn) {
       navigate('/')
     }
@@ -77,11 +90,20 @@ const LoginPage = () => {
         <Link to={RouteNames.REGISTER} className={styles.text}>Зарееструватися</Link>
       </div>
 
-      <button className={styles.googleButton}>
+{/*       <button className={styles.googleButton} onClick={() => loginWithGoogle()}>
         <img src={googleIcon} alt="Google icon" />
         <div className={styles.buttonText}>зайти через google</div>
-      </button>
-      <button className={styles.gitButton}>
+      </button> */}
+
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+          loginWithGoogle(credentialResponse as IGoogleRes);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />;
+      <button className={styles.gitButton} onClick={loginWithGitHub}>
         <img src={gitIcon} alt="Git icon" />
         <div className={styles.buttonText}>зайти через github</div>
       </button>

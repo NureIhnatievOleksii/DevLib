@@ -29,7 +29,7 @@ const LastBooksList: FC<LastBooksListProps> = ({ books }) => {
           loop
         >
           {books.map((book) => (
-            <SwiperSlide key={book.book_id}>
+            <SwiperSlide key={book.bookId}>
               <BookItem book={book} />
             </SwiperSlide>
           ))}

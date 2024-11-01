@@ -11,7 +11,7 @@ const AllBooksList: FC<AllBooksListProps> = ({ books }) => {
     return (
         <div className={styles.allBooksList}>
             {books.map((book) => (
-               <div className={styles.item} key={book.book_id}>
+               <div className={styles.item} key={book.bookId}>
                <BookItem book={book} />
            </div>
             ))}

@@ -11,13 +11,13 @@ const BookItem: FC<BookItemProps> = ({ book }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/books/${book.book_id}`);
+    navigate(`/books/${book.bookId}`);
   };
-
+  const bookImg = process.env.STATIC_URL || 'https://localhost:3200';
   return (
     <div className={styles.item} onClick={handleClick}>
-      <img src={book.book_photo} alt={book.book_name} />
-      <div className={styles.title}>{book.book_name}</div>
+      <img src={bookImg+ book.photoBook} alt={book.bookName} />
+      <div className={styles.title}>{book.bookName}</div>
     </div>
   );
 };

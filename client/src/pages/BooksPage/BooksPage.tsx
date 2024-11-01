@@ -11,8 +11,8 @@ const BooksPage: React.FC = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const booksData = await BooksPageService.getAllBooks();
-            setBooks(booksData);
+            const {data} = await BooksPageService.getAllBooks();
+            setBooks(data);
         };
         
         fetchBooks();

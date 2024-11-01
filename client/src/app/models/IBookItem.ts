@@ -1,5 +1,5 @@
 export interface IBookItem{
-    book_id: number,
-    book_name: string,
-    book_photo: string
+    bookId: string;
+    bookName: string;
+    photoBook: string
 }

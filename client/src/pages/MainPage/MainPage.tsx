@@ -16,12 +16,12 @@ const MainPage = () => {
 
 
   useEffect(() => {
-    
+  
     const fetch = async () =>{
       const directoriesData = await MainPageService.get8Directories();
       setDirectories(directoriesData);
-      const booksData = await MainPageService.getLastBooks();
-      setBooks(booksData)
+      const {data} = await MainPageService.getLastBooks();
+      setBooks(data);
     }
     fetch()
     setHeaderVersion('normal')

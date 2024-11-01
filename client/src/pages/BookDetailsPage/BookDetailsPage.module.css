@@ -1,15 +1,19 @@
+* {
+    box-sizing: border-box;
+}
+
 .bookDetails {
     background-color: #F8F8F8; 
     display: flex;
     justify-content: space-between; 
     align-items: flex-start; 
     padding: 20px; 
-    box-sizing: border-box; 
     min-height: 100vh; 
     flex-wrap: wrap; 
 }
 
 .bookImage {
+    flex: 0 0 auto; 
     width: 100%; 
     max-width: 400px; 
     height: auto; 
@@ -22,10 +26,11 @@
     display: flex; 
     flex-direction: column; 
     flex: 1; 
-    margin-left: 40px; 
-    margin-top: 50px;
-    gap: 60px;
+    margin-left: 20px;
+    margin-top: 20px; 
+    gap: 30px;
 }
+
 .titleContainer {
     display: flex; 
     justify-content: space-between; 
@@ -40,6 +45,7 @@
     color: #000000; 
     margin: 0; 
 }
+
 .author, .tags {
     font-family: 'Hahmlet', sans-serif; 
     font-weight: 400; 
@@ -55,23 +61,22 @@
 .bookStats {
     display: flex; 
     align-items: center; 
-    justify-content: center; 
+    justify-content: flex-start; 
     margin-top: 20px; 
 }
-
 .ratingContainer, .bookmarksContainer {
     display: flex;
     flex-direction: column; 
     align-items: center;
-    margin-right: 80px;
+    margin-right: 20px;
     text-align: center;
 }
 
 .averageRating, .reviewsCount, .bookmarksCount {
     font-family: 'Hahmlet';
     font-weight: 700;
-    font-size: 26px;
-    line-height: 45px;
+    font-size: 1.8rem; 
+    line-height: 1.5; 
     text-align: center;
 }
 
@@ -82,13 +87,11 @@
     margin: 0 20px; 
 }
 
-
 .buttons {
     display: flex;
-    gap: 120px; 
-    margin-top: 0px;
+    gap: 20px; 
+    margin-top: 150px;
 }
-  
 
 .readButton {
     width: 300px; 
@@ -106,7 +109,6 @@
     justify-content: center; 
     cursor: pointer;
 }
-  
 
 .downloadButton {
     width: 410px; 
@@ -125,14 +127,12 @@
 }
 
 .lineSeparator {
-    
-    width: 801px;
+    width: 100%; 
     height: 0px;
-    margin-left: 400px; 
-    margin-top: 50px; 
+    /* margin: 50px auto;  */
     border: 1px solid #0B7DCF; 
 }
-  
+
 .ratingSection {
     margin-top: 20px;
     text-align: left;
@@ -146,7 +146,7 @@
     margin: 0; 
     margin-top: 90px;
 }
-  
+
 .ratingDescription {
     font-family: 'Hahmlet', sans-serif;
     font-weight: 400;
@@ -155,22 +155,22 @@
     margin-top: 5px;
     margin-bottom: 20px;
 }
-  
+
 .starsContainer {
     display: flex;
     gap: 10px;
 }
-  
+
 .filledStar, .emptyStar {
     font-size: 70px;
     cursor: pointer;
     color: #888888; 
 }
-  
+
 .filledStar {
     color: #FFD700;
 }
-  
+
 .rateButton {
     background-color: #E0E0E0;
     border: none;
@@ -185,11 +185,42 @@
     transform: translateY(-55px); 
 }
 
+.reviewButton {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 16px; /* Зменшено padding */
+    font-family: 'Hahmlet', sans-serif;
+    font-weight: 500;
+    font-size: 20px; /* Зменшено розмір шрифту */
+    color: #555555;
+    cursor: pointer;
+}
+
+.reviews {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    margin-top: 50px;  
+    font-family: 'Hahmlet', sans-serif; 
+    font-weight: 700; 
+    font-size: 24px; 
+    color: #000000; 
+    cursor: pointer; 
+    width: 100%; 
+}
 
 .review {
-    margin-top: 20px; 
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 100%; 
+    max-width: 600px; 
     text-align: left; 
 }
+
+
 
 .submitReviewButton {
     background-color: #E0E0E0;
@@ -201,27 +232,13 @@
     font-size: 34px;
     color: #555555;
     cursor: pointer;
-    margin-top: -30px; 
-    margin-right: 900px;
-    
-   
+    margin-top: 20px; 
+    align-self: flex-start; 
 }
 
-  
-.reviews {
-    margin-top: 50px;
-    margin-right: 890px;
-    font-family: 'Hahmlet', sans-serif;
-    font-weight: 700;
-    font-size: 24px;
-    color: #000000;
-    cursor: pointer;
-}
-  
 .reviewItem {
     padding: 10px;
     background-color: #f1f1f1;
     border-radius: 8px;
     margin-bottom: 10px;
-    
 }

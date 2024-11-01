@@ -1,58 +1,72 @@
-//фото,какие то числа на этой странице временные, они были надо для того чтобы прописать примерно стили :)
-
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; 
+import { useParams, useNavigate } from 'react-router-dom';
 import { useHeaderStore } from '../../layouts/Header/store/header';
-import ReviewModal from './components/ReviewModal';
-import DownloadModal from './components/DownloadModal'; 
+import ReviewModal from './components/ReviewModal/ReviewModal';
+import DownloadModal from './components/DownloadModal/DownloadModal';
 import styles from './BookDetailsPage.module.css';
+import BookmarkIcon from './components/BookmarkIcon/BookmarkIcon';
 
 const BookDetailsPage = () => {
   const { bookId } = useParams<{ bookId: string }>();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const setHeaderVersion = useHeaderStore((store) => store.setHeaderVersion);
-  
+
   const [bookDetails, setBookDetails] = useState({
     title: 'Чистий код',
     author: 'Роберт Мартін',
     tags: ['#js', '#c#', '#react'],
     reviewsCount: 0,
     averageRating: 0,
-    bookmarksCount: 183,
+    bookmarksCount: 0,
   });
 
   const [rating, setRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState('');
-  const [reviews, setReviews] = useState<{ text: string; rating: number }[]>([]);
+  const [reviews, setReviews] = useState<{ text: string }[]>([]); // Тільки текст відгуків
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false); 
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
-  useEffect(() => {
-    setHeaderVersion('minimized');
-    
-    const fetchBookDetails = async () => {
-      try {
-        const response = await fetch(`/api/books/${bookId}`);
-        const data = await response.json();
-        setBookDetails(data);
-      } catch (error) {
-        console.error('Помилка при отриманні деталей книги:', error);
-      }
-    };
+  // useEffect(() => {
+  //   setHeaderVersion('minimized');
 
-    fetchBookDetails();
-  }, [setHeaderVersion, bookId]);
+  //   const fetchBookDetails = async () => {
+  //     if (bookId) {
+  //       try {
+  //         const data = await BookService.getBookDetails(bookId);
+  //         setBookDetails(data);
+  //       } catch (error) {
+  //         console.error('Помилка при отриманні деталей книги:', error);
+  //       }
+  //     } else {
+  //       console.error('Book ID is undefined');
+  //     }
+  //   };
+
+  //   fetchBookDetails();
+  // }, [setHeaderVersion, bookId]);
 
   const handleRatingChange = (star: number) => {
     setRating(star);
-    setIsReviewModalOpen(true);
   };
 
   const handleReviewSubmit = () => {
-    if (reviewText && rating > 0) {
-      const newReview = { text: reviewText, rating: rating };
+    if (reviewText) {
+      const newReview = { text: reviewText };
       setReviews((prevReviews) => [...prevReviews, newReview]);
 
+      setBookDetails((prevDetails) => ({
+        ...prevDetails,
+        reviewsCount: prevDetails.reviewsCount + 1,
+      }));
+
+      setReviewText('');
+      closeReviewModal();
+    }
+  };
+
+  const handleRatingSubmit = () => {
+    if (rating > 0) {
       setBookDetails((prevDetails) => {
         const newReviewsCount = prevDetails.reviewsCount + 1;
         const newAverageRating =
@@ -60,14 +74,11 @@ const BookDetailsPage = () => {
 
         return {
           ...prevDetails,
-          reviewsCount: newReviewsCount,
           averageRating: newAverageRating,
         };
       });
 
-      setReviewText('');
-      setRating(0);
-      closeReviewModal();
+      setRating(0); // Скидаємо оцінку після підрахунку
     }
   };
 
@@ -85,14 +96,33 @@ const BookDetailsPage = () => {
     navigate(`/reading/${bookId}/read`);
   };
 
+  const toggleBookmark = () => {
+    setIsBookmarked((prevIsBookmarked) => {
+      const newIsBookmarked = !prevIsBookmarked;
+
+      setBookDetails((prevDetails) => ({
+        ...prevDetails,
+        bookmarksCount: newIsBookmarked
+          ? prevDetails.bookmarksCount + 1
+          : prevDetails.bookmarksCount - 1,
+      }));
+
+      return newIsBookmarked;
+    });
+  };
+
   return (
     <div className={styles.bookDetails}>
+      <BookmarkIcon
+        isBookmarked={isBookmarked}
+        onToggleBookmark={toggleBookmark}
+      />
       <img
         src="https://i.pinimg.com/736x/42/8d/00/428d009ef0e54bf82bdac6dc28cde302.jpg"
         alt={bookDetails.title}
         className={styles.bookImage}
       />
-  
+
       <div className={styles.bookInfo}>
         <div className={styles.titleContainer}>
           <h1 className={styles.title}>{bookDetails.title}</h1>
@@ -109,7 +139,7 @@ const BookDetailsPage = () => {
           <div className={styles.bookmarksContainer}>
             <p className={styles.bookmarksCount}>
               {bookDetails.bookmarksCount}<br />
-              людей додали у закладки
+              разів додано до закладок
             </p>
           </div>
         </div>
@@ -119,7 +149,7 @@ const BookDetailsPage = () => {
           <button className={styles.downloadButton} onClick={openDownloadModal}>Завантажити у форматі...</button>
         </div>
       </div>
-  
+
       <div className={styles.lineSeparator}></div>
 
       <div className={styles.ratingSection}>
@@ -138,11 +168,17 @@ const BookDetailsPage = () => {
             </span>
           ))}
         </div>
-        <button className={styles.rateButton} onClick={openReviewModal}>
-          Написати відгук
+        <button className={styles.rateButton} onClick={handleRatingSubmit}>
+          Ставити оцінку
         </button>
+        <button className={styles.reviewButton} onClick={openReviewModal}>
+    Написати відгук
+  </button>
       </div>
-  
+
+
+
+
       <ReviewModal
         isOpen={isReviewModalOpen}
         onRequestClose={closeReviewModal}
@@ -163,7 +199,6 @@ const BookDetailsPage = () => {
           reviews.map((review, index) => (
             <div key={index} className={styles.review}>
               <p className={styles.reviewText}>{review.text}</p>
-              <p className={styles.reviewRating}>{review.rating} ⭐️</p>
             </div>
           ))
         ) : (
