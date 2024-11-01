@@ -7,4 +7,6 @@ namespace DevLib.Application.CQRS.Queries.Books.SearchBooks
 public record BookNameDto
 {
     public string BookName { get; init; }
+    public Guid BookId { get; init; }
+    public string BookImg { get; init; }
 }
