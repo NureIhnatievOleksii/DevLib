@@ -67,13 +67,16 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
         var result = await repository.UpdateAsync(book, cancellationToken);
 
 
+
         if (command.Tags != null)
         {
+            await tagRepository.RemoveTagConnectionAsync(book.BookId, cancellationToken);
             for (int i = 0; i < command.Tags.Count; i++)
             {
                 await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);
             }
         }
+
 
         return result;
     }
