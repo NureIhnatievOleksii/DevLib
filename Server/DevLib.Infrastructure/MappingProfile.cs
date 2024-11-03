@@ -15,7 +15,9 @@ using DevLib.Domain.BookmarkAggregate;
 using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.TagAggregate;
+using DevLib.Domain.CommentAggregate;
 using DevLib.Application.CQRS.Queries.Books.SearchBooks;
+using DevLib.Application.CQRS.Commands.Comments.AddReview;
 
 namespace DevLib.Infrastructure;
 
@@ -25,6 +27,8 @@ public class MappingProfile : Profile
     {
         CreateMap<AddNoteCommand, Note>();
         CreateMap<AddBookmarkCommand, Bookmark>();
+
+        CreateMap<AddReviewCommand, Comment>();
 
         CreateMap<CreateCustomerCommand, Customer>();
         CreateMap<UpdateCustomerCommand, Customer>();
@@ -55,7 +59,6 @@ public class MappingProfile : Profile
 
         CreateMap<Tag, TagDto>();
 
-        // Новый маппинг для получения последних директорий
         CreateMap<DLDirectory, LastDirectoryDto>()
             .ForMember(dest => dest.DirectoryId, opt => opt.MapFrom(src => src.DirectoryId))
             .ForMember(dest => dest.DirectoryName, opt => opt.MapFrom(src => src.DirectoryName))
