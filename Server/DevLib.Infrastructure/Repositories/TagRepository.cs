@@ -43,17 +43,22 @@ namespace DevLib.Infrastructure.Repositories
             return tags;
         }
 
-        public async Task AddTagConnectionAsync(Guid bookId, string tag, CancellationToken cancellationToken)
+        public async Task RemoveTagConnectionAsync(Guid bookId, CancellationToken cancellationToken)
         {
             var existingConnections = await _context.TagConnections
-                .Where(tc => tc.BookId == bookId)
-                .ToListAsync(cancellationToken);
+    .Where(tc => tc.BookId == bookId)
+    .ToListAsync(cancellationToken);
 
             if (existingConnections.Any())
             {
                 _context.TagConnections.RemoveRange(existingConnections);
                 await _context.SaveChangesAsync(cancellationToken);
             }
+        }
+
+        public async Task AddTagConnectionAsync(Guid bookId, string tag, CancellationToken cancellationToken)
+        {
+
 
             var currentTag = await _context.Tags.FirstOrDefaultAsync(c => c.TagText == tag, cancellationToken);
             Guid tagId;
