@@ -11,12 +11,8 @@ const DirectoriesPage = () => {
         const fetchDirectories = async () => {
             try {
                 const directoriesData = await DirectoriesPageService.getDirectories(); // Не передаємо параметр
-                const formattedDirectories: IDirectoryItem[] = directoriesData.map(directory => ({
-                    directory_id: directory.DirectoryId,
-                    directoryName: directory.DirectoryName,
-                    img_link: directory.ImgLink
-                }));
-                setDirectories(formattedDirectories);
+                
+                setDirectories(directoriesData);
             } catch (error) {
                 console.error("Error fetching directories:", error);
             }
@@ -26,12 +22,12 @@ const DirectoriesPage = () => {
     }, []);
 
     return (
-        <div className={styles.container}>
+        <div className={`${styles.container} container`}>
             {directories.length === 0 ? (
                 <p>Немає доступних довідників.</p>
             ) : (
                 directories.map((directory) => (
-                    <div className={styles.itemWrapper} key={directory.directory_id}>
+                    <div className={styles.itemWrapper} key={directory.directoryId}>
                         <DirectorItem directory={directory} />
                     </div>
                 ))

@@ -5,4 +5,5 @@ export const adminPanelRoutes = [
     RouteNames.FORUM,
     RouteNames.USERS_ADMIN,
     RouteNames.ADD_DIRECTORY,
+    '/add-article',
 ]

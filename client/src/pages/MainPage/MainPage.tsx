@@ -19,7 +19,7 @@ const MainPage = () => {
   
     const fetch = async () =>{
       const directoriesData = await MainPageService.get8Directories();
-      setDirectories(directoriesData);
+      setDirectories(directoriesData.data);
       const {data} = await MainPageService.getLastBooks();
       setBooks(data);
     }

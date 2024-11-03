@@ -1,12 +1,13 @@
-import { ChangeEvent, FC, ReactNode, useRef } from 'react';
+import { ChangeEvent, FC, ReactNode, useEffect, useRef } from 'react';
 
 interface FileUploadProps {
     onFileChange: (file: File | null) => void;
+    file?: File
     children: ReactNode;
     className?: string
 }
 
-const FileUpload: FC<FileUploadProps> = ({ onFileChange, children,className }) => {
+const FileUpload: FC<FileUploadProps> = ({ onFileChange, children,className, ...props }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const handleClick = () => {
@@ -19,6 +20,10 @@ const FileUpload: FC<FileUploadProps> = ({ onFileChange, children,className }) =
         if (inputRef.current) inputRef.current.value = ''; // очистка после выбора файла
     };
 
+    useEffect(()=>{
+        if(props.file)
+        onFileChange(props.file);
+    },[props.file])
     return (
         <>
             <input

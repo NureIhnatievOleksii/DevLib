@@ -1,5 +1,5 @@
 export interface IDirectoryItem {
-    directory_id: number,
+    directoryId: number,
     directoryName:string,
-    img_link: string
+    imgLink: string
 }

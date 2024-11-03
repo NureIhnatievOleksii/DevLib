@@ -23,8 +23,8 @@ namespace DevLib.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateDirectory([FromForm, Required] CreateDirectoryCommand command, CancellationToken cancellationToken)
         {
-            await mediator.Send(command, cancellationToken);
-            return Ok();
+            string directory = await mediator.Send(command, cancellationToken);
+            return Ok(directory);
         }
 
         [HttpPost("add-article")]

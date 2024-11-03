@@ -6,7 +6,7 @@
 }
 
 .title {
-    width: 160px;
+    width: 195px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -56,4 +56,12 @@ text-align: center;
 color: #767676;
 
 
+}
+
+.fileText span{
+    font-size: 20px;
+}
+
+.fileText .size{
+    font-size: 16px;
 }

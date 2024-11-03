@@ -36,6 +36,10 @@ export default class AppService {
     static async loginGoogle(params:ILoginGoogleDto) :Promise<AxiosResponse<LoginResponse>>{
         return await $api.post('auth/login-with-google', params)
     }
+
+    static async loginGitHub(code: string) :Promise<AxiosResponse<LoginResponse>>{
+        return await $api.post('auth/login-with-github?code='+ code)
+    }
  /*    static async getDirectory(directoryId: string): Promise<AxiosResponse<DirectoryResponse>> {
         return $api.get(`/get_directory/${directoryId}`);
     } */

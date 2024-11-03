@@ -10,7 +10,7 @@ const DirectoriesList:FC<DirectoriesListProps> = (props) => {
   return (
     <div className={styles.list}>
         {props.directories.map(directory =>
-            <DirectorItem directory= {directory} key = {directory.directory_id}/> 
+            <DirectorItem directory= {directory} key = {directory.directoryId}/> 
         )}
     </div>
   )

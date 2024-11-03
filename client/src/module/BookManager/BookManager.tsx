@@ -20,7 +20,7 @@ const BookManager: FC<BookManagerProps> = (props) => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [tags, setTags] = useState<IListItem[]>([])
 
-  const publish = async () => {
+  const handleCreate = async () => {
     const reqData: AddBookReq = {
       BookName: bookName,
       Author: bookAutor,
@@ -40,9 +40,9 @@ const BookManager: FC<BookManagerProps> = (props) => {
 
   }
 
-  const handelAction = () => {
+  const handleAction = () => {
     if (props.action == 'create') {
-      publish()
+      handleCreate()
     } else {
 
     }
@@ -80,7 +80,7 @@ const BookManager: FC<BookManagerProps> = (props) => {
           itemPlaceholder='Новий тег' />
       </AddRecordInputRow>
 
-      <BlueButton onClick={handelAction}>
+      <BlueButton onClick={handleAction}>
         Опублікувати
       </BlueButton>
     </div>

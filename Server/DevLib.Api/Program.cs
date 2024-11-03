@@ -6,9 +6,7 @@ using DevLib.Infrastructure.Database;
 using DevLib.Infrastructure.PreloadingInformation;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddHttpClient();
-
 // Настройка CORS для разрешения запросов с http://localhost:3000
 builder.Services.AddCors(options =>
 {
@@ -33,22 +31,11 @@ builder.Services.AddDbContext<DevLibContext>(options =>
 builder.Services.AddTransient<SeedDataService>();
 
 var app = builder.Build();
-app.UseMiddleware<TokenValidationMiddleware>();
-app.UseStaticFiles();
-
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<DevLibContext>();
-    context.Database.Migrate();
-
-    var seedService = scope.ServiceProvider.GetRequiredService<SeedDataService>();
-    seedService.SeedData();
-}
 
 // Применение CORS middleware до любого другого middleware
 app.UseCors("AllowSpecificOrigin");
 
-//app.UseMiddleware<TokenValidationMiddleware>(); // Проверка токенов после CORS
+app.UseMiddleware<TokenValidationMiddleware>(); // Проверка токенов после CORS
 app.UseStaticFiles();
 
 using (var scope = app.Services.CreateScope())

@@ -6,4 +6,4 @@ namespace DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 public record CreateDirectoryCommand(
     string DirectoryName,
     IFormFile File
-) : IRequest;
+) : IRequest<string>;

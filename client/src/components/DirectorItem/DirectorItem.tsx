@@ -6,11 +6,11 @@ interface DirectorItemProps {
   directory: IDirectoryItem
 }
 const DirectorItem: FC<DirectorItemProps> = ({ directory }) => {
-  const staticUrl = process.env.STATIC_URL || 'https://localhost:3200';
-
+  const staticUrl = process.env.STATIC_URL || 'http://localhost:3200/';
+  console.log(directory)
   return (
-    <Link to={`/reference/${directory.directory_id}`} className={styles.item} key={directory.directory_id}>
-      <img src={staticUrl + directory.img_link} alt={directory.directoryName} />
+    <Link to={`/reference/${directory.directoryId}`} className={styles.item} key={directory.directoryId}>
+      <img src={staticUrl + directory.imgLink} alt={directory.directoryName} />
       <div className={styles.title}>
         {directory.directoryName}
       </div>

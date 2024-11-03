@@ -21,7 +21,8 @@ interface BearState {
   login: (email: string, password: string) => Promise<void>;
   checkAuth: () => Promise<void>;
   logout: () => void;
-  loginWithGoogle: (dto: IGoogleRes) => void
+  loginWithGoogle: (dto: IGoogleRes) => void,
+  loginWithGithub: (code: string) => void
 }
 export const useAuthStore = create<BearState>()(
   devtools((set) => ({
@@ -52,6 +53,23 @@ export const useAuthStore = create<BearState>()(
       set({ isLoading: true });
       try {
       const { data } = await AppService.loginGoogle({ userId: dto.clientId, token: dto.credential });
+      const decodedToken: any = jwtDecode(data.token);
+        set({
+          loggedIn: true,
+          role: (decodedToken.role == 'Client') ? 'user' : (decodedToken.role == 'Admin') ? 'admin' : '',
+          isLoading: false,
+        });
+
+        localStorage.setItem('token', data.token);
+      } catch (error: any) {
+        console.error(error);
+        set({ isLoading: false });
+      }
+    },
+    loginWithGithub: async (code: string) => {
+      set({ isLoading: true });
+      try {
+      const { data } = await AppService.loginGitHub(code);
       const decodedToken: any = jwtDecode(data.token);
         set({
           loggedIn: true,

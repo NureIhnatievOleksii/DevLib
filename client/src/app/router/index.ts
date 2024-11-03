@@ -16,6 +16,7 @@ import ReadingPage from '../../pages/ReadingPage/ReadingPage';
 import ArticlePage from '../../pages/ArticlePage/ArticlePage';
 import AddBook from '../../pages/AddBook/AddBook';
 import AddDirectory from '../../pages/AddDirectory/AddDirectory';
+import ArticleManager from '../../module/DirectoryManeger/ArticleManager/ArticleManager';
 /* import LoginPage from '../../pages/LoginPage/LoginPage';
 import SeatchRealEstate from '../../pages/SeatchRealEstate/SeatchRealEstate'; */
 
@@ -43,7 +44,8 @@ export enum RouteNames {
   BOOK_DETAILS = "/books/:bookId", 
   READING = "/reading/:bookId/read", 
   ARTICLE = "/article/:articleId", 
-  ADD_DIRECTORY ="/add-directory"
+  ADD_DIRECTORY ="/add-directory",
+  ADD_ARTICLE ="/add-article/:articleId"
 }
 
 
@@ -52,6 +54,8 @@ export const adminRoutes: IRoute[] = [
   { path: RouteNames.ADD_BOOK, element: AddBook },
   { path: RouteNames.USERS_ADMIN, element: UsersAdmin },
   { path: RouteNames.ADD_DIRECTORY, element: AddDirectory },
+  { path: RouteNames.ADD_ARTICLE, element: ArticleManager },
+  
 
 ]
 

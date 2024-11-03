@@ -13,6 +13,7 @@ interface HeaderState {
   setRequestIsLoading: (value: boolean) => void
   filerValue: string,
   setValue: (value: string) => void;
+  setRequestUrl: (value: string) => void;
   getData: () => void,
   setFilterValue: (value: string) => void,
   setHeaderVersion: (value: THeaderVersion) => void //note установление значения версии шапки - маленькая или большая
@@ -31,18 +32,19 @@ export const useHeaderStore = create<HeaderState>()(
       set({ value });
     },
 
-    getData: async () => {
-      set({ requestIsLoading: true });
-      try {
-        const requestUrl = get().requestUrl;
-        const { data } = await $api.get(requestUrl);
-        set({ response: data });
-      } catch (e) {
-        alert(e);
-      } finally {
-        set({ requestIsLoading: false });
-      }
-    },
+   getData: async () => {
+    set({ requestIsLoading: true });
+    try {
+      const { value, requestUrl } = get();
+      const searchUrl = `${requestUrl}${value || ''}`;
+      const { data } = await $api.get(searchUrl);
+      set({ response: data });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      set({ requestIsLoading: false });
+    }
+  },
     setFilterValue: (value: string) => {
       set({ filerValue: value });
     },
@@ -51,6 +53,9 @@ export const useHeaderStore = create<HeaderState>()(
     },
     setRequestIsLoading: (value: boolean) => {
       set({ requestIsLoading: value });
+    },
+    setRequestUrl(value: string) {
+      set({ requestUrl: value });
     },
   })
 

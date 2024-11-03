@@ -23,10 +23,11 @@ const LoginPage = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const setRole = useAuthStore(store => store.setRole)
   const login = useAuthStore(store => store.login)
   const loginWithGoogle = useAuthStore(store => store.loginWithGoogle)
+  const loginWithGithub = useAuthStore(store => store.loginWithGithub)
 
+  
   const loggedIn = useAuthStore(store => store.loggedIn)
   const setLoggedIn = useAuthStore(store => store.setLoggedIn)
   const navigate = useNavigate()
@@ -54,10 +55,8 @@ const LoginPage = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const codeParam = urlParams.get("code");
-
     try {
-      /*   const { data } = await LoginService.getGitAccess(codeParam as string);
-        console.log(data); */
+       await loginWithGithub(codeParam as string) // Господи, помоги!
     } catch (error) {
       console.error("Error fetching access token:", error);
     }
@@ -78,10 +77,12 @@ const LoginPage = () => {
         <MyInput
           placeholder='Пошта'
           value={email} setValue={setEmail}
+          type='email'
         />
         <MyInput
           placeholder='Пароль'
           value={password} setValue={setPassword}
+          type='password'
         />
       </div>
 
@@ -102,7 +103,8 @@ const LoginPage = () => {
         onError={() => {
           console.log('Login Failed');
         }}
-      />;
+      />
+      
       <button className={styles.gitButton} onClick={loginWithGitHub}>
         <img src={gitIcon} alt="Git icon" />
         <div className={styles.buttonText}>зайти через github</div>

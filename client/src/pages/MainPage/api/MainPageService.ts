@@ -9,9 +9,8 @@ import { GetLastBooksRes } from "./res";
 
 export default class MainPageService {
    
-    static async get8Directories(): /* Promise<AxiosResponse<Directories8Response[]>> */ Promise<IDirectoryItem[]>{
-        return directoriesList;
-        return $api.get('/book/last-published-books')
+    static async get8Directories(): Promise<AxiosResponse<IDirectoryItem[]>> {
+        return $api.get('/directory/get-last-directory')
     }
 
        

@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 namespace DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 
 public class CreateDirectoryCommandHandler(IDirectoryRepository directoryRepository, IMapper mapper, ILogger<CreateDirectoryCommandHandler> logger)
-    : IRequestHandler<CreateDirectoryCommand>
+    : IRequestHandler<CreateDirectoryCommand, string>
 {
-    public async Task Handle(CreateDirectoryCommand command, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateDirectoryCommand command, CancellationToken cancellationToken)
     {
         string directoryImgLink = "";
 
@@ -41,6 +41,8 @@ public class CreateDirectoryCommandHandler(IDirectoryRepository directoryReposit
         };
 
         await directoryRepository.CreateAsync(directory, cancellationToken);
+
+        return  directory.DirectoryId.ToString();
     }
 }
 

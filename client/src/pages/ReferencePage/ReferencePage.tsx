@@ -51,12 +51,11 @@ const ReferencePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [directory, setDirectory] = useState<IDirectoryItem>();
-
+ /*  alert(directoryId) */
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        // Send request to fetch chapter names
         const response = await ReferencePageService.getAllChapterNames(directoryId!);
         const directoryResponse = await ReferencePageService.getDirectory(directoryId!);
         console.log("Fetched articles:", response.data); // Debugging output
@@ -77,13 +76,16 @@ const ReferencePage: React.FC = () => {
   setHeaderVersion('minimized')
   // Loading and error display logic
   if (loading) return <p>Завантаження...</p>;
-  if (!articles.length) return <p>Статті не знайдені.</p>;
-
+/*   if (!articles.length) return <p>Статті не знайдені.</p>; */
+  
   return (
+    <>
     <DirectoryContent 
       directory_name={`${directory?.directoryName}`} // Optionally display directory name if needed
       articles={articles} 
     />
+    {!articles.length && <p>Статті не знайдені.</p>}
+    </>
   );
 };
 
