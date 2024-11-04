@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.CQRS.Commands.Notes.AddNote;
+using DevLib.Application.CQRS.Queries.Notes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,13 @@ namespace DevLib.Api.Controllers
             await mediator.Send(command, cancellationToken);
 
             return Ok();
+        }
+        [HttpGet("get-notes/{bookId:guid}/{userId:guid}")]
+        public async Task<IActionResult> GetNotes(Guid bookId, Guid userId, CancellationToken cancellationToken)
+        {
+            var query = new GetNotesByBookAndUserQuery(bookId, userId);
+            var notes = await mediator.Send(query, cancellationToken);
+            return Ok(notes);
         }
     }
 
