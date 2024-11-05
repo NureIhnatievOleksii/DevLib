@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.CQRS.Commands.Tags.UpdateTags;
+using DevLib.Application.CQRS.Commands.Tags.CreateTags;
 using DevLib.Application.CQRS.Queries.Tags.GetTagsByBookId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,20 @@ namespace DevLib.Api.Controllers
     [Route("api/tag")]
     public class TagController(IMediator mediator) : ControllerBase
     {
+        [HttpPut("add-tag")]
+        public async Task<IActionResult> CreateTag([FromBody, Required] CreateTagCommand command, CancellationToken cancellationToken)
+        {
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
+
+        [HttpPut("edit-tag")]
+        public async Task<IActionResult> UpdateTag([FromBody, Required] UpdateTagCommand command, CancellationToken cancellationToken)
+        {
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
+
         [HttpGet("get-tags/{bookId}")]
         public async Task<IActionResult> GetTagsById(Guid bookId, CancellationToken cancellationToken)
         {
@@ -21,13 +36,5 @@ namespace DevLib.Api.Controllers
 
             return Ok(result);
         }
-
-        [HttpPut("edit-tag")]
-        public async Task<IActionResult> UpdateDirectory([FromBody, Required] UpdateTagCommand command, CancellationToken cancellationToken)
-        {
-            await mediator.Send(command, cancellationToken);
-            return Ok();
-        }
     }
-
 }

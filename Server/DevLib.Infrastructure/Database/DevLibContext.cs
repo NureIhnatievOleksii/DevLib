@@ -116,13 +116,6 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .WithMany()
                   .HasForeignKey(tc => tc.BookId)
                   .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne(tc => tc.Directory)
-                  .WithMany()
-                  .HasForeignKey(tc => tc.DirectoryId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-
         });
 
 
