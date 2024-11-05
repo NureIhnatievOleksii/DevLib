@@ -58,7 +58,6 @@ public class MappingProfile : Profile
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
 
         CreateMap<Tag, TagDto>();
-        // Добавьте маппинг для заметок
         CreateMap<Note, GetNotesByBookAndUserQueryDto>()
             .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.NoteId))
             .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Text));

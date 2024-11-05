@@ -1,4 +1,5 @@
-﻿using DevLib.Application.CQRS.Queries.Tags.GetTagsByBookId;
+﻿using DevLib.Application.CQRS.Commands.Tags.DeleteTagById;
+using DevLib.Application.CQRS.Queries.Tags.GetTagsByBookId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,12 @@ namespace DevLib.Api.Controllers
             }
 
             return Ok(result);
+        }
+        [HttpDelete("delete-teg/{tagId}")]
+        public async Task<IActionResult> DeleteTagById(Guid tagId, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeleteTagByIdCommand(tagId), cancellationToken);
+            return Ok();
         }
     }
 

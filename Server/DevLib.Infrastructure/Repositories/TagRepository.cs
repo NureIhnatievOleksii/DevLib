@@ -1,12 +1,7 @@
 ﻿using DevLib.Application.Interfaces.Repositories;
-using DevLib.Domain.BookAggregate;
-using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -46,8 +41,8 @@ namespace DevLib.Infrastructure.Repositories
         public async Task RemoveTagConnectionAsync(Guid bookId, CancellationToken cancellationToken)
         {
             var existingConnections = await _context.TagConnections
-    .Where(tc => tc.BookId == bookId)
-    .ToListAsync(cancellationToken);
+                .Where(tc => tc.BookId == bookId)
+                .ToListAsync(cancellationToken);
 
             if (existingConnections.Any())
             {
@@ -90,7 +85,16 @@ namespace DevLib.Infrastructure.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<Tag> GetTagByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Tags.FirstOrDefaultAsync(t => t.TagId == id, cancellationToken);
+        }
 
+        public async Task DeleteTagAsync(Tag tag, CancellationToken cancellationToken)
+        {
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
 
     }
 }

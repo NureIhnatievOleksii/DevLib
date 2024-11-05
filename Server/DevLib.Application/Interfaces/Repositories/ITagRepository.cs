@@ -10,5 +10,7 @@ namespace DevLib.Application.Interfaces.Repositories
         Task<List<Tag>> GetTagsByBookIdAsync(Guid Id, CancellationToken cancellationToken);
         Task AddTagConnectionAsync(Guid bookId, string tag, CancellationToken cancellationToken);
         Task RemoveTagConnectionAsync(Guid bookId, CancellationToken cancellationToken);
+        Task<Tag> GetTagByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task DeleteTagAsync(Tag tag, CancellationToken cancellationToken);
     }
 }
