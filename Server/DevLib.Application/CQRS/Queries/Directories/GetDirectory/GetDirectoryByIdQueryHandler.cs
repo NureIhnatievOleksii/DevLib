@@ -26,6 +26,7 @@ namespace DevLib.Application.CQRS.Queries.Directories.GetDirectoryById
             var directoryDto = new GetDirectoryDto(
                 directory.DirectoryId,
                 directory.DirectoryName,
+                directory.ImgLink,
                 articles.Select(article => new ArticleDto(article.ArticleId, article.ChapterName))
             );
 

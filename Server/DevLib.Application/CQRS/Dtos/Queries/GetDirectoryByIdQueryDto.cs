@@ -4,6 +4,7 @@
     (
         Guid DirectoryId,
         string DirectoryName,
+        string ImgLink,
         IEnumerable<ArticleDto> Articles
     );
 
