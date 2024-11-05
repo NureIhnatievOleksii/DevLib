@@ -7,8 +7,8 @@ namespace DevLib.Application.CQRS.Commands.Books.UpdateBook;
 public record UpdateBookCommand
 (
     Guid BookId,
-    string BookName,
-    string Author,
-    IFormFile BookImg,
-    IFormFile BookPdf
+    string? BookName,
+    string? Author,
+    IFormFile? BookImg,
+    IFormFile? BookPdf
 ) : IRequest<IdentityResult>;

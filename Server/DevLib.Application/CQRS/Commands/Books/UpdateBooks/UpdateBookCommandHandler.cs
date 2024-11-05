@@ -4,6 +4,7 @@ using DevLib.Application.Interfaces.Repositories;
 using DevLib.Domain.BookAggregate;
 using Microsoft.AspNetCore.Identity;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
+using System.IO;
 
 namespace DevLib.Application.CQRS.Commands.Books.UpdateBook;
 
@@ -12,15 +13,22 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
 {
     public async Task<IdentityResult> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        var book = mapper.Map<Book>(command);
-        book.PublicationDateTime = DateTime.UtcNow;
+        var book = await repository.GetByIdAsync(command.BookId, cancellationToken);
 
         string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Books");
         if (!Directory.Exists(webRootPath))
         {
             Directory.CreateDirectory(webRootPath);
         }
+        if (!string.IsNullOrWhiteSpace(command.BookName))
+        {
+            book.BookName = command.BookName;
+        }
 
+        if (!string.IsNullOrWhiteSpace(command.Author))
+        {
+            book.Author = command.Author;
+        }
         if (command.BookImg != null)
         {
             var imageFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.BookImg.FileName)}";
