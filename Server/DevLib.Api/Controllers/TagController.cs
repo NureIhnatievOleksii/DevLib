@@ -1,7 +1,8 @@
-﻿using DevLib.Application.CQRS.Commands.Tags.DeleteTagById;
+﻿using DevLib.Application.CQRS.Commands.Tags.UpdateTags;
 using DevLib.Application.CQRS.Queries.Tags.GetTagsByBookId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevLib.Api.Controllers
 {
@@ -20,10 +21,11 @@ namespace DevLib.Api.Controllers
 
             return Ok(result);
         }
-        [HttpDelete("delete-teg/{tagId}")]
-        public async Task<IActionResult> DeleteTagById(Guid tagId, CancellationToken cancellationToken)
+
+        [HttpPut("edit-tag")]
+        public async Task<IActionResult> UpdateDirectory([FromBody, Required] UpdateTagCommand command, CancellationToken cancellationToken)
         {
-            await mediator.Send(new DeleteTagByIdCommand(tagId), cancellationToken);
+            await mediator.Send(command, cancellationToken);
             return Ok();
         }
     }

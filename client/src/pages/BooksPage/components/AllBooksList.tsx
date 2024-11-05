@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IBookItem } from '../../../app/models/IBookItem';
+import { IBookItem } from '../../../models/IBookItem';
 import BookItem from '../../../components/BookItem/BookItem';
 import styles from './AllBooksList.module.css';
 

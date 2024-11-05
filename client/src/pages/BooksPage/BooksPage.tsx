@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import BooksPageService from './api/BooksPageService';
 import AllBooksList from './components/AllBooksList';
 import styles from './BooksPage.module.css';
-import { IBookItem } from '../../app/models/IBookItem';
+
 import { useHeaderStore } from '../../layouts/Header/store/header';
+import { IBookItem } from '../../models/IBookItem';
 
 const BooksPage: React.FC = () => {
     const setHeaderVersion = useHeaderStore((store) => store.setHeaderVersion);

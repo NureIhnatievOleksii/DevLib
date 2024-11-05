@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
-import { IDirectoryItem } from '../../../../app/models/IDirectoryItem';
+
 import styles from './DirectoriesList.module.css'
 import img from '../../../../assets/images/api/puthon1.png'
 import DirectorItem from '../../../../components/DirectorItem/DirectorItem';
+import { IDirectoryItem } from '../../../../models/IDirectoryItem';
 interface DirectoriesListProps{
     directories: IDirectoryItem[]
 }

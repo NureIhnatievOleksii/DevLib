@@ -3,12 +3,14 @@ import AppLayout from '../../layouts/AppLayout/AppLayout'
 
 import $api from '../../app/api/http';
 import MainPageService from './api/MainPageService';
-import { IDirectoryItem } from '../../app/models/IDirectoryItem';
+
 import styles from './MainPage.module.css'
 import DirectoriesList from './components/DirectoriesList/DirectoriesList';
 import LastBooksList from './components/LastBooksList/LastBooksList';
 import { useHeaderStore } from '../../layouts/Header/store/header';
-import { IBookItem } from '../../app/models/IBookItem';
+import { IDirectoryItem } from '../../models/IDirectoryItem';
+import { IBookItem } from '../../models/IBookItem';
+
 const MainPage = () => {
   const setHeaderVersion = useHeaderStore(store => store.setHeaderVersion);
   const [directories,setDirectories] = useState<IDirectoryItem[]>([]);

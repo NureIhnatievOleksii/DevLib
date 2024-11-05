@@ -1,5 +1,6 @@
 using DevLib.Application.CQRS.Commands.Books.CreateBooks;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
+using DevLib.Application.CQRS.Commands.Tags.DeleteTagsFromBook;
 using DevLib.Application.CQRS.Queries.Books.GetBookById;
 using DevLib.Application.CQRS.Queries.Books.LastPublishedBooks;
 using DevLib.Application.CQRS.Queries.Books.SearchBooks;
@@ -106,5 +107,11 @@ namespace DevLib.Api.Controllers
             return Ok(books);
         }
 
+        [HttpDelete("remove-tag")]
+        public async Task<IActionResult> RemoveTagFromBook([FromBody] DeleteTagFromBookCommand command, CancellationToken cancellationToken)
+        {
+            await mediator.Send(command, cancellationToken);
+            return Ok();
+        }
     }
 }

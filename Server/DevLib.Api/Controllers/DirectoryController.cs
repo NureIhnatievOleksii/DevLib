@@ -2,6 +2,7 @@
 using DevLib.Application.CQRS.Commands.Directories.CreateArticles;
 using DevLib.Application.CQRS.Commands.Directories.UpdateDirectories;
 using DevLib.Application.CQRS.Commands.Directories.UpdateArticles;
+using DevLib.Application.CQRS.Commands.Directories.DeleteArticles;
 using DevLib.Application.CQRS.Dtos.Queries;
 using DevLib.Application.CQRS.Queries.Articles.GetAllArticlesNamesByDirectoryId;
 using DevLib.Application.CQRS.Queries.Articles.GetArticleById;
@@ -91,6 +92,13 @@ namespace DevLib.Api.Controllers
         {
             var directories = await mediator.Send(new LastDirectoriesQuery(), cancellationToken);
             return Ok(directories);
+        }
+
+        [HttpDelete("delete-article/{articleId}")]
+        public async Task<IActionResult> DeleteArticle(Guid articleId, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeleteArticleCommand(articleId), cancellationToken);
+            return Ok();
         }
     }
 }

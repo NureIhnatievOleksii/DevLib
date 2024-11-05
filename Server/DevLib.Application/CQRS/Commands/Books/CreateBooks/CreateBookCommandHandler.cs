@@ -68,7 +68,6 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
 
         if (command.Tags != null)
         {
-            await tagRepository.RemoveTagConnectionAsync(book.BookId, cancellationToken);
             for (int i = 0; i < command.Tags.Count; i++)
             {
                 await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);

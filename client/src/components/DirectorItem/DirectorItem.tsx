@@ -1,20 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import styles from './DirectorItem.module.css'
-import { Link } from 'react-router-dom';
-import { IDirectoryItem } from '../../app/models/IDirectoryItem';
+import { Link, useNavigate } from 'react-router-dom';
+import { IDirectoryItem } from '../../models/IDirectoryItem';
+import EditItemButton from '../../UI/EditItemButton/EditItemButton';
+
 interface DirectorItemProps {
   directory: IDirectoryItem
 }
 const DirectorItem: FC<DirectorItemProps> = ({ directory }) => {
   const staticUrl = process.env.STATIC_URL || 'http://localhost:3200/';
-  console.log(directory)
+  const navigate = useNavigate()
+  const handleEdit = () => {
+    console.log(directory.directoryId)
+};
   return (
-    <Link to={`/reference/${directory.directoryId}`} className={styles.item} key={directory.directoryId}>
-      <img src={staticUrl + directory.imgLink} alt={directory.directoryName} />
+    <div onClick={()=> navigate(`/reference/${directory.directoryId}`)} className={styles.item} key={directory.directoryId}>
+      <EditItemButton onClick={handleEdit} />
+      <img src={staticUrl + (directory.imgLink || directory.directoryImg)} alt={directory.directoryName} />
       <div className={styles.title}>
         {directory.directoryName}
       </div>
-    </Link>
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { FC, useRef } from 'react';
-import { IBookItem } from '../../../../app/models/IBookItem';
+
 import BookItem from '../../../../components/BookItem/BookItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
@@ -8,6 +8,7 @@ import styles from './LastBooksList.module.css';
 
 import prevIcon from '../../../../assets/images/prev.png';
 import nextIcon from '../../../../assets/images/next.png';
+import { IBookItem } from '../../../../models/IBookItem';
 
 interface LastBooksListProps {
   books: IBookItem[];

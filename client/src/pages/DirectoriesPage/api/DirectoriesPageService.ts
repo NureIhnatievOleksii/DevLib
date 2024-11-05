@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import $api from "../../../app/api/http";
-import { IDirectoryItem } from "../../../app/models/IDirectoryItem";
+import { IDirectoryItem } from "../../../models/IDirectoryItem";
+
 //import directoriesList from '../../../api/directories/list.json';
 //import { IDirectoryItem } from "../../../app/models/IDirectoryItem";
 

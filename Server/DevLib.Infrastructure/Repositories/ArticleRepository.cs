@@ -2,6 +2,7 @@
 using DevLib.Domain.ArticleAggregate;
 using DevLib.Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using DevLib.Domain.CustomerAggregate;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -31,11 +32,17 @@ namespace DevLib.Infrastructure.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<List<Article>> GetByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken)
+        public async Task<List<Article>> GetByDirectoryIdAsync(Guid directoryId, CancellationToken cancellationToken = default)
         {
             return await _context.Articles
                 .Where(article => article.DirectoryId == directoryId)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync(Article article, CancellationToken cancellationToken = default)
+        {
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

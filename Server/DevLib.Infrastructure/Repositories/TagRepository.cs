@@ -1,7 +1,13 @@
 ﻿using DevLib.Application.Interfaces.Repositories;
+using DevLib.Domain.BookAggregate;
+using DevLib.Domain.CustomerAggregate;
+using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -38,18 +44,18 @@ namespace DevLib.Infrastructure.Repositories
             return tags;
         }
 
-        public async Task RemoveTagConnectionAsync(Guid bookId, CancellationToken cancellationToken)
+        public async Task RemoveTagConnectionAsync(Guid bookId, Guid tagId, CancellationToken cancellationToken)
         {
-            var existingConnections = await _context.TagConnections
-                .Where(tc => tc.BookId == bookId)
-                .ToListAsync(cancellationToken);
+            var existingConnection = await _context.TagConnections
+                .FirstOrDefaultAsync(tc => tc.BookId == bookId && tc.TagId == tagId, cancellationToken);
 
-            if (existingConnections.Any())
+            if (existingConnection != null)
             {
-                _context.TagConnections.RemoveRange(existingConnections);
+                _context.TagConnections.Remove(existingConnection);
                 await _context.SaveChangesAsync(cancellationToken);
             }
         }
+
 
         public async Task AddTagConnectionAsync(Guid bookId, string tag, CancellationToken cancellationToken)
         {
@@ -85,16 +91,20 @@ namespace DevLib.Infrastructure.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Tag> GetTagByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Tag> GetTagByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _context.Tags.FirstOrDefaultAsync(t => t.TagId == id, cancellationToken);
+            return await _context.Tags.FirstOrDefaultAsync(c => c.TagId == id, cancellationToken);
         }
 
+        public async Task UpdateAsync(Tag tag, CancellationToken cancellationToken = default)
+        {
+            _context.Tags.Update(tag);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
         public async Task DeleteTagAsync(Tag tag, CancellationToken cancellationToken)
         {
             _context.Tags.Remove(tag);
             await _context.SaveChangesAsync(cancellationToken);
         }
-
     }
 }

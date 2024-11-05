@@ -24,7 +24,7 @@ public class CreateArticleCommandHandler(IDirectoryRepository directoryRepositor
             ChapterName = command.ArticleName,
             Text = command.ArticleContent,
             DirectoryId = command.DirectoryId,
-            Directory = await directoryRepository.GetByIdAsync(command.DirectoryId)
+            Directory = await directoryRepository.GetByIdAsync(command.DirectoryId, cancellationToken)
         };
 
         await articleRepository.CreateAsync(article, cancellationToken);

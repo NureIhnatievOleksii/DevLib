@@ -10,6 +10,5 @@ public record UpdateBookCommand
     string BookName,
     string Author,
     IFormFile BookImg,
-    IFormFile BookPdf,
-    List<string> Tags
+    IFormFile BookPdf
 ) : IRequest<IdentityResult>;

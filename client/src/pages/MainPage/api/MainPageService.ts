@@ -1,11 +1,7 @@
 import { AxiosResponse } from "axios";
 import $api from "../../../app/api/http";
-import directoriesList from '../../../api/directories/list.json'
-import booksList from '../../../api/books/list.json'
-
-import { IDirectoryItem } from "../../../app/models/IDirectoryItem";
-import { IBookItem } from "../../../app/models/IBookItem";
 import { GetLastBooksRes } from "./res";
+import { IDirectoryItem } from "../../../models/IDirectoryItem";
 
 export default class MainPageService {
    

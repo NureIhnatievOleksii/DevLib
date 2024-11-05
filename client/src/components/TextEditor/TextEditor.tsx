@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Подключаем стили для Quill
+import styles from './TextEditor.module.css'
 interface TextEditorProps{
     className: string;
     setValue: (value: string) => void;
@@ -21,7 +22,7 @@ const TextEditor:FC<TextEditorProps> = ({className, setValue, value}) => {
       ['clean']                                         // Кнопка очистки форматирования
     ],
   };
-
+  
   return (
     <div>
       <ReactQuill 
@@ -30,7 +31,7 @@ const TextEditor:FC<TextEditorProps> = ({className, setValue, value}) => {
         onChange={setValue} 
         modules={modules}
         placeholder="Напишіть свої думки!" 
-        className={className}
+        className={`${className} custom-text ${styles.editor}`}
       />
     </div>
   );
