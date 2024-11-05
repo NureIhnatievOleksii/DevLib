@@ -57,7 +57,7 @@ namespace DevLib.Infrastructure.Repositories
         }
 
 
-        public async Task AddTagConnectionAsync(Guid bookId, string tag, CancellationToken cancellationToken)
+        public async Task AddTagConnectionAsync(Guid? bookId, Guid? postId, string tag, CancellationToken cancellationToken)
         {
 
 
@@ -80,14 +80,21 @@ namespace DevLib.Infrastructure.Repositories
                 tagId = currentTag.TagId;
             }
 
-            var tagConnection = new TagConnection
+            if (bookId != null) { 
+                var tagConnection = new TagConnection
+                {
+                    TagId = tagId,
+                    BookId = bookId,
+                    TagConnectionId = Guid.NewGuid()
+                };
+                await _context.TagConnections.AddAsync(tagConnection, cancellationToken);
+            }
+            if (postId != null)
             {
-                TagId = tagId,
-                BookId = bookId,
-                TagConnectionId = Guid.NewGuid()
-            };
+                //not implemented
+            }
 
-            await _context.TagConnections.AddAsync(tagConnection, cancellationToken);
+            
             await _context.SaveChangesAsync(cancellationToken);
         }
 

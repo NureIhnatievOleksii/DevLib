@@ -70,7 +70,7 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
         {
             for (int i = 0; i < command.Tags.Count; i++)
             {
-                await tagRepository.AddTagConnectionAsync(book.BookId, command.Tags[i], cancellationToken);
+                await tagRepository.AddTagConnectionAsync(book.BookId, null ,command.Tags[i], cancellationToken);
             }
         }
 

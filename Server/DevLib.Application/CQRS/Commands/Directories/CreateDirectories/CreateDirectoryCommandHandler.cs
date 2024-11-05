@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevLib.Application.CQRS.Commands.Directories.CreateDirectories;
 
-public class CreateDirectoryCommandHandler(IDirectoryRepository directoryRepository, IMapper mapper, ILogger<CreateDirectoryCommandHandler> logger)
+public class CreateDirectoryCommandHandler(IDirectoryRepository directoryRepository, IMapper mapper)
     : IRequestHandler<CreateDirectoryCommand, string>
 {
     public async Task<string> Handle(CreateDirectoryCommand command, CancellationToken cancellationToken)

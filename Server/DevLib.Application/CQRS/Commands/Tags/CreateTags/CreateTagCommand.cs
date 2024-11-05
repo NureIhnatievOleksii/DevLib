@@ -11,6 +11,5 @@ namespace DevLib.Application.CQRS.Commands.Tags.CreateTags;
 public record CreateTagCommand(
     string tagText,
     Guid? postId,
-    Guid? bookId,
-    Guid? directoryId
+    Guid? bookId
 ) : IRequest;

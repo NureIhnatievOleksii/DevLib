@@ -10,7 +10,7 @@ namespace DevLib.Api.Controllers
     [Route("api/tag")]
     public class TagController(IMediator mediator) : ControllerBase
     {
-        [HttpPut("add-tag")]
+        [HttpPost("add-tag")]
         public async Task<IActionResult> CreateTag([FromBody, Required] CreateTagCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
