@@ -9,6 +9,7 @@ namespace DevLib.Domain.NotesAggregate
         public Guid UserId { get; set; }
         public Guid BookId { get; set; }
         public string Text { get; set; }
+        public string Type { get; set; }
 
         public User User { get; set; }
         public Book Book { get; set; }

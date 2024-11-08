@@ -6,5 +6,6 @@ public record AddNoteCommand
 (
     Guid UserId,
     Guid BookId,
-    string Text
+    string Text,
+    string Type 
 ) : IRequest;

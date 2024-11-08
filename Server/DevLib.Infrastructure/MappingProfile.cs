@@ -16,7 +16,6 @@ using DevLib.Domain.NotesAggregate;
 using DevLib.Domain.BookAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Domain.CommentAggregate;
-using DevLib.Application.CQRS.Queries.Books.SearchBooks;
 using DevLib.Application.CQRS.Commands.Comments.AddReview;
 
 namespace DevLib.Infrastructure;
@@ -57,7 +56,10 @@ public class MappingProfile : Profile
         CreateMap<Article, GetArticleByIdQueryDto>();
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
 
-        CreateMap<Tag, TagDto>();
+        CreateMap<Tag, TagDto>(); 
+        CreateMap<AddNoteCommand, Note>()
+    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type));
+
         CreateMap<Note, GetNotesByBookAndUserQueryDto>()
             .ForMember(dest => dest.NoteId, opt => opt.MapFrom(src => src.NoteId))
             .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Text));
