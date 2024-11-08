@@ -1,4 +1,5 @@
-﻿using DevLib.Application.CQRS.Commands.Comments.AddReview;
+﻿using DevLib.Application.CQRS.Commands.Comments;
+using DevLib.Application.CQRS.Commands.Comments.AddReview;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,12 @@ namespace DevLib.Api.Controllers
             await mediator.Send(command, cancellationToken);
 
             return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand command, CancellationToken cancellationToken)
+        {
+            var commentId = await mediator.Send(command, cancellationToken);
+            return Ok(new { commentId });
         }
     }
 }

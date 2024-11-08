@@ -19,4 +19,9 @@ public class CommentRepository : ICommentRepository
         await _context.Comments.AddAsync(comment, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
     }
+    public async Task CreateAsync(Comment comment, CancellationToken cancellationToken)
+    {
+        await _context.Comments.AddAsync(comment, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }
