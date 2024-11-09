@@ -1,6 +1,7 @@
 ﻿using DevLib.Application.CQRS.Commands.Posts.CreatePosts;
 using DevLib.Application.CQRS.Queries.Posts.GetPostsById;
 using DevLib.Application.CQRS.Queries.Posts.GetPosts;
+using DevLib.Application.CQRS.Queries.Posts.SearchPosts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,21 @@ namespace DevLib.Api.Controllers
             try
             {
                 var posts = await mediator.Send(new GetPostsQuery(), cancellationToken);
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+        [HttpGet("search/{name}")]
+        public async Task<IActionResult> SearchPosts(string name, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var posts = await mediator.Send(new SearchPostsQuery(name), cancellationToken);
 
                 return Ok(posts);
             }
