@@ -27,6 +27,7 @@ public class TokenValidationMiddleware
             path.StartsWith("/api/directory/get-all-chapter-name/") ||
             path.StartsWith("/api/directory/get-directory/") ||
             path.StartsWith("/api/tag/get-tags/") ||
+            path.StartsWith("/api/tag/get-tags") ||
             path.StartsWith("/api/directory/search-directories/") ||
             path.StartsWith("/images") ||
             path.StartsWith("/books")) // Разрешение доступа ко всем файлам в папке Books

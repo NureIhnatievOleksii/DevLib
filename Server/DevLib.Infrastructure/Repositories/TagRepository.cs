@@ -6,6 +6,7 @@ using DevLib.Domain.TagAggregate;
 using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +24,13 @@ namespace DevLib.Infrastructure.Repositories
         {
             await _context.Tags.AddAsync(tag, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<Tag>> GetTagsAsync(CancellationToken cancellationToken)
+        {
+            var tags = await _context.Tags
+                .ToListAsync(cancellationToken);
+            return tags;
         }
 
         public async Task<List<Tag>> GetTagsByBookIdAsync(Guid bookId, CancellationToken cancellationToken = default)
