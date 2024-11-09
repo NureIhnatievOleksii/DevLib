@@ -18,4 +18,9 @@ public class PostRepository(DevLibContext context) : IPostRepository
     {
         return await context.Posts.FirstOrDefaultAsync(d => d.PostId == postId, cancellationToken);
     }
+
+    public async Task<IReadOnlyList<Post>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Posts.ToListAsync(cancellationToken);
+    }
 }
