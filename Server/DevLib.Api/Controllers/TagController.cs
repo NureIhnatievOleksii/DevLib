@@ -5,6 +5,7 @@ using DevLib.Application.CQRS.Queries.Tags.GetTags;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using DevLib.Application.CQRS.Commands.Tags.DeleteTagById;
 
 namespace DevLib.Api.Controllers
 {
@@ -50,5 +51,13 @@ namespace DevLib.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("/{tagId}")]
+        public async Task<IActionResult> DeleteTag(Guid tagId, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeleteTagByIdCommand(tagId), cancellationToken);
+            return Ok();
+        }
+
     }
 }
