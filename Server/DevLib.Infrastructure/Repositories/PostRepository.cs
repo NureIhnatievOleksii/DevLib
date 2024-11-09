@@ -13,4 +13,9 @@ public class PostRepository(DevLibContext context) : IPostRepository
         await context.Posts.AddAsync(post, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Post> GetByIdAsync(Guid postId, CancellationToken cancellationToken = default)
+    {
+        return await context.Posts.FirstOrDefaultAsync(d => d.PostId == postId, cancellationToken);
+    }
 }

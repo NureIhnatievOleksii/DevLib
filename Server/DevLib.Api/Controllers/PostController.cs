@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.CQRS.Commands.Posts.CreatePosts;
+using DevLib.Application.CQRS.Queries.Posts.GetPostsById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,21 @@ namespace DevLib.Api.Controllers
             try
             {
                 string post = await mediator.Send(command, cancellationToken);
+                return Ok(post);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+        [HttpGet("{postId}")]
+        public async Task<IActionResult> GetPostById(Guid postId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var post = await mediator.Send(new GetPostByIdQuery(postId), cancellationToken);
+
                 return Ok(post);
             }
             catch (Exception ex)
