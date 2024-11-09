@@ -110,6 +110,18 @@ namespace DevLib.Infrastructure.Repositories
         {
             return await _context.Tags.FirstOrDefaultAsync(c => c.TagId == id, cancellationToken);
         }
+        public async Task<List<TagConnection>> GetTagConnectionByText(string tagText, CancellationToken cancellationToken = default)
+        {
+            var tagId = await _context.Tags
+                .Where(t => t.TagText == tagText)
+                .Select(t => t.TagId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            var tagConnections = await _context.TagConnections.Where(tc => tc.TagId == tagId)
+                .ToListAsync(cancellationToken);
+
+            return tagConnections;
+        }
 
         public async Task UpdateAsync(Tag tag, CancellationToken cancellationToken = default)
         {

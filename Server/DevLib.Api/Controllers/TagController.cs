@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using DevLib.Application.CQRS.Commands.Tags.DeleteTagById;
+using DevLib.Application.CQRS.Queries.Tags.GetBooksByTagText;
 
 namespace DevLib.Api.Controllers
 {
@@ -43,6 +44,19 @@ namespace DevLib.Api.Controllers
         public async Task<IActionResult> GetTagsById(Guid bookId, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(new GetTagsByBookIdQuery(bookId), cancellationToken);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("{tagText}/books")]
+        public async Task<IActionResult> GetBooksByTagText(string tagText, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new GetBooksByTagTextQuery(tagText), cancellationToken);
 
             if (result == null)
             {
