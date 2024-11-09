@@ -31,7 +31,7 @@ public class GetPostsHandler(IPostRepository postRepository, UserManager<User> u
                     new GetPostsQueryDto
                     (
                         PostName: post.Title,
-                        DateTime: DateTime.UtcNow,
+                        DateTime: post.DateTime,
                         AuthorName: user.UserName,
                         AuthorImg: user.Photo,
                         PostId: post.PostId,
