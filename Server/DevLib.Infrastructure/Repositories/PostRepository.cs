@@ -23,4 +23,10 @@ public class PostRepository(DevLibContext context) : IPostRepository
     {
         return await context.Posts.ToListAsync(cancellationToken);
     }
+
+    public async Task DeleteAsync(Post post, CancellationToken cancellationToken = default)
+    {
+        context.Posts.Remove(post);
+        await context.SaveChangesAsync(cancellationToken);
+    }
 }

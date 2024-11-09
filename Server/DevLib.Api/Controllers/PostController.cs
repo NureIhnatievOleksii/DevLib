@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using DevLib.Application.CQRS.Commands.Posts.DeletePosts;
 
 namespace DevLib.Api.Controllers
 {
@@ -64,6 +65,21 @@ namespace DevLib.Api.Controllers
                 var posts = await mediator.Send(new SearchPostsQuery(name), cancellationToken);
 
                 return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{postId}")]
+        public async Task<IActionResult> DeletePosts(Guid postId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await mediator.Send(new DeletePostCommand(postId), cancellationToken);
+
+                return Ok();
             }
             catch (Exception ex)
             {
