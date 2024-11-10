@@ -8,4 +8,5 @@ public class GetNotesByBookAndUserQueryDto
 {
     public Guid NoteId { get; set; }
     public string Note { get; set; }
-    public string Type { get; set; } 
+    public string Type { get; set; }
+}

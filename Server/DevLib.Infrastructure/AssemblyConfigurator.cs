@@ -133,7 +133,8 @@ public static class AssemblyConfigurator
             .AddScoped<INoteRepository, NoteRepository>()
             .AddScoped<IArticleRepository, ArticleRepository>()
             .AddScoped<ITagRepository, TagRepository>()
-            .AddScoped<IBookRepository, BookRepository>();
+            .AddScoped<IBookRepository, BookRepository>()
+            .AddScoped<IUserRepository, UserRepository>();
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
