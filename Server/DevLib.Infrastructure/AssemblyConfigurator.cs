@@ -135,6 +135,8 @@ public static class AssemblyConfigurator
             .AddScoped<ITagRepository, TagRepository>()
             .AddScoped<IBookRepository, BookRepository>()
             .AddScoped<IPostRepository, PostRepository>();
+            .AddScoped<IBookRepository, BookRepository>()
+            .AddScoped<IUserRepository, UserRepository>();
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services)

@@ -19,6 +19,7 @@ namespace DevLib.Api.Controllers
             return Ok();
         }
         [HttpPost]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand command, CancellationToken cancellationToken)
         {
             var commentId = await mediator.Send(command, cancellationToken);

@@ -28,8 +28,10 @@ namespace DevLib.Application.CQRS.Queries.Notes
             return notes.Select(note => new GetNotesByBookAndUserQueryDto
             {
                 NoteId = note.NoteId,
-                Note = note.Text
+                Note = note.Text,
+                Type = note.Type 
             }).ToList();
+
         }
     }
 }

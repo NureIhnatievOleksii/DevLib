@@ -12,6 +12,8 @@ public class AddNoteCommandHandler(INoteRepository repository, IMapper mapper)
     {
         var note = mapper.Map<Note>(command);
 
+        note.Type = command.Type;
+
         await repository.AddNoteAsync(note, cancellationToken);
     }
 }
