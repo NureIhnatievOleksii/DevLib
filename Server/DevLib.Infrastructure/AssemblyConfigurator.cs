@@ -134,7 +134,7 @@ public static class AssemblyConfigurator
             .AddScoped<IArticleRepository, ArticleRepository>()
             .AddScoped<ITagRepository, TagRepository>()
             .AddScoped<IBookRepository, BookRepository>()
-            .AddScoped<IPostRepository, PostRepository>();
+            .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IBookRepository, BookRepository>()
             .AddScoped<IUserRepository, UserRepository>();
     }

@@ -9,7 +9,8 @@ using System.Collections.Generic;
 
 namespace DevLib.Application.CQRS.Queries.Posts.SearchPosts;
 
-public class SearchPostsHandler(IPostRepository postRepository, UserManager<User> userManager, IMapper mapper)
+// todo fix shorten path name <DevLib.Domain.UserAggregate.User>
+public class SearchPostsHandler(IPostRepository postRepository, UserManager<DevLib.Domain.UserAggregate.User> userManager, IMapper mapper)
     : IRequestHandler<SearchPostsQuery, List<GetPostsQueryDto>?>
 {
     public async Task<List<GetPostsQueryDto>?> Handle(

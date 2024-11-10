@@ -9,7 +9,8 @@ using System.Collections.Generic;
 
 namespace DevLib.Application.CQRS.Queries.Posts.GetPostsById;
 
-public class GetPostByIdQueryHandler(IPostRepository postRepository, UserManager<User> userManager, IMapper mapper)
+// todo fix shorten path name <DevLib.Domain.UserAggregate.User>
+public class GetPostByIdQueryHandler(IPostRepository postRepository, UserManager<DevLib.Domain.UserAggregate.User> userManager, IMapper mapper)
     : IRequestHandler<GetPostByIdQuery, GetPostByIdQueryDto>
 {
     public async Task<GetPostByIdQueryDto> Handle(
