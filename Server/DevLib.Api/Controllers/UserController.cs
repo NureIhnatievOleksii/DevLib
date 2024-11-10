@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DevLib.Application.CQRS.Commands.Users.ResetUserPassword;
 using DevLib.Application.CQRS.Commands.Users.UpdateUser;
+using DevLib.Application.CQRS.Queries.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,16 @@ namespace DevLib.Api.Controllers
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
+        }
+
+        [HttpGet("{userId}")]
+        [Authorize(Roles = "Client,Admin")]
+        public async Task<IActionResult> GetUserInfo(Guid userId, CancellationToken cancellationToken)
+        {
+            var query = new GetUserInfoQuery(userId);
+            var userInfo = await mediator.Send(query, cancellationToken);
+
+            return Ok(userInfo);
         }
 
     }
