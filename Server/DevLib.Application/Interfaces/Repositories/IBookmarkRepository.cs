@@ -6,4 +6,6 @@ public interface IBookmarkRepository
 {
     Task AddBookmarkAsync(Bookmark bookmark, CancellationToken cancellationToken);
     Task<List<Bookmark>> GetBookmarksByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+    Task<Bookmark> GetByIdAsync(Guid bookmarkId, CancellationToken cancellationToken);
+    Task DeleteAsync(Bookmark bookmark, CancellationToken cancellationToken);
 }

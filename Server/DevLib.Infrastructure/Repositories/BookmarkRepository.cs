@@ -18,4 +18,14 @@ public class BookmarkRepository(DevLibContext context) : IBookmarkRepository
             .Where(b => b.UserId == userId)
             .ToListAsync(cancellationToken);
     }
+    public async Task<Bookmark?> GetByIdAsync(Guid bookmarkId, CancellationToken cancellationToken)
+    {
+        return await context.Bookmarks
+            .FirstOrDefaultAsync(b => b.BookmarkId == bookmarkId, cancellationToken);
+    }
+    public async Task DeleteAsync(Bookmark bookmark, CancellationToken cancellationToken)
+    {
+        context.Bookmarks.Remove(bookmark);
+        await context.SaveChangesAsync(cancellationToken);
+    }
 }

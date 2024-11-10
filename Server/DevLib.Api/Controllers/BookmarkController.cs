@@ -1,8 +1,8 @@
 ﻿using DevLib.Application.CQRS.Commands.Bookmarks.AddBookmark;
+using DevLib.Application.CQRS.Commands.Bookmarks.DeleteBookmarkById;
 using DevLib.Application.CQRS.Queries.Bookmarks.GetBookmarksByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,6 +26,22 @@ namespace DevLib.Api.Controllers
             var query = new GetBookmarksByUserIdQuery(userId);
             var bookIds = await mediator.Send(query, cancellationToken);
             return Ok(bookIds);
+        }
+        [HttpDelete("{bookmarkId:guid}")]
+        [Authorize(Roles = "Client,Admin")]
+        public async Task<IActionResult> DeleteBookmarkById(Guid bookmarkId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteBookmarkByIdCommand(bookmarkId);
+            var result = await mediator.Send(command, cancellationToken);
+
+            if (result)
+            {
+                return Ok(new { Message = "Bookmark deleted successfully" });
+            }
+            else
+            {
+                return NotFound(new { Message = "Bookmark not found" });
+            }
         }
     }
 }
