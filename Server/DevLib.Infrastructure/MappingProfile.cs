@@ -17,6 +17,7 @@ using DevLib.Domain.BookAggregate;
 using DevLib.Domain.TagAggregate;
 using DevLib.Domain.CommentAggregate;
 using DevLib.Application.CQRS.Commands.Comments.AddReview;
+using DevLib.Application.CQRS.Commands.Tags.CreateTags;
 
 namespace DevLib.Infrastructure;
 
@@ -25,6 +26,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<AddNoteCommand, Note>();
+        CreateMap<CreateTagCommand, Tag>();
         CreateMap<AddBookmarkCommand, Bookmark>();
 
         CreateMap<AddReviewCommand, Comment>();

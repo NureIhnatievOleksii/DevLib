@@ -9,7 +9,5 @@ using System.Threading.Tasks;
 namespace DevLib.Application.CQRS.Commands.Tags.CreateTags;
 
 public record CreateTagCommand(
-    string tagText,
-    Guid? postId,
-    Guid? bookId
+    string tagText
 ) : IRequest;
