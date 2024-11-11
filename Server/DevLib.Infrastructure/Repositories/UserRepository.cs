@@ -15,6 +15,11 @@ namespace DevLib.Infrastructure.Repositories
     {
         private readonly DevLibContext _context;
 
+        public UserRepository(DevLibContext context)
+        {
+            _context = context;
+        }
+
         public async Task<User> GetUserWithPostsAsync(Guid userId, CancellationToken cancellationToken)
         {
             return await _context.Users
