@@ -10,10 +10,10 @@ using DevLib.Domain.UserAggregate;
 namespace DevLib.Application.CQRS.Commands.Users.UpdateUser
 {
     public class UpdateUserCommandHandler(
-        UserManager<User> userManager,
-        IMapper mapper,
-        IJwtService jwtService,
-        IOptions<AuthenticationOptions> authenticationOptions) : IRequestHandler<UpdateUserCommand, AuthResponseDto>
+    UserManager<User> userManager,
+    IMapper mapper,
+    IJwtService jwtService,
+    IOptions<AuthenticationOptions> authenticationOptions) : IRequestHandler<UpdateUserCommand, AuthResponseDto>
     {
         public async Task<AuthResponseDto> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
@@ -22,7 +22,41 @@ namespace DevLib.Application.CQRS.Commands.Users.UpdateUser
 
             user.Email = command.Email;
             user.UserName = command.UserName;
-            user.Photo = command.Photo;
+
+            if (command.Photo != null)
+            {
+                var allowedImageExtensions = new[] { ".jpg", ".png", ".jpeg" };
+                var imgExtension = Path.GetExtension(command.Photo.FileName).ToLower();
+
+                if (!allowedImageExtensions.Contains(imgExtension))
+                {
+                    return new AuthResponseDto { IsSuccess = false, ErrorMessage = "Invalid file extension. Allowed extensions are: .jpg, .png, .jpeg" };
+                }
+
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UserPhotos");
+                if (!Directory.Exists(webRootPath))
+                {
+                    Directory.CreateDirectory(webRootPath);
+                }
+
+                var imageFileName = $"{DateTime.UtcNow.Ticks}_{Path.GetFileName(command.Photo.FileName)}";
+                var imageDestinationPath = Path.Combine(webRootPath, imageFileName);
+
+                try
+                {
+                    using (var stream = new FileStream(imageDestinationPath, FileMode.Create))
+                    {
+                        await command.Photo.CopyToAsync(stream, cancellationToken);
+                    }
+
+                    user.Photo = $"/UserPhotos/{imageFileName}";
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return new AuthResponseDto { IsSuccess = false, ErrorMessage = "Photo file could not be copied" };
+                }
+            }
 
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
@@ -31,8 +65,8 @@ namespace DevLib.Application.CQRS.Commands.Users.UpdateUser
             }
 
             var token = await jwtService.GenerateJwtTokenAsync(user);
-
             var tokenResult = await userManager.SetAuthenticationTokenAsync(user, authenticationOptions.Value.DevLib.Provider, authenticationOptions.Value.DevLib.TokenName, token);
+
             if (!tokenResult.Succeeded)
             {
                 return new AuthResponseDto { IsSuccess = false, ErrorMessage = "Failed to save token." };
@@ -41,4 +75,5 @@ namespace DevLib.Application.CQRS.Commands.Users.UpdateUser
             return new AuthResponseDto { IsSuccess = true, Token = token };
         }
     }
+
 }
