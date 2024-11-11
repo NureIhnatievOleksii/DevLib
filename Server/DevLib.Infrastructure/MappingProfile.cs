@@ -58,7 +58,7 @@ public class MappingProfile : Profile
         CreateMap<Article, GetArticleByIdQueryDto>();
         CreateMap<Article, GetAllArticlesNamesByDirectoryIdDto>();
 
-        CreateMap<Tag, TagDto>(); 
+        CreateMap<Tag, Tag>(); 
         CreateMap<AddNoteCommand, Note>()
     .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type));
 
