@@ -10,8 +10,17 @@ public class AddBookmarkCommandHandler(IBookmarkRepository repository, IMapper m
 {
     public async Task Handle(AddBookmarkCommand command, CancellationToken cancellationToken)
     {
-        var bookmark = mapper.Map<Bookmark>(command);
+        var existingBookmarks = await repository.GetBookmarksByUserIdAsync(command.UserId, cancellationToken);
+        var existingBookmark = existingBookmarks.FirstOrDefault(b => b.BookId == command.BookId);
 
-        await repository.AddBookmarkAsync(bookmark, cancellationToken);
+        if (existingBookmark != null)
+        {
+            await repository.DeleteAsync(existingBookmark, cancellationToken);
+        }
+        else
+        {
+            var bookmark = mapper.Map<Bookmark>(command);
+            await repository.AddBookmarkAsync(bookmark, cancellationToken);
+        }
     }
 }

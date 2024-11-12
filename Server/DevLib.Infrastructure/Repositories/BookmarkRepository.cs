@@ -18,6 +18,7 @@ public class BookmarkRepository(DevLibContext context) : IBookmarkRepository
             .Where(b => b.UserId == userId)
             .ToListAsync(cancellationToken);
     }
+
     public async Task<Bookmark?> GetByIdAsync(Guid bookmarkId, CancellationToken cancellationToken)
     {
         return await context.Bookmarks
