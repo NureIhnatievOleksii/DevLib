@@ -1,4 +1,5 @@
-﻿using DevLib.Domain.CommentAggregate;
+﻿using DevLib.Application.CQRS.Dtos.Queries;
+using DevLib.Domain.CommentAggregate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,4 +11,5 @@ public interface ICommentRepository
     Task CreateAsync(Comment comment, CancellationToken cancellationToken);
     Task<IdentityResult> CreateReply(Comment comment, Guid CommentId, CancellationToken cancellationToken);
     Task<IdentityResult> DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken);
+    Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken);
 }

@@ -27,7 +27,6 @@ namespace DevLib.Application.CQRS.Commands.Comments
                 CommentId = Guid.NewGuid(),
                 UserId = command.UserId,
                 Content = command.Text,
-                PostId = command.PostId,
                 DateTime = DateTime.UtcNow
             };
 
