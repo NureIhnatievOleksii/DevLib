@@ -27,7 +27,7 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
     public DbSet<TagConnection> TagConnections { get; set; }
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<Comment> ReplyLinks { get; set; }
+    public DbSet<ReplyLink> ReplyLinks { get; set; }
     public DbSet<Article> Articles { get; set; }
     public DbSet<Note> Notes { get; set; }
 

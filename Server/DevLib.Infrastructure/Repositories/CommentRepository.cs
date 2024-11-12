@@ -1,6 +1,8 @@
 ﻿using DevLib.Application.Interfaces.Repositories;
 using DevLib.Domain.CommentAggregate;
 using DevLib.Infrastructure.Database;
+using Microsoft.AspNetCore.Identity;
+using DevLib.Domain.ReplyLinkAggregate;
 
 namespace DevLib.Infrastructure.Repositories;
 
@@ -23,5 +25,20 @@ public class CommentRepository : ICommentRepository
     {
         await _context.Comments.AddAsync(comment, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IdentityResult> CreateReply(Comment comment,Guid CommentId, CancellationToken cancellationToken)
+    {
+        ReplyLink replyLink = new ReplyLink { CommentId = CommentId, ReplyId = Guid.NewGuid() };
+
+        await _context.ReplyLinks.AddAsync(replyLink, cancellationToken);
+
+        comment.ReplyId = replyLink.ReplyId;
+        comment.Reply = replyLink;
+
+        await _context.Comments.AddAsync(comment, cancellationToken);
+        
+        await _context.SaveChangesAsync(cancellationToken);
+        return IdentityResult.Success;
     }
 }

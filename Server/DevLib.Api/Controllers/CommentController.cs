@@ -25,5 +25,15 @@ namespace DevLib.Api.Controllers
             var commentId = await mediator.Send(command, cancellationToken);
             return Ok(new { commentId });
         }
+
+        [HttpPost("reply")]
+        [Authorize(Roles = "Client,Admin")]
+        public async Task<IActionResult> CreateReply([FromBody] CreateReplyCommand command, CancellationToken cancellationToken)
+        {
+            var commentId = await mediator.Send(command, cancellationToken);
+            return Ok(new { commentId });
+        }
+
+
     }
 }
