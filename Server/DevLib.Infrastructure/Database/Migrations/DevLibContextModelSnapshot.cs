@@ -128,9 +128,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("CommentId");
 
                     b.HasIndex("BookId");
@@ -140,8 +137,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.HasIndex("ReplyId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Comment");
                 });
@@ -604,12 +599,9 @@ namespace DevLib.Infrastructure.Database.Migrations
                         .HasForeignKey("ReplyId");
 
                     b.HasOne("DevLib.Domain.UserAggregate.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("DevLib.Domain.UserAggregate.User", null)
                         .WithMany("Comments")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Book");
 

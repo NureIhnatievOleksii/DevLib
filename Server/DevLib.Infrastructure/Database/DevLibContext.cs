@@ -193,15 +193,17 @@ public class DevLibContext(DbContextOptions<DevLibContext> options) : IdentityDb
                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(com => com.User)
-                  .WithMany()
-                  .HasForeignKey(com => com.UserId);
+          .WithMany(u => u.Comments)
+          .HasForeignKey(com => com.UserId)
+          .OnDelete(DeleteBehavior.Restrict); 
 
             entity.HasOne(com => com.Reply)
                   .WithMany()
                   .HasForeignKey(com => com.ReplyId)
-                  .OnDelete(DeleteBehavior.ClientSetNull);
-
+                  .OnDelete(DeleteBehavior.ClientSetNull);  
         });
+
+
 
         modelBuilder.Entity<ReplyLink>(entity =>
         {

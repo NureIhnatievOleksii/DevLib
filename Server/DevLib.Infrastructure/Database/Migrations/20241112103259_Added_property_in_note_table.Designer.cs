@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevLib.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DevLibContext))]
-    [Migration("20241110062634_Added_property_in_notes")]
-    partial class Added_property_in_notes
+    [Migration("20241112103259_Added_property_in_note_table")]
+    partial class Added_property_in_note_table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,9 +131,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("CommentId");
 
                     b.HasIndex("BookId");
@@ -143,8 +140,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                     b.HasIndex("ReplyId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Comment");
                 });
@@ -256,9 +251,6 @@ namespace DevLib.Infrastructure.Database.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsArticle")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -610,12 +602,9 @@ namespace DevLib.Infrastructure.Database.Migrations
                         .HasForeignKey("ReplyId");
 
                     b.HasOne("DevLib.Domain.UserAggregate.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("DevLib.Domain.UserAggregate.User", null)
                         .WithMany("Comments")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Book");
 
