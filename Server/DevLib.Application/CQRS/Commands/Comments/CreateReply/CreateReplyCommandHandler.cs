@@ -5,6 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using DevLib.Domain.CommentAggregate;
 using Microsoft.AspNetCore.Identity;
+using DevLib.Application.CQRS.Commands.Tags.DeleteTagsFromBook;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevLib.Application.CQRS.Commands.Comments
 {
@@ -28,9 +31,8 @@ namespace DevLib.Application.CQRS.Commands.Comments
                 DateTime = DateTime.UtcNow
             };
 
-            await _commentRepository.CreateReply(comment,command.CommentId, cancellationToken);
+            return await _commentRepository.CreateReply(comment, command.CommentId, cancellationToken);
 
-            return IdentityResult.Success;
         }
     }
 }

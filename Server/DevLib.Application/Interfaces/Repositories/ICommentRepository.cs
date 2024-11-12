@@ -9,4 +9,5 @@ public interface ICommentRepository
     Task AddReviewAsync(Comment comment, CancellationToken cancellationToken);
     Task CreateAsync(Comment comment, CancellationToken cancellationToken);
     Task<IdentityResult> CreateReply(Comment comment, Guid CommentId, CancellationToken cancellationToken);
+    Task<IdentityResult> DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken);
 }

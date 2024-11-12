@@ -1,5 +1,7 @@
-﻿using DevLib.Application.CQRS.Commands.Comments;
+﻿using DevLib.Application.CQRS.Commands.Bookmarks.DeleteBookmarkById;
+using DevLib.Application.CQRS.Commands.Comments;
 using DevLib.Application.CQRS.Commands.Comments.AddReview;
+using DevLib.Application.CQRS.Commands.Comments.DeleteCommentById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +32,30 @@ namespace DevLib.Api.Controllers
         [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> CreateReply([FromBody] CreateReplyCommand command, CancellationToken cancellationToken)
         {
-            var commentId = await mediator.Send(command, cancellationToken);
-            return Ok(new { commentId });
+            var result = await mediator.Send(command, cancellationToken);
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Reply was succesfully added" });
+            }
+
+            return BadRequest(result.Errors);
         }
 
+        [HttpDelete("{commentId:guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteComment(Guid commentId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteCommentByIdCommand(commentId);
 
+            var result = await mediator.Send(command, cancellationToken);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { Message = "Comment was succesfully deleted" });
+            }
+
+            return BadRequest(result.Errors);
+
+        }
     }
 }
