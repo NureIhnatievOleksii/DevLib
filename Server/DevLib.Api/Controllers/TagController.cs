@@ -52,7 +52,7 @@ namespace DevLib.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("/{tagId}")]
+        [HttpDelete("{tagId}")]
         public async Task<IActionResult> DeleteTag(Guid tagId, CancellationToken cancellationToken)
         {
             await mediator.Send(new DeleteTagByIdCommand(tagId), cancellationToken);
