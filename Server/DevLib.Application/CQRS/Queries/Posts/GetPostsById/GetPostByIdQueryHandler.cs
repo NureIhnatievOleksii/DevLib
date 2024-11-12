@@ -10,19 +10,38 @@ using System.Collections.Generic;
 namespace DevLib.Application.CQRS.Queries.Posts.GetPostsById;
 
 // todo fix shorten path name <DevLib.Domain.UserAggregate.User>
-public class GetPostByIdQueryHandler(IPostRepository postRepository, UserManager<DevLib.Domain.UserAggregate.User> userManager, IMapper mapper)
-    : IRequestHandler<GetPostByIdQuery, GetPostByIdQueryDto>
+public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdQueryDto>
 {
-    public async Task<GetPostByIdQueryDto> Handle(
-        GetPostByIdQuery query, CancellationToken cancellationToken)
+    private readonly IPostRepository postRepository;
+    private readonly UserManager<DevLib.Domain.UserAggregate.User> userManager;
+    private readonly IMapper mapper;
+
+    public GetPostByIdQueryHandler(IPostRepository postRepository, UserManager<DevLib.Domain.UserAggregate.User> userManager, IMapper mapper)
     {
-        try 
-        { 
+        this.postRepository = postRepository;
+        this.userManager = userManager;
+        this.mapper = mapper;
+    }
+
+    public async Task<GetPostByIdQueryDto> Handle(GetPostByIdQuery query, CancellationToken cancellationToken)
+    {
+        try
+        {
             var post = await postRepository.GetByIdAsync(query.postId, cancellationToken)
                            ?? throw new Exception("Post not found");
 
             var user = await userManager.FindByIdAsync(post.UserId.ToString())
                            ?? throw new Exception("User not found");
+
+            var comments = await postRepository.GetCommentsByPostIdAsync(post.PostId, cancellationToken);
+
+            var commentDtos = comments.Select(c => new CommentDto(
+                AuthorName: c.User.UserName,
+                AuthorImg: c.User.Photo,
+                DateTime: c.DateTime,
+                Text: c.Content,
+                Comments: null  
+            )).ToList();
 
             var resultPost = new GetPostByIdQueryDto
             (
@@ -31,8 +50,8 @@ public class GetPostByIdQueryHandler(IPostRepository postRepository, UserManager
                 DateTime: DateTime.UtcNow,
                 AuthorName: user.UserName,
                 AuthorImg: user.Photo,
-                CommentsQuantity: 0,
-                Comments: null
+                CommentsQuantity: comments.Count,
+                Comments: commentDtos  
             );
 
             return resultPost;
@@ -43,3 +62,4 @@ public class GetPostByIdQueryHandler(IPostRepository postRepository, UserManager
         }
     }
 }
+

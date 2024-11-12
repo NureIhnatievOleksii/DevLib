@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.Interfaces.Repositories;
+using DevLib.Domain.CommentAggregate;
 using DevLib.Domain.DirectoryAggregate;
 using DevLib.Domain.PostAggregate;
 using DevLib.Infrastructure.Database;
@@ -29,4 +30,13 @@ public class PostRepository(DevLibContext context) : IPostRepository
         context.Posts.Remove(post);
         await context.SaveChangesAsync(cancellationToken);
     }
+    public async Task<IReadOnlyList<Comment>> GetCommentsByPostIdAsync(Guid postId, CancellationToken cancellationToken)
+    {
+        return await context.Comments
+            .Where(c => c.PostId == postId)
+            .Include(c => c.User) 
+            .ToListAsync(cancellationToken);
+    }
+
+
 }
