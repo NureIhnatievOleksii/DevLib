@@ -108,6 +108,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpDelete("remove-tag")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RemoveTagFromBook([FromBody] DeleteTagFromBookCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);

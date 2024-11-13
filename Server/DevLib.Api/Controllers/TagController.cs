@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using DevLib.Application.CQRS.Commands.Tags.DeleteTagById;
 using DevLib.Application.CQRS.Queries.Tags.GetBooksByTagText;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevLib.Api.Controllers
 {
@@ -13,6 +14,7 @@ namespace DevLib.Api.Controllers
     public class TagController(IMediator mediator) : ControllerBase
     {
         [HttpPost("add-tag")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateTag([FromBody, Required] CreateTagCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
@@ -20,6 +22,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpPut("edit-tag")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateTag([FromBody, Required] UpdateTagCommand command, CancellationToken cancellationToken)
         {
             await mediator.Send(command, cancellationToken);
@@ -53,6 +56,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpDelete("{tagId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteTag(Guid tagId, CancellationToken cancellationToken)
         {
             await mediator.Send(new DeleteTagByIdCommand(tagId), cancellationToken);

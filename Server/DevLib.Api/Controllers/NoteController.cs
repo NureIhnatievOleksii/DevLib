@@ -19,6 +19,7 @@ namespace DevLib.Api.Controllers
             return Ok();
         }
         [HttpGet("get-notes/{bookId:guid}/{userId:guid}")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> GetNotes(Guid bookId, Guid userId, CancellationToken cancellationToken)
         {
             var query = new GetNotesByBookAndUserQuery(bookId, userId);

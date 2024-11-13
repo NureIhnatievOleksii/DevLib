@@ -14,6 +14,7 @@ namespace DevLib.Api.Controllers
     public class PostController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> CreatePost([FromBody, Required] CreatePostCommand command, CancellationToken cancellationToken)
         {
             try
@@ -73,6 +74,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpDelete("{postId}")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> DeletePosts(Guid postId, CancellationToken cancellationToken)
         {
             try

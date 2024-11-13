@@ -42,7 +42,7 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpDelete("{commentId:guid}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> DeleteComment(Guid commentId, CancellationToken cancellationToken)
         {
             var command = new DeleteCommentByIdCommand(commentId);

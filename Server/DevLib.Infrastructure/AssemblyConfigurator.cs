@@ -52,7 +52,7 @@ public static class AssemblyConfigurator
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
         })
         .AddJwtBearer(options =>
         {
@@ -66,7 +66,14 @@ public static class AssemblyConfigurator
                 ValidAudience = configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
             };
+        })
+        .AddCookie()
+        .AddGoogle(googleOptions =>
+        {
+            googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+            googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
         });
+
 
         services.AddSwaggerGen(c =>
         {
@@ -96,18 +103,7 @@ public static class AssemblyConfigurator
             });
         });
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-        })
-        .AddCookie()
-        .AddGoogle(googleOptions =>
-        {
-            googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-            googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-        });
-
+        
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IValidator<Customer>, CustomerValidator>();
 

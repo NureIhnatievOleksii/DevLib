@@ -22,16 +22,25 @@ public class TokenValidationMiddleware
             path.StartsWith("/api/auth/logout") ||
             path.StartsWith("/api/book/get-book/") ||
             path.StartsWith("/api/book/search-books") ||
+            path.StartsWith("/api/book/") ||
             path.StartsWith("/api/book/last-published-books") ||
             path.StartsWith("/api/directory/get-article/") ||
+            path.StartsWith("/api/directory/get-last-directory/") ||
             path.StartsWith("/api/directory/get-all-chapter-name/") ||
             path.StartsWith("/api/directory/get-directory/") ||
+            path.StartsWith("/api/directory/search-directory/") ||
             path.StartsWith("/api/tag/get-tags/") ||
             path.StartsWith("/api/tag/get-tags") ||
             (path.StartsWith("/api/tag/") && path.EndsWith("/books")) ||
             path.StartsWith("/api/directory/search-directories/") ||
             path.StartsWith("/images") ||
-            path.StartsWith("/books")) // Разрешение доступа ко всем файлам в папке Books
+            path.StartsWith("/books"))
+        {
+            await _next(context);
+            return;
+        }
+
+        if ((path.StartsWith("/api/post") || path.StartsWith("/api/post/")) && context.Request.Method == "GET")
         {
             await _next(context);
             return;
@@ -39,12 +48,11 @@ public class TokenValidationMiddleware
 
         if (!context.Request.Headers.ContainsKey("Authorization"))
         {
-            context.Response.StatusCode = (int)HttpStatusCode.Forbidden; // 403 Forbidden
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
             await context.Response.WriteAsync("Access denied. No token provided.");
             return;
         }
 
         await _next(context);
     }
-
 }
