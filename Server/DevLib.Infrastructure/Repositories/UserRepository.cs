@@ -27,13 +27,5 @@ namespace DevLib.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         }
 
-        public async Task<List<Comment>> GetUserCommentsAsync(Guid userId, CancellationToken cancellationToken)
-        {
-            return await _context.Comments
-                .Where(c => c.UserId == userId)
-                .Include(c => c.Book)
-                .ToListAsync(cancellationToken);
-        }
-
     }
 }

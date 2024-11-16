@@ -12,4 +12,5 @@ public interface ICommentRepository
     Task<IdentityResult> CreateReply(Comment comment, Guid CommentId, CancellationToken cancellationToken);
     Task<IdentityResult> DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken);
     Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken);
+    Task<List<UserCommentDto>> GetUserCommentAsync(Guid UserId, CancellationToken cancellationToken);
 }

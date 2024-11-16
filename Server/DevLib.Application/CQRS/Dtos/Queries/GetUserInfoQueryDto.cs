@@ -22,9 +22,11 @@ namespace DevLib.Application.CQRS.Dtos.Queries
 
     public record UserCommentDto
     (
-        Guid BookId,
-        string BookName,
+        Guid? BookId,
+        Guid? PostId,
+        string title,
         Guid CommentId,
-        string Comment
+        string Content,
+        DateTime DateTime
     );
 }

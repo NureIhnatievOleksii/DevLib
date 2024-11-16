@@ -89,8 +89,6 @@ public class CommentRepository : ICommentRepository
     }
     public async Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken = default)
     {
-
-
         var replies = await _context.ReplyLinks.Where(r => r.CommentId == comment.CommentId).ToListAsync();
 
         foreach (var item in replies)
@@ -109,5 +107,62 @@ public class CommentRepository : ICommentRepository
         }
 
         return comment;
+    }
+
+    private class CommentInfo
+    {
+        public string Title { get; set; }
+        public Guid? PostId { get; set; }
+        public Guid? BookId { get; set; }
+    }
+
+
+    private async Task<CommentInfo> GetTitle(Guid CommentId, CancellationToken cancellationToken)
+    {
+
+        
+
+        Comment comment = await _context.Comments.FirstOrDefaultAsync(c =>c.CommentId == CommentId);
+
+
+        if (comment.BookId != null)
+        {
+            var book = await _context.Books
+                .Where(b => b.BookId == comment.BookId)
+                .FirstOrDefaultAsync();
+            return new CommentInfo() { BookId = book.BookId, Title =  book.BookName};
+        }
+        else if (comment.PostId != null)
+        {
+            var post = await _context.Posts
+                .Where(p => p.PostId == comment.PostId)
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+            return new CommentInfo() { PostId = post.PostId, Title = post.Title };
+        }
+
+        Guid commentId = await _context.ReplyLinks.Where(r => r.ReplyId == comment.ReplyId).Select(r => r.CommentId).FirstOrDefaultAsync();
+
+        return GetTitle(commentId, cancellationToken).Result;
+    }
+
+    public async Task<List<UserCommentDto>> GetUserCommentAsync(Guid UserId, CancellationToken cancellationToken = default)
+    {
+        var comments = await _context.Comments.Where(c => c.UserId == UserId).ToListAsync();
+
+        List<UserCommentDto> result = new List<UserCommentDto>();
+
+
+        foreach (var item in comments)
+        {
+
+            CommentInfo obj =  GetTitle(item.CommentId, cancellationToken).Result;
+            
+
+
+            result.Add(new UserCommentDto(obj.BookId, obj.PostId, obj.Title, item.CommentId, item.Content, item.DateTime));
+        }
+
+        return result;
+
     }
 }

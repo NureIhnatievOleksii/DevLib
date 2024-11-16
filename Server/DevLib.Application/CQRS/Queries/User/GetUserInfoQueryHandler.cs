@@ -10,12 +10,15 @@ namespace DevLib.Application.CQRS.Queries.User
     public class GetUserInfoQueryHandler : IRequestHandler<GetUserInfoQuery, GetUserInfoQueryDto>
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
 
-        public GetUserInfoQueryHandler(IUserRepository userRepository, IMapper mapper)
+
+        public GetUserInfoQueryHandler(ICommentRepository commentRepository,IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _commentRepository = commentRepository;
         }
 
         public async Task<GetUserInfoQueryDto> Handle(GetUserInfoQuery query, CancellationToken cancellationToken)
@@ -24,17 +27,13 @@ namespace DevLib.Application.CQRS.Queries.User
             if (user == null)
                 throw new Exception("User not found");
 
-            var comments = await _userRepository.GetUserCommentsAsync(query.UserId, cancellationToken);
+            var comments = await _commentRepository.GetUserCommentAsync(query.UserId,cancellationToken);
 
             var posts = user.Posts.Select(p => new UserPostDto(p.PostId, p.Text)).ToList();
-            var commentDtos = comments.Select(c => new UserCommentDto(
-                c.BookId ?? Guid.Empty,
-                c.Book?.BookName ?? string.Empty,
-                c.CommentId,
-                c.Content
-            )).ToList();
 
-            return new GetUserInfoQueryDto(user.UserName, user.Email, user.Photo, posts, commentDtos);
+
+
+            return new GetUserInfoQueryDto(user.UserName, user.Email, user.Photo, posts, comments);
         }
 
     }

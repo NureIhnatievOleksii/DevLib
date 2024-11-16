@@ -11,6 +11,5 @@ namespace DevLib.Application.Interfaces.Repositories
     public interface IUserRepository
     {
         Task<User> GetUserWithPostsAsync(Guid userId, CancellationToken cancellationToken);
-        Task<List<Comment>> GetUserCommentsAsync(Guid userId, CancellationToken cancellationToken);
     }
 }
