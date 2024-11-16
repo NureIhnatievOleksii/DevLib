@@ -3,10 +3,11 @@
 public record CommentDto
 (
     string AuthorName,
+    Guid CommentId,
     string? AuthorImg,
     DateTime DateTime,
     string Text,
-    List<CommentDto>? Comments 
+    List<CommentDto> Comments 
 );
 
 public record GetPostByIdQueryDto
@@ -17,6 +18,7 @@ public record GetPostByIdQueryDto
     string AuthorName,
     string? AuthorImg,
     int CommentsQuantity,
-    List<CommentDto>? Comments 
+    Guid PostId,
+    List<CommentDto> Comments 
 );
 

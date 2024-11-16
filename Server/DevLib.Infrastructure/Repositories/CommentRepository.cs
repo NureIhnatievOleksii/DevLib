@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using DevLib.Domain.ReplyLinkAggregate;
 using DevLib.Domain.CustomerAggregate;
 using Microsoft.EntityFrameworkCore;
+using DevLib.Domain.BookAggregate;
+using DevLib.Application.CQRS.Dtos.Queries;
 
 namespace DevLib.Infrastructure.Repositories;
 
@@ -56,14 +58,15 @@ public class CommentRepository : ICommentRepository
     public async Task<IdentityResult> DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken = default)
     {
         Comment comment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId, cancellationToken);
-        if(comment == null)
+        if (comment == null)
         {
             return IdentityResult.Failed(new IdentityError { Description = "Comment was not found." });
         }
 
-        var replies = await _context.ReplyLinks.Where(r=> r.CommentId == commentId).ToListAsync();
+        var replies = await _context.ReplyLinks.Where(r => r.CommentId == commentId).ToListAsync();
 
-        foreach (var replyLink in replies) {
+        foreach (var replyLink in replies)
+        {
             Comment replyComment = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == replyLink.ReplyId, cancellationToken);
             if (replyComment != null)
             {
@@ -76,12 +79,35 @@ public class CommentRepository : ICommentRepository
 
         if (comment.ReplyId != null)
         {
-            var reply = await _context.ReplyLinks.FirstOrDefaultAsync(r => r.ReplyId == comment.ReplyId,cancellationToken);
+            var reply = await _context.ReplyLinks.FirstOrDefaultAsync(r => r.ReplyId == comment.ReplyId, cancellationToken);
             _context.ReplyLinks.Remove(reply);
         }
         _context.Comments.Remove(comment);
 
         await _context.SaveChangesAsync(cancellationToken);
         return IdentityResult.Success;
+    }
+    public async Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken = default)
+    {
+
+
+        var replies = await _context.ReplyLinks.Where(r => r.CommentId == comment.CommentId).ToListAsync();
+
+        foreach (var item in replies)
+        {
+            Comment current = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == item.ReplyId);
+
+            CommentDto commentDto = new CommentDto(
+                    AuthorName: current.User.UserName,
+                    AuthorImg: current.User.Photo,
+                    DateTime: current.DateTime,
+                    Text: current.Content,
+                    CommentId: current.CommentId,
+                     Comments: new List<CommentDto>()
+    );
+            comment.Comments.Add(GetReplies(commentDto, cancellationToken).Result);
+        }
+
+        return comment;
     }
 }
