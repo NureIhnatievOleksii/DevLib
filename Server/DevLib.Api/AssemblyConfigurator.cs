@@ -9,8 +9,8 @@ public static class AssemblyConfigurator
 {
     public static IServiceCollection ConfigureWebApiServices(this IServiceCollection services)
     {
-        services.AddExceptionHandlerMiddleware();
-
+        //services.AddExceptionHandlerMiddleware();
+        
         services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
@@ -37,7 +37,7 @@ public static class AssemblyConfigurator
     public static WebApplication ConfigureWebApi(this WebApplication app)
     {
         app.UseCors("AllowAll");
-        app.UseExceptionHandlerMiddleware();
+        //app.UseExceptionHandlerMiddleware();
 
         app.UseRouting();
         app.MapControllers();
