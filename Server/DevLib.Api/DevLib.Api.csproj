@@ -23,6 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\DevLib.Application\DevLib.Application.csproj" />
       <ProjectReference Include="..\DevLib.Infrastructure\DevLib.Infrastructure.csproj" />
+      <ProjectReference Include="..\EmailService\EmailService.csproj" />
     </ItemGroup>
 
 </Project>

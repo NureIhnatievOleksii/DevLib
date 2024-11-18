@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Humanizer.Configuration;
+using EmailService;
 
 namespace DevLib.Infrastructure;
 
@@ -103,7 +105,11 @@ public static class AssemblyConfigurator
             });
         });
 
-        
+        var emailConfig = configuration
+            .GetSection("EmailConfiguration")
+            .Get<EmailConfiguration>();
+        services.AddSingleton(emailConfig);
+
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IValidator<Customer>, CustomerValidator>();
 
@@ -132,7 +138,8 @@ public static class AssemblyConfigurator
             .AddScoped<IBookRepository, BookRepository>()
             .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IBookRepository, BookRepository>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IEmailSender, EmailSender>();
     }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
