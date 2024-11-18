@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DevLib.Application\DevLib.Application.csproj" />
+      <ProjectReference Include="..\EmailService\EmailService.csproj" />
     </ItemGroup>
 
     <ItemGroup>
