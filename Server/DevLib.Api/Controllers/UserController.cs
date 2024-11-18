@@ -43,7 +43,6 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpPost("forgot-password")]
-        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPassword)
         {
             if(!ModelState.IsValid)
@@ -70,7 +69,6 @@ namespace DevLib.Api.Controllers
         }
 
         [HttpPost("reset-user-password")]
-        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> ResetUserPassword([FromBody] ResetPasswordDto resetPassword)
         {
             if (!ModelState.IsValid)

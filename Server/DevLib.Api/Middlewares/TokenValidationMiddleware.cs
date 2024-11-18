@@ -33,8 +33,9 @@ public class TokenValidationMiddleware
             path.StartsWith("/api/tag/get-tags") ||
             (path.StartsWith("/api/tag/") && path.EndsWith("/books")) ||
             path.StartsWith("/api/directory/search-directories/") ||
+            path.StartsWith("/api/user/forgot-password") ||
             path.StartsWith("/images") ||
-            path.StartsWith("/books"))
+            path.StartsWith("/books")) 
         {
             await _next(context);
             return;
