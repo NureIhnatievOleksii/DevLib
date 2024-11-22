@@ -1,4 +1,5 @@
 ﻿using DevLib.Application.CQRS.Commands.Notes.AddNote;
+using DevLib.Application.CQRS.Commands.Notes.DeleteNote;
 using DevLib.Application.CQRS.Queries.Notes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,13 @@ namespace DevLib.Api.Controllers
             var query = new GetNotesByBookAndUserQuery(bookId, userId);
             var notes = await mediator.Send(query, cancellationToken);
             return Ok(notes);
+        }
+
+        [HttpDelete("{noteId}")]
+        public async Task<IActionResult> DeleteNote(Guid noteId, CancellationToken cancellationToken)
+        {
+            await mediator.Send(new DeleteNoteCommand(noteId), cancellationToken);
+            return Ok();
         }
     }
 
