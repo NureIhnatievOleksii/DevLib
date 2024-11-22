@@ -5,6 +5,7 @@ using DevLib.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using DevLib.Domain.CommentAggregate;
 using DevLib.Domain.RatingAggregate;
+using DevLib.Domain.TagAggregate;
 
 namespace DevLib.Infrastructure.Repositories;
 
@@ -64,6 +65,13 @@ public class BookRepository : IBookRepository
             .Where(c => c.BookId == bookId)
             .ToListAsync(cancellationToken);
     }
-
+    public async Task<List<Tag>> GetTagsByBookIdAsync(Guid bookId, CancellationToken cancellationToken)
+    {
+        return await _context.TagConnections
+            .Include(tc => tc.Tag)
+            .Where(tc => tc.BookId == bookId)
+            .Select(tc => tc.Tag)
+            .ToListAsync(cancellationToken);
+    }
 
 }

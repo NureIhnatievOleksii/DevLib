@@ -28,18 +28,26 @@ namespace DevLib.Application.CQRS.Queries.Books.GetBookById
             var reviews = comments.Select(comment => new ReviewDto
             {
                 UserImg = comment.User?.Photo ?? string.Empty,
-                UserName = comment.User?.UserName ?? "Unknown",  
+                UserName = comment.User?.UserName ?? "Unknown",
                 Rate = ratings.FirstOrDefault(r => r.UserId == comment.UserId)?.PointsQuantity ?? 0,
                 CreationDate = comment.DateTime,
                 Text = comment.Content
             }).ToList();
 
+            var tags = await _bookRepository.GetTagsByBookIdAsync(query.Id, cancellationToken);
+            var tagDtos = tags.Select(tag => new TagDto
+            {
+                TagId = tag.TagId,
+                TagText = tag.TagText
+            }).ToList();
 
             var bookDto = _mapper.Map<GetBookByIdQueryDto>(book);
             bookDto.AverageRating = averageRating;
             bookDto.Reviews = reviews;
+            bookDto.Tags = tagDtos;  
 
             return bookDto;
         }
+
     }
 }

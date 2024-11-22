@@ -9,6 +9,7 @@
         public string Author { get; set; }
         public double AverageRating { get; set; }
         public List<ReviewDto> Reviews { get; set; } = new();
+        public List<TagDto> Tags { get; set; }
     }
 
     public class ReviewDto
@@ -18,5 +19,10 @@
         public int Rate { get; set; }
         public DateTime CreationDate { get; set; }
         public string Text { get; set; }
+    }
+    public class TagDto
+    {
+        public Guid TagId { get; set; }
+        public string TagText { get; set; }
     }
 }
