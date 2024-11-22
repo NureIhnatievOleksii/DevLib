@@ -60,9 +60,10 @@ public class BookRepository : IBookRepository
     public async Task<List<Comment>> GetCommentsByBookIdAsync(Guid bookId, CancellationToken cancellationToken)
     {
         return await _context.Comments
-            .Include(c => c.User)
+            .Include(c => c.User)  
             .Where(c => c.BookId == bookId)
             .ToListAsync(cancellationToken);
     }
+
 
 }

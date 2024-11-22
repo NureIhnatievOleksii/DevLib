@@ -14,6 +14,7 @@
     public class ReviewDto
     {
         public string UserImg { get; set; }
+        public string UserName { get; set; }
         public int Rate { get; set; }
         public DateTime CreationDate { get; set; }
         public string Text { get; set; }
