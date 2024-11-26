@@ -10,14 +10,17 @@ using DevLib.Domain.UserAggregate;
 namespace DevLib.Application.CQRS.Queries.Posts.GetPosts;
 
 // todo fix shorten path name <DevLib.Domain.UserAggregate.User>
-public class GetPostsHandler(IPostRepository postRepository, UserManager<DevLib.Domain.UserAggregate.User> userManager, IMapper mapper)
+public class GetPostsHandler(IPostRepository postRepository,
+                             ICommentRepository commentRepository,
+                             UserManager<DevLib.Domain.UserAggregate.User> userManager,
+                             IMapper mapper)
     : IRequestHandler<GetPostsQuery, List<GetPostsQueryDto>?>
 {
     public async Task<List<GetPostsQueryDto>?> Handle(
         GetPostsQuery query, CancellationToken cancellationToken)
     {
-        try 
-        { 
+        try
+        {
             var posts = await postRepository.GetAllAsync(cancellationToken)
                            ?? throw new Exception("Posts not found");
 
@@ -28,6 +31,9 @@ public class GetPostsHandler(IPostRepository postRepository, UserManager<DevLib.
                 var user = await userManager.FindByIdAsync(post.UserId.ToString())
                            ?? throw new Exception($"User with ID {post.UserId} not found");
 
+                
+                var comments = await postRepository.GetCommentsByPostIdAsync(post.PostId, cancellationToken);
+
                 resultPosts.Add(
                     new GetPostsQueryDto
                     (
@@ -36,11 +42,11 @@ public class GetPostsHandler(IPostRepository postRepository, UserManager<DevLib.
                         AuthorName: user.UserName,
                         AuthorImg: user.Photo,
                         PostId: post.PostId,
-                        CommentsQuantity: 0
+                        CommentsQuantity: comments.Count  
                     )
-                ); 
+                );
             }
-            
+
             return resultPosts;
         }
         catch (Exception ex)
@@ -49,3 +55,4 @@ public class GetPostsHandler(IPostRepository postRepository, UserManager<DevLib.
         }
     }
 }
+
