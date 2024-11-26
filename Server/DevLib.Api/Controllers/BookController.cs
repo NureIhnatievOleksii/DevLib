@@ -107,7 +107,6 @@ namespace DevLib.Api.Controllers
             }
         }
 
-
         [HttpGet("last-published-books")]
         public async Task<IActionResult> GetLastPublishedBooks(CancellationToken cancellationToken)
         {

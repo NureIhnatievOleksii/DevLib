@@ -5,6 +5,7 @@ using DevLib.Domain.BookAggregate;
 using Microsoft.AspNetCore.Identity;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 using System.IO;
+using DevLib.Domain.TagAggregate;
 
 namespace DevLib.Application.CQRS.Commands.Books.UpdateBook;
 
@@ -71,6 +72,30 @@ public class UpdateBookCommandHandler(IBookRepository repository, ITagRepository
             }
         }
 
+        if (command.TagId != null)
+        {
+            try
+            {
+                Guid tagId = (Guid)command.TagId;
+
+                var tags = await tagRepository.GetTagsByBookIdAsync(command.BookId, cancellationToken);
+
+                if (tags != null)
+                {
+                    foreach (var existingTag in tags)
+                    {
+                        await tagRepository.RemoveTagConnectionAsync(command.BookId, existingTag.TagId, cancellationToken);
+                    }
+                }
+
+                var tagToAdd = await tagRepository.GetTagByIdAsync(tagId, cancellationToken);
+                await tagRepository.AddTagConnectionAsync(command.BookId, null, tagToAdd.TagText, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while updating the book tags.", ex);
+            }
+        }
         var result = await repository.UpdateAsync(book, cancellationToken);
 
         return result;

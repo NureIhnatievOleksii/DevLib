@@ -66,12 +66,11 @@ public class CreateBookCommandHandler(IBookRepository repository,ITagRepository 
         var result = await repository.CreateAsync(book, cancellationToken);
 
 
-        if (command.Tags != null)
+        if (!string.IsNullOrWhiteSpace(command.Tag))
         {
-            for (int i = 0; i < command.Tags.Count; i++)
-            {
-                await tagRepository.AddTagConnectionAsync(book.BookId, null ,command.Tags[i], cancellationToken);
-            }
+
+            await tagRepository.AddTagConnectionAsync(book.BookId, null, command.Tag, cancellationToken);
+
         }
 
         return result;
