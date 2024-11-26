@@ -27,14 +27,13 @@ namespace DevLib.Application.CQRS.Queries.User
             if (user == null)
                 throw new Exception("User not found");
 
-            var comments = await _commentRepository.GetUserCommentAsync(query.UserId,cancellationToken);
+            var comments = await _commentRepository.GetUserCommentAsync(query.UserId, cancellationToken);
 
-            var posts = user.Posts.Select(p => new UserPostDto(p.PostId, p.Text)).ToList();
-
-
+            var posts = user.Posts.Select(p => new UserPostDto(p.PostId, p.Title)).ToList();
 
             return new GetUserInfoQueryDto(user.UserName, user.Email, user.Photo, posts, comments);
         }
+
 
     }
 

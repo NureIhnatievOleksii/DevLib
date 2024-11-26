@@ -17,7 +17,7 @@ namespace DevLib.Application.CQRS.Dtos.Queries
     public record UserPostDto
 (
     Guid PostId,
-    string Text
+    string Title
 );
 
     public record UserCommentDto
