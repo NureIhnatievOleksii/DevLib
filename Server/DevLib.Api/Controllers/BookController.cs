@@ -93,12 +93,20 @@ namespace DevLib.Api.Controllers
             return BadRequest(result.Errors);
         }
 
-        [HttpGet("search-books")]
-        public async Task<IActionResult> SearchBooks([FromQuery] string? bookName, CancellationToken cancellationToken)
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchBooks([FromQuery] string? tag, [FromQuery] string? bookName, CancellationToken cancellationToken)
         {
-            var books = await mediator.Send(new SearchBooksQuery(bookName ?? ""), cancellationToken);
-            return Ok(books);
+            try
+            {
+                var books = await mediator.Send(new SearchBooksQuery(tag, bookName ?? ""), cancellationToken);
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
+
 
         [HttpGet("last-published-books")]
         public async Task<IActionResult> GetLastPublishedBooks(CancellationToken cancellationToken)

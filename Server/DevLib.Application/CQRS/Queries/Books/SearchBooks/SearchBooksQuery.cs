@@ -2,7 +2,7 @@
 
 namespace DevLib.Application.CQRS.Queries.Books.SearchBooks
 {
-    public record SearchBooksQuery(string BookName) : IRequest<List<BookNameDto>>;
+    public record SearchBooksQuery(string? tag, string? BookName) : IRequest<List<BookNameDto>>;
 }
 public record BookNameDto
 {
