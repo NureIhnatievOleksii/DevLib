@@ -21,11 +21,11 @@ namespace DevLib.Api.Controllers
         }
         [HttpGet("{userId:guid}")]
         [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> GetBookmarksByUserId(Guid userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetBooksWithBookmarks(Guid userId, CancellationToken cancellationToken)
         {
-            var query = new GetBookmarksByUserIdQuery(userId);
-            var bookIds = await mediator.Send(query, cancellationToken);
-            return Ok(bookIds);
+            var query = new GetBooksWithBookmarksQuery(userId);
+            var booksWithBookmarks = await mediator.Send(query, cancellationToken);
+            return Ok(booksWithBookmarks);
         }
         [HttpDelete("{bookmarkId:guid}")]
         [Authorize(Roles = "Client,Admin")]

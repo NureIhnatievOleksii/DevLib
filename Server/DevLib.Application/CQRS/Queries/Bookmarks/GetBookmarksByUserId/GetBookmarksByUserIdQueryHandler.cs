@@ -9,19 +9,35 @@ using System.Threading.Tasks;
 
 namespace DevLib.Application.CQRS.Queries.Bookmarks.GetBookmarksByUserId
 {
-    public class GetBookmarksByUserIdQueryHandler : IRequestHandler<GetBookmarksByUserIdQuery, List<Guid>>
+    public class GetBooksWithBookmarksQueryHandler : IRequestHandler<GetBooksWithBookmarksQuery, List<BookWithBookmarkDto>>
     {
+        private readonly IBookRepository _bookRepository;
         private readonly IBookmarkRepository _bookmarkRepository;
 
-        public GetBookmarksByUserIdQueryHandler(IBookmarkRepository bookmarkRepository)
+        public GetBooksWithBookmarksQueryHandler(IBookRepository bookRepository, IBookmarkRepository bookmarkRepository)
         {
+            _bookRepository = bookRepository;
             _bookmarkRepository = bookmarkRepository;
         }
 
-        public async Task<List<Guid>> Handle(GetBookmarksByUserIdQuery query, CancellationToken cancellationToken)
+        public async Task<List<BookWithBookmarkDto>> Handle(GetBooksWithBookmarksQuery query, CancellationToken cancellationToken)
         {
+            var books = await _bookRepository.GetAllAsync(cancellationToken);
             var bookmarks = await _bookmarkRepository.GetBookmarksByUserIdAsync(query.UserId, cancellationToken);
-            return bookmarks.Select(b => b.BookId).ToList();
+
+            var bookmarkDict = bookmarks.ToDictionary(b => b.BookId, b => b.BookmarkId);
+
+            return books.Select(book => new BookWithBookmarkDto
+            {
+                BookId = book.BookId,
+                BookName = book.BookName,
+                Author = book.Author,
+                FilePath = book.FilePath,
+                BookImg = book.BookImg,
+                PublicationDateTime = book.PublicationDateTime,
+                BookmarkId = bookmarkDict.ContainsKey(book.BookId) ? bookmarkDict[book.BookId] : null
+            }).ToList();
         }
     }
+
 }
