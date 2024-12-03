@@ -15,7 +15,7 @@ namespace DevLib.Api.Controllers
     {
         [HttpPost]
         [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> CreatePost([FromBody, Required] CreatePostCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreatePost([FromForm, Required] CreatePostCommand command, CancellationToken cancellationToken)
         {
             try
             {
