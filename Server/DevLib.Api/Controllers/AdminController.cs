@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using DevLib.Application.CQRS.Queries.Admins;
+using DevLib.Application.CQRS.Commands.Admins.BanUser;
 
 namespace DevLib.Api.Controllers
 {
@@ -45,6 +46,18 @@ namespace DevLib.Api.Controllers
             var users = await mediator.Send(query, cancellationToken);
 
             return Ok(users);
+        }
+        [HttpPost("ban/{userId}")]
+        public async Task<IActionResult> BanUser(Guid userId, [FromQuery] bool isBanned, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new BanUserCommand(userId, isBanned), cancellationToken);
+
+            if (result)
+            {
+                return Ok(new { Message = isBanned ? "User banned successfully." : "User unbanned successfully." });
+            }
+
+            return NotFound(new { Message = "User not found." });
         }
     }
 }

@@ -23,6 +23,10 @@ public class LoginCommandHandler(
         {
             return CreateLoginResult(false, "User not found");
         }
+        if (user.IsBanned)
+        {
+            return CreateLoginResult(false, "User is banned.");
+        }
 
         var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
 

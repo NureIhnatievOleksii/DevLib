@@ -4,6 +4,7 @@ using DevLib.Api;
 using DevLib.Infrastructure;
 using DevLib.Infrastructure.Database;
 using DevLib.Infrastructure.PreloadingInformation;
+using DevLib.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -31,7 +32,9 @@ var app = builder.Build();
 
 app.UseCors("AllowSpecificOrigin");
 
-app.UseMiddleware<TokenValidationMiddleware>(); 
+app.UseMiddleware<BannedUserMiddleware>();
+app.UseMiddleware<TokenValidationMiddleware>();
+
 app.UseStaticFiles();
 
 using (var scope = app.Services.CreateScope())
