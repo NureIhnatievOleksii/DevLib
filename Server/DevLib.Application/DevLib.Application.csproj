@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DevLib.Domain\DevLib.Domain.csproj" />
+      <ProjectReference Include="..\EmailService\EmailService.csproj" />
     </ItemGroup>
 
     <ItemGroup>

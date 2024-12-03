@@ -13,8 +13,30 @@ public class CreatePostCommandHandler(IPostRepository postRepository, UserManage
     {
         try
         {
+            string imgLink = "";
+
+            if (command.File != null && command.File.Length > 0)
+            {
+                var fileName = $"{Guid.NewGuid()}_{command.File.FileName}";
+                var imagesFolderPath = Path.Combine("wwwroot", "images");
+
+                if (!Directory.Exists(imagesFolderPath))
+                {
+                    Directory.CreateDirectory(imagesFolderPath);
+                }
+
+                var filePath = Path.Combine(imagesFolderPath, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await command.File.CopyToAsync(stream);
+                }
+
+                imgLink = Path.Combine("images", fileName).Replace("\\", "/");
+            }
+
             var user = await userManager.FindByIdAsync(command.userId.ToString())
-                           ?? throw new Exception("User not found");
+                          ?? throw new Exception("User not found");
 
             var post = new Post
             {
@@ -25,6 +47,11 @@ public class CreatePostCommandHandler(IPostRepository postRepository, UserManage
                 User = user
             };
 
+            if (!string.IsNullOrEmpty(imgLink))
+            {
+                post.ImgLink = imgLink;
+            }
+
             await postRepository.CreateAsync(post, cancellationToken);
 
             return post.PostId.ToString();
@@ -34,4 +61,5 @@ public class CreatePostCommandHandler(IPostRepository postRepository, UserManage
             throw new Exception($"An unexpected error occurred: {ex.Message}");
         }
     }
+
 }

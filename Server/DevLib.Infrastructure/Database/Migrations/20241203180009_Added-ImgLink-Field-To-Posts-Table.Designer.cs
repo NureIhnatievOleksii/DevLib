@@ -4,6 +4,7 @@ using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevLib.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(DevLibContext))]
-    partial class DevLibContextModelSnapshot : ModelSnapshot
+    [Migration("20241203180009_Added-ImgLink-Field-To-Posts-Table")]
+    partial class AddedImgLinkFieldToPostsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,9 +376,6 @@ namespace DevLib.Infrastructure.Database.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")

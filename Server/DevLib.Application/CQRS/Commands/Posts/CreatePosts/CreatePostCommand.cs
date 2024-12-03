@@ -10,5 +10,6 @@ namespace DevLib.Application.CQRS.Commands.Posts.CreatePosts;
 public record CreatePostCommand(
     string postName,
     string text,
+    IFormFile? File,
     Guid userId
 ) : IRequest<string>;
