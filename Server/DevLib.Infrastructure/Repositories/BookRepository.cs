@@ -73,5 +73,9 @@ public class BookRepository : IBookRepository
             .Select(tc => tc.Tag)
             .ToListAsync(cancellationToken);
     }
-
+    public async Task DeleteByIdAsync(Book book, CancellationToken cancellationToken = default)
+    {
+        _context.Books.Remove(book);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }
