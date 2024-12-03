@@ -3,10 +3,11 @@ using DevLib.Application.CQRS.Commands.Admins.AssignModeratorRole;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using DevLib.Application.CQRS.Queries.Admins;
 
 namespace DevLib.Api.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/admin")]
     public class AdminController(IMediator mediator) : ControllerBase
     {
         [HttpPost("assign-moderator-role")]
@@ -34,6 +35,16 @@ namespace DevLib.Api.Controllers
             }
 
             return BadRequest(result.ErrorMessage);
+        }
+
+        [HttpGet("user")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+        {
+            var query = new GetAllUsersQuery();
+            var users = await mediator.Send(query, cancellationToken);
+
+            return Ok(users);
         }
     }
 }

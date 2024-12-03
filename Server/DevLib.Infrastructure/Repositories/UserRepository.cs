@@ -1,13 +1,7 @@
 ﻿using DevLib.Application.Interfaces.Repositories;
-using DevLib.Domain.CommentAggregate;
 using DevLib.Domain.UserAggregate;
 using DevLib.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevLib.Infrastructure.Repositories
 {
@@ -25,6 +19,10 @@ namespace DevLib.Infrastructure.Repositories
             return await _context.Users
                 .Include(u => u.Posts)
                 .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        }
+        public async Task<List<User>> GetAllUsersAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users.ToListAsync(cancellationToken);
         }
 
     }
