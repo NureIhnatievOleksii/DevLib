@@ -7,6 +7,7 @@ namespace DevLib.Application.Interfaces.Repositories;
 
 public interface ICommentRepository
 {
+    Task<Comment> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task AddReviewAsync(Comment comment, CancellationToken cancellationToken);
     Task CreateAsync(Comment comment, CancellationToken cancellationToken);
     Task<IdentityResult> CreateReply(Comment comment, Guid CommentId, CancellationToken cancellationToken);

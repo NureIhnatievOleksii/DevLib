@@ -19,6 +19,11 @@ public class CommentRepository : ICommentRepository
         _context = context;
     }
 
+    public async Task<Comment> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == id, cancellationToken);
+    }
+
     public async Task AddReviewAsync(Comment comment, CancellationToken cancellationToken)
     {
         comment.DateTime = DateTime.Now;
