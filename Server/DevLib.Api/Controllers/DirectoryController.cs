@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using DevLib.Application.CQRS.Queries.Directories;
+using DevLib.Application.CQRS.Commands.Directories.DeleteDirectory;
 
 namespace DevLib.Api.Controllers
 {
@@ -98,6 +99,19 @@ namespace DevLib.Api.Controllers
         public async Task<IActionResult> DeleteArticle(Guid articleId, CancellationToken cancellationToken)
         {
             await mediator.Send(new DeleteArticleCommand(articleId), cancellationToken);
+            return Ok();
+        }
+
+        [HttpDelete("{idDirectory}")]
+        public async Task<IActionResult> DeleteDirectory(Guid idDirectory, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(new DeleteDirectoryCommand(idDirectory), cancellationToken);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new { Message = result.Errors });
+            }
+
             return Ok();
         }
     }

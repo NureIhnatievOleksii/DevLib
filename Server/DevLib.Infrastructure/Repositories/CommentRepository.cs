@@ -30,6 +30,15 @@ public class CommentRepository : ICommentRepository
         await _context.Comments.AddAsync(comment, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task UpdateAsync(Comment comment, CancellationToken cancellationToken)
+    {
+        _context.Comments.Update(comment);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    
+
     public async Task CreateAsync(Comment comment, CancellationToken cancellationToken)
     {
         await _context.Comments.AddAsync(comment, cancellationToken);
@@ -169,5 +178,11 @@ public class CommentRepository : ICommentRepository
 
         return result;
 
+    }
+
+    public async Task<Comment> GetComment(Guid commentId, CancellationToken cancellationToken)
+    {
+        var comment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId, cancellationToken);
+        return comment;
     }
 }
