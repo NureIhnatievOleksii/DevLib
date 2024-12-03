@@ -1,4 +1,5 @@
 using DevLib.Application.CQRS.Commands.Books.CreateBooks;
+using DevLib.Application.CQRS.Commands.Books.DeleteBookById;
 using DevLib.Application.CQRS.Commands.Books.UpdateBook;
 using DevLib.Application.CQRS.Commands.Tags.DeleteTagsFromBook;
 using DevLib.Application.CQRS.Queries.Books.GetBookById;
@@ -8,7 +9,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace DevLib.Api.Controllers
 {
@@ -120,6 +120,22 @@ namespace DevLib.Api.Controllers
         {
             await mediator.Send(command, cancellationToken);
             return Ok();
+        }
+
+        [HttpDelete("delete-book/{bookId}")]
+        [Authorize(Roles = "Client,Admin")]
+        public async Task<IActionResult> DeleteBookById(Guid bookId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await mediator.Send(new DeleteBookByIdCommand(bookId), cancellationToken);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
         }
     }
 }

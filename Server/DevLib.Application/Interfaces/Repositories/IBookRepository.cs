@@ -16,5 +16,5 @@ public interface IBookRepository
     Task<List<Rating>> GetRatingsByBookIdAsync(Guid bookId, CancellationToken cancellationToken);
     Task<List<Comment>> GetCommentsByBookIdAsync(Guid bookId, CancellationToken cancellationToken);
     Task<List<Tag>> GetTagsByBookIdAsync(Guid bookId, CancellationToken cancellationToken);
-
+    Task DeleteByIdAsync(Book book, CancellationToken cancellationToken);
 }
