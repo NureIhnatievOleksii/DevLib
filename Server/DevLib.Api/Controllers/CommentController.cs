@@ -2,6 +2,7 @@
 using DevLib.Application.CQRS.Commands.Comments;
 using DevLib.Application.CQRS.Commands.Comments.AddReview;
 using DevLib.Application.CQRS.Commands.Comments.DeleteCommentById;
+using DevLib.Application.CQRS.Commands.Comments.UpdateComment;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace DevLib.Api.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> CreateComment([FromBody] CreateCommentCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateComment([FromBody, Required] CreateCommentCommand command, CancellationToken cancellationToken)
         {
             var commentId = await mediator.Send(command, cancellationToken);
             return Ok(new { commentId });
@@ -30,7 +31,7 @@ namespace DevLib.Api.Controllers
 
         [HttpPost("reply")]
         [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> CreateReply([FromBody] CreateReplyCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateReply([FromBody, Required] CreateReplyCommand command, CancellationToken cancellationToken)
         {
             var result = await mediator.Send(command, cancellationToken);
             if (result.Succeeded)
@@ -43,7 +44,7 @@ namespace DevLib.Api.Controllers
 
         [HttpDelete("{commentId:guid}")]
         [Authorize(Roles = "Client,Admin")]
-        public async Task<IActionResult> DeleteComment(Guid commentId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteComment([ Required] Guid commentId, CancellationToken cancellationToken)
         {
             var command = new DeleteCommentByIdCommand(commentId);
 
@@ -57,5 +58,26 @@ namespace DevLib.Api.Controllers
             return BadRequest(result.Errors);
 
         }
+
+        [HttpPut("update-coments")]
+        [Authorize(Roles = "Client,Admin")]
+
+        public async Task<IActionResult> UpdateComment([FromBody, Required] UpdateCommentCommand command, CancellationToken cancellationToken)
+        {
+            if (command == null)
+            {
+                return BadRequest("Incorrect data entry");
+            }
+
+            object result = await mediator.Send(command, cancellationToken);
+
+            if (result == null)
+            {
+                return BadRequest("There is no such comment");
+            }
+
+            return Ok(result);
+        }
+
     }
 }
