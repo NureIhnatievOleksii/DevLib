@@ -2,6 +2,7 @@
 
 public record CommentDto
 (
+    Guid UserId,
     string AuthorName,
     Guid CommentId,
     string? AuthorImg,

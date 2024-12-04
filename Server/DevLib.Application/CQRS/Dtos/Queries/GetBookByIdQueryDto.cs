@@ -14,6 +14,7 @@
 
     public class ReviewDto
     {
+        public Guid? UserId { get; set; }
         public string UserImg { get; set; }
         public string UserName { get; set; }
         public int Rate { get; set; }

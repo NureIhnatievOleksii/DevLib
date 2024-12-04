@@ -38,6 +38,7 @@ public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPost
             var comments = await postRepository.GetCommentsByPostIdAsync(post.PostId, cancellationToken);
 
             var commentDtos = comments.Select(c => new CommentDto(
+                UserId: c.User.Id,
                 AuthorName: c.User.UserName,
                 AuthorImg: c.User.Photo,
                 DateTime: c.DateTime,
