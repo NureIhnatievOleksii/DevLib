@@ -110,13 +110,14 @@ public class CommentRepository : ICommentRepository
             Comment current = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == item.ReplyId);
 
             CommentDto commentDto = new CommentDto(
-                    AuthorName: current.User.UserName,
-                    AuthorImg: current.User.Photo,
-                    DateTime: current.DateTime,
-                    Text: current.Content,
-                    CommentId: current.CommentId,
-                     Comments: new List<CommentDto>()
-    );
+                UserId: current.User.Id,
+                AuthorName: current.User.UserName,
+                AuthorImg: current.User.Photo,
+                DateTime: current.DateTime,
+                Text: current.Content,
+                CommentId: current.CommentId,
+                Comments: new List<CommentDto>()
+            );
             comment.Comments.Add(GetReplies(commentDto, cancellationToken).Result);
         }
 
