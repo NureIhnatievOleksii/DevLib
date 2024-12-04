@@ -68,39 +68,51 @@ public class CommentRepository : ICommentRepository
         return IdentityResult.Success;
     }
 
-
     public async Task<IdentityResult> DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken = default)
     {
-        Comment comment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId, cancellationToken);
+        var comment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == commentId, cancellationToken);
         if (comment == null)
         {
             return IdentityResult.Failed(new IdentityError { Description = "Comment was not found." });
         }
 
-        var replies = await _context.ReplyLinks.Where(r => r.CommentId == commentId).ToListAsync();
-
-        foreach (var replyLink in replies)
-        {
-            Comment replyComment = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == replyLink.ReplyId, cancellationToken);
-            if (replyComment != null)
-            {
-                replyComment.Reply = null;
-                replyComment.ReplyId = null;
-            }
-            _context.ReplyLinks.Remove(replyLink);
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        await DeleteRepliesAsync(commentId, cancellationToken);
 
         if (comment.ReplyId != null)
         {
-            var reply = await _context.ReplyLinks.FirstOrDefaultAsync(r => r.ReplyId == comment.ReplyId, cancellationToken);
-            _context.ReplyLinks.Remove(reply);
+            var replyLink = await _context.ReplyLinks.FirstOrDefaultAsync(r => r.ReplyId == comment.ReplyId, cancellationToken);
+            if (replyLink != null)
+            {
+                _context.ReplyLinks.Remove(replyLink);
+            }
         }
-        _context.Comments.Remove(comment);
 
+        _context.Comments.Remove(comment);
         await _context.SaveChangesAsync(cancellationToken);
+
         return IdentityResult.Success;
     }
+
+    private async Task DeleteRepliesAsync(Guid commentId, CancellationToken cancellationToken)
+    {
+        var replyLinks = await _context.ReplyLinks.Where(r => r.CommentId == commentId).ToListAsync(cancellationToken);
+
+        foreach (var replyLink in replyLinks)
+        {
+            var replyComment = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == replyLink.ReplyId, cancellationToken);
+            if (replyComment != null)
+            {
+                await DeleteRepliesAsync(replyComment.CommentId, cancellationToken);
+
+                _context.Comments.Remove(replyComment);
+            }
+            _context.ReplyLinks.Remove(replyLink);
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+
     public async Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken = default)
     {
         var replies = await _context.ReplyLinks.Where(r => r.CommentId == comment.CommentId).ToListAsync();
@@ -110,13 +122,13 @@ public class CommentRepository : ICommentRepository
             Comment current = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == item.ReplyId);
 
             CommentDto commentDto = new CommentDto(
-                    AuthorName: current.User.UserName,
-                    AuthorImg: current.User.Photo,
-                    DateTime: current.DateTime,
-                    Text: current.Content,
-                    CommentId: current.CommentId,
-                     Comments: new List<CommentDto>()
-    );
+                AuthorName: current.User.UserName,
+                AuthorImg: current.User.Photo,
+                DateTime: current.DateTime,
+                Text: current.Content,
+                CommentId: current.CommentId,
+                Comments: new List<CommentDto>()
+            );
             comment.Comments.Add(GetReplies(commentDto, cancellationToken).Result);
         }
 
@@ -130,14 +142,9 @@ public class CommentRepository : ICommentRepository
         public Guid? BookId { get; set; }
     }
 
-
     private async Task<CommentInfo> GetTitle(Guid CommentId, CancellationToken cancellationToken)
     {
-
-        
-
         Comment comment = await _context.Comments.FirstOrDefaultAsync(c =>c.CommentId == CommentId);
-
 
         if (comment.BookId != null)
         {
@@ -168,11 +175,7 @@ public class CommentRepository : ICommentRepository
 
         foreach (var item in comments)
         {
-
             CommentInfo obj =  GetTitle(item.CommentId, cancellationToken).Result;
-            
-
-
             result.Add(new UserCommentDto(obj.BookId, obj.PostId, obj.Title, item.CommentId, item.Content, item.DateTime));
         }
 
