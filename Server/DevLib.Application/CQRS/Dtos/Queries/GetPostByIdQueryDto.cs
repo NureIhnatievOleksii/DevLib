@@ -7,8 +7,10 @@ public record CommentDto
     string? AuthorImg,
     DateTime DateTime,
     string Text,
-    List<CommentDto> Comments 
+    List<CommentDto> Comments,
+    Guid? UserId  
 );
+
 
 public record GetPostByIdQueryDto
 (

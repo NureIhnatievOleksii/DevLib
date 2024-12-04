@@ -113,27 +113,32 @@ public class CommentRepository : ICommentRepository
     }
 
 
-    public async Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken = default)
+    public async Task<CommentDto> GetReplies(CommentDto comment, CancellationToken cancellationToken)
     {
         var replies = await _context.ReplyLinks.Where(r => r.CommentId == comment.CommentId).ToListAsync();
 
         foreach (var item in replies)
         {
-            Comment current = await _context.Comments.FirstOrDefaultAsync(c => c.ReplyId == item.ReplyId);
+            var current = await _context.Comments
+                .Include(c => c.User) 
+                .FirstOrDefaultAsync(c => c.ReplyId == item.ReplyId, cancellationToken);
 
-            CommentDto commentDto = new CommentDto(
+            var commentDto = new CommentDto(
                 AuthorName: current.User.UserName,
                 AuthorImg: current.User.Photo,
                 DateTime: current.DateTime,
                 Text: current.Content,
                 CommentId: current.CommentId,
-                Comments: new List<CommentDto>()
+                Comments: new List<CommentDto>(),
+                UserId: current.UserId // Добавляем UserId
             );
-            comment.Comments.Add(GetReplies(commentDto, cancellationToken).Result);
+
+            comment.Comments.Add(await GetReplies(commentDto, cancellationToken));
         }
 
         return comment;
     }
+
 
     private class CommentInfo
     {

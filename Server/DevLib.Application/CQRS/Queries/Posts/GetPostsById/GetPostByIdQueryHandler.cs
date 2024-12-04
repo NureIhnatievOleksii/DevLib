@@ -43,8 +43,10 @@ public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPost
                 DateTime: c.DateTime,
                 Text: c.Content,
                 CommentId: c.CommentId,
-                Comments: new List<CommentDto>()  
+                Comments: new List<CommentDto>(),
+                UserId: c.UserId 
             )).ToList();
+
 
             foreach (var comment in commentDtos)
             {

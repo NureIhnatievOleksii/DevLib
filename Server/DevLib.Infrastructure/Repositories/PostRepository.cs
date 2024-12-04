@@ -35,7 +35,8 @@ public class PostRepository(DevLibContext context) : IPostRepository
     {
         return await context.Comments
             .Where(c => c.PostId == postId)
-            .Include(c => c.User) 
+            .Include(c => c.User)  
             .ToListAsync(cancellationToken);
     }
+
 }
