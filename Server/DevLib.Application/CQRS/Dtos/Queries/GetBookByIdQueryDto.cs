@@ -19,7 +19,9 @@
         public int Rate { get; set; }
         public DateTime CreationDate { get; set; }
         public string Text { get; set; }
+        public Guid? UserId { get; set; } 
     }
+
     public class TagDto
     {
         public Guid TagId { get; set; }
