@@ -21,6 +21,7 @@ public record GetPostByIdQueryDto
     string? AuthorImg,
     int CommentsQuantity,
     Guid PostId,
-    List<CommentDto> Comments 
+    List<CommentDto> Comments,
+    string? ImgLink
 );
 

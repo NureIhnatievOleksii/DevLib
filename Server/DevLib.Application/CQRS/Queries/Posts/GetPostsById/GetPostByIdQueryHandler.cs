@@ -44,27 +44,26 @@ public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPost
                 Text: c.Content,
                 CommentId: c.CommentId,
                 Comments: new List<CommentDto>(),
-                UserId: c.UserId 
+                UserId: c.UserId
             )).ToList();
-
 
             foreach (var comment in commentDtos)
             {
-                await commentRepository.GetReplies(comment,cancellationToken);
+                await commentRepository.GetReplies(comment, cancellationToken);
             }
 
             var resultPost = new GetPostByIdQueryDto
             (
                 PostName: post.Title,
                 Text: post.Text,
-                DateTime: DateTime.UtcNow,
+                DateTime: post.DateTime,
                 AuthorName: user.UserName,
                 AuthorImg: user.Photo,
                 CommentsQuantity: comments.Count,
                 PostId: post.PostId,
-                Comments: commentDtos  
+                Comments: commentDtos,
+                ImgLink: post.ImgLink  
             );
-
 
             return resultPost;
         }
@@ -73,5 +72,6 @@ public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPost
             throw new Exception($"An unexpected error occurred: {ex.Message}");
         }
     }
+
 }
 
