@@ -20,7 +20,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Ok(new { Message = "User registered successfully." });
         }
 
-        return StatusCode(403, result.ErrorMessage);
+        return BadRequest(result.ErrorMessage);
     }
 
     [HttpPost("login-with-google")]
@@ -34,7 +34,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Ok(new { result.Token, Message = "Login information added successfully." });
         }
 
-        return StatusCode(403, result.ErrorMessage);
+        return BadRequest(result.ErrorMessage);
     }
 
     [HttpPost("login-with-github")]
@@ -47,7 +47,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Ok(new { result.Token, Message = "GitHub login successful." });
         }
 
-        return StatusCode(403, result.ErrorMessage);
+        return BadRequest(result.ErrorMessage);
     }
 
     [HttpPost("login")]
@@ -73,6 +73,6 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Ok(new { Message = "Logout successful." });
         }
 
-        return StatusCode(403, result.ErrorMessage);
+        return BadRequest(result.ErrorMessage);
     }
 }
