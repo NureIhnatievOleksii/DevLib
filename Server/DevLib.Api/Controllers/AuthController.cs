@@ -60,7 +60,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             return Ok(new { result.Token, Message = "User logged in successfully." });
         }
 
-        return BadRequest(result.ErrorMessage);
+        return StatusCode(403, result.ErrorMessage);
     }
 
     [HttpPut("logout")]
